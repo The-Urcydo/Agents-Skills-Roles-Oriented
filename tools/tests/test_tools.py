@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for tools/check.py. Standard library only."""
+"""Tests for the repository tools. Standard library only."""
 from __future__ import annotations
 
 import subprocess
@@ -10,11 +10,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CHECK = ROOT / "tools" / "check.py"
+NEW_SKILL = ROOT / "tools" / "new_skill.py"
+CATALOG = ROOT / "tools" / "catalog.py"
+INSTALL = ROOT / "tools" / "install.py"
+
+sys.path.insert(0, str(ROOT / "tools"))
+import catalog  # noqa: E402
 
 
 def write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
+
+
+def refresh_catalog(root: Path) -> None:
+    write(root / "SKILLS.md", catalog.render_catalog(root))
 
 
 def make_repo(tmp: Path) -> Path:
@@ -49,12 +59,21 @@ def make_repo(tmp: Path) -> Path:
     }
     for path, text in required.items():
         write(root / path, text)
+    refresh_catalog(root)
     return root
 
 
 def run_check(root: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
         [sys.executable, str(CHECK), "--root", str(root), *args],
+        text=True,
+        capture_output=True,
+    )
+
+
+def run_tool(tool: Path, root: Path, *args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        [sys.executable, str(tool), "--root", str(root), *args],
         text=True,
         capture_output=True,
     )
@@ -83,6 +102,7 @@ class CheckTests(unittest.TestCase):
                     "# Example\n"
                 ),
             )
+            refresh_catalog(root)
             result = run_check(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn("1 skill(s)", result.stdout)
@@ -102,6 +122,7 @@ class CheckTests(unittest.TestCase):
                     "---\n"
                 ),
             )
+            refresh_catalog(root)
             result = run_check(root)
             self.assertEqual(result.returncode, 1)
             self.assertIn("must match the folder", result.stdout)
@@ -120,6 +141,7 @@ class CheckTests(unittest.TestCase):
                     "---\n"
                 ),
             )
+            refresh_catalog(root)
             result = run_check(root)
             self.assertEqual(result.returncode, 1)
             self.assertIn("missing 'license'", result.stdout)
@@ -141,6 +163,7 @@ class CheckTests(unittest.TestCase):
                     f"{body}\n"
                 ),
             )
+            refresh_catalog(root)
             result = run_check(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             strict = run_check(root, "--strict")
@@ -163,9 +186,110 @@ class CheckTests(unittest.TestCase):
                     "See [missing](references/missing.md).\n"
                 ),
             )
+            refresh_catalog(root)
             result = run_check(root)
             self.assertEqual(result.returncode, 1)
             self.assertIn("link target not found", result.stdout)
+
+
+class ToolTests(unittest.TestCase):
+    def test_new_skill_scaffolds_and_updates_catalog(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            result = run_tool(NEW_SKILL, root, "example-skill", "--category", "engineering")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            skill = root / "skills/example-skill/SKILL.md"
+            self.assertTrue(skill.exists())
+            self.assertIn("name: example-skill", skill.read_text(encoding="utf-8"))
+            self.assertIn("example-skill", (root / "SKILLS.md").read_text(encoding="utf-8"))
+            check = run_check(root)
+            self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
+
+    def test_new_skill_rejects_duplicate_without_force(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            first = run_tool(NEW_SKILL, root, "example-skill", "--category", "engineering")
+            self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
+            second = run_tool(NEW_SKILL, root, "example-skill", "--category", "engineering")
+            self.assertEqual(second.returncode, 2)
+            self.assertIn("already exists", second.stderr)
+
+    def test_new_skill_quotes_a_description_with_a_colon(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            result = run_tool(
+                NEW_SKILL,
+                root,
+                "example-skill",
+                "--category",
+                "engineering",
+                "--description",
+                "Use when: testing a colon",
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            text = (root / "skills/example-skill/SKILL.md").read_text(encoding="utf-8")
+            self.assertIn('description: "Use when: testing a colon"', text)
+            check = run_check(root)
+            self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
+
+    def test_catalog_check_fails_when_out_of_date(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(
+                root / "skills/example-skill/SKILL.md",
+                (
+                    "---\n"
+                    "name: example-skill\n"
+                    "description: Does a thing. Use when testing.\n"
+                    "license: MIT\n"
+                    "metadata:\n"
+                    "  category: engineering\n"
+                    "---\n"
+                ),
+            )
+            result = run_tool(CATALOG, root, "--check")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("out of date", result.stdout)
+
+    def test_install_copies_skill(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            project = Path(tmp) / "project"
+            project.mkdir()
+            created = run_tool(NEW_SKILL, root, "example-skill", "--category", "engineering")
+            self.assertEqual(created.returncode, 0, created.stdout + created.stderr)
+            write(root / "skills/example-skill/references/notes.md", "note\n")
+            result = run_tool(
+                INSTALL,
+                root,
+                "--target",
+                "claude",
+                "--skill",
+                "example-skill",
+                "--project",
+                str(project),
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertTrue((project / ".claude/skills/example-skill/SKILL.md").exists())
+            self.assertTrue((project / ".claude/skills/example-skill/references/notes.md").exists())
+
+    def test_install_unknown_skill_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            project = Path(tmp) / "project"
+            project.mkdir()
+            result = run_tool(
+                INSTALL,
+                root,
+                "--target",
+                "claude",
+                "--skill",
+                "missing",
+                "--project",
+                str(project),
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertIn("unknown skill", result.stderr)
 
 
 if __name__ == "__main__":

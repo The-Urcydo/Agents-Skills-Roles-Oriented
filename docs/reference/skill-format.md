@@ -75,7 +75,13 @@ The agent sees `name` and `description` at startup. It loads the body only when 
 python3 tools/check.py
 ```
 
-The checker validates names, front matter, license, metadata, links, and the 500-line limit. `--strict` makes warnings fail. If the reference validator is available, `skills-ref validate skills/<name>` should also pass.
+The checker validates names, front matter, license, metadata, links, and the 500-line limit. `--strict` makes warnings fail. It also fails when `SKILLS.md` does not match the skill folders.
+
+```bash
+python3 tools/catalog.py --check
+```
+
+If the reference validator is available, `skills-ref validate skills/<name>` should also pass.
 
 ## Quality checklist
 

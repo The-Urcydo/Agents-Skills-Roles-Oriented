@@ -27,12 +27,21 @@ skills/
 ## Add a skill
 
 ```bash
-mkdir -p skills/my-skill
-# write skills/my-skill/SKILL.md
-python3 tools/check.py
+python3 tools/new_skill.py my-skill --category engineering
+# fill in skills/my-skill/SKILL.md
+python3 tools/catalog.py
+python3 tools/check.py --strict
 ```
 
-The scaffolding, catalog, and installation tools arrive in Batch 1. Until then, create the folder and `SKILL.md` by hand.
+The scaffold creates the folder and updates `SKILLS.md`. To do it by hand, create `skills/my-skill/SKILL.md` and run `python3 tools/catalog.py` afterwards.
+
+## Install a skill
+
+```bash
+python3 tools/install.py --target claude --skill my-skill --project path/to/project
+```
+
+Targets: `claude` (`.claude/skills`), `opencode` (`.opencode/skills`), `agents` (`.agents/skills`). See [the install guide](../docs/how-to/install-skills.md).
 
 ## Categories
 

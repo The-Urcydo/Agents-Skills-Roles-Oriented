@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import catalog
 from _lib import FrontMatterError, parse_front_matter, read_text, repo_root
 
 SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -35,6 +36,7 @@ REQUIRED = (
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "CHANGELOG.md",
+    "SKILLS.md",
     "docs/INDEX.md",
     "skills/README.md",
     "roles/README.md",
@@ -212,6 +214,15 @@ def check_skill_links(root: Path, skill_dir: Path, sk: Path, rep: Report) -> Non
             rep.error("skill-link", rel(root, sk), f"link target not found: {target}")
 
 
+def check_catalog(root: Path, rep: Report) -> None:
+    p = root / "SKILLS.md"
+    if not p.exists():
+        rep.error("catalog", "SKILLS.md", "generated catalog is missing; run python3 tools/catalog.py")
+        return
+    if read_text(p) != catalog.render_catalog(root):
+        rep.error("catalog", "SKILLS.md", "generated catalog is out of date; run python3 tools/catalog.py")
+
+
 def check_docs(root: Path, rep: Report) -> int:
     base = root / "docs"
     if not base.is_dir():
@@ -220,7 +231,7 @@ def check_docs(root: Path, rep: Report) -> int:
     for p in sorted(base.rglob("*.md")):
         count += 1
         check_links(root, p, rep)
-    for name in ("README.md", "AGENTS.md"):
+    for name in ("README.md", "AGENTS.md", "SKILLS.md"):
         p = root / name
         if p.exists():
             check_links(root, p, rep)
@@ -311,6 +322,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     check_required(root, rep)
     check_agents(root, rep)
     skills = check_skills(root, rep)
+    check_catalog(root, rep)
     docs = check_docs(root, rep)
     check_adrs(root, rep)
     for f in sorted(rep.items, key=lambda x: (x.level, x.where, x.code)):

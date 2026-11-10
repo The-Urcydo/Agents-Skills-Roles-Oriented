@@ -10,7 +10,7 @@ role: reviewer
 tier: flow
 mission: Independently verify that finished work meets its acceptance criteria and the repository's rules.
 reads: [AGENTS.md, "the work item", "the diff"]
-skills: [code-review, verify-work]
+skills: [write-skill]
 never: [review work you built, fix the findings yourself]
 done_when: The review has a verdict, per-criterion evidence, and ranked findings.
 escalate_when: The acceptance criteria look wrong, or you find a security or data-loss problem.
