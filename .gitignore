@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environments
+.venv/
+venv/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Local agent installs created by tools/install.py
+.agents/
+.claude/
+.opencode/
+
+# Local environment files
+.env
+.env.*

@@ -1,0 +1,9 @@
+# The owner approves every pull request. The last matching pattern wins, so the
+# catch-all comes first.
+*                                       @nguyenquocduyloc @NguyenLoc231
+/AGENTS.md                              @nguyenquocduyloc @NguyenLoc231
+/skills/                                @nguyenquocduyloc @NguyenLoc231
+/roles/                                 @nguyenquocduyloc @NguyenLoc231
+/agents/                                @nguyenquocduyloc @NguyenLoc231
+/tools/                                 @nguyenquocduyloc @NguyenLoc231
+/.github/                               @nguyenquocduyloc @NguyenLoc231
