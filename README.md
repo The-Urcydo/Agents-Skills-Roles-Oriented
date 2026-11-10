@@ -4,22 +4,30 @@ A portable library of agent skills, with role charters that consume them. Built 
 
 This repo is the skills-focused sibling of [Repo-Template](https://github.com/The-Urcydo/Repo-Template). Repo-Template owns the runnable project skeleton: docs, work items, roles, protocols, tools. This repo owns the skill library and the role charters that use it. Skills developed here are ported into Repo-Template when they are ready; Repo-Template is not modified from this repo.
 
-**Status:** v0.1 in progress. Batch 0 is the bootstrap: the contract, the checker, the decisions, and the folder shape. No skills are imported yet.
+**Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 adds the catalog, scaffold, installer, and the first skill (`write-skill`).
 
 ## Quick start
 
 ```bash
 python3 tools/check.py
+python3 tools/catalog.py --check
 python3 -m unittest discover -s tools/tests -v
 ```
 
-`check.py` validates the repository. `--strict` makes warnings fail. The test suite covers the checker itself.
+Install a skill into a project:
+
+```bash
+python3 tools/install.py --target claude --skill write-skill --project path/to/project
+```
+
+`check.py` validates the repository. `--strict` makes warnings fail. The test suite covers the tools.
 
 ## Layout
 
 | Path | Purpose |
 |---|---|
 | `skills/` | The library. One flat folder per skill: `skills/<name>/SKILL.md` |
+| `SKILLS.md` | Generated catalog of every skill, grouped by category |
 | `roles/` | Role charters. Each charter lists the skills it uses; skills stay role-agnostic |
 | `agents/` | The harness around the skills: protocols, generated adapters, optional evals |
 | `docs/` | The skill contract, the reasoning, authoring guides, and decisions |
@@ -39,7 +47,7 @@ skills/code-review/
 
 The open format is specified at [agentskills.io](https://agentskills.io/specification). This repo keeps the source in that format and puts tool-specific behavior in generated adapters, so the same skill works in Claude Code, OpenCode, and other agents.
 
-Start with [docs/INDEX.md](docs/INDEX.md).
+Start with [docs/INDEX.md](docs/INDEX.md). The generated [SKILLS.md](SKILLS.md) lists every available skill.
 
 ## Relationship to Repo-Template
 

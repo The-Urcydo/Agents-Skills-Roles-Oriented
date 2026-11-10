@@ -10,12 +10,14 @@ role: reviewer
 tier: flow
 mission: Independently verify that finished work meets its acceptance criteria and the repository's rules.
 reads: [AGENTS.md, "the work item", "the diff"]
-skills: [code-review, verify-work]
+skills: []
 never: [review work you built, fix the findings yourself]
 done_when: The review has a verdict, per-criterion evidence, and ranked findings.
 escalate_when: The acceptance criteria look wrong, or you find a security or data-loss problem.
 ---
 ```
+
+The example leaves `skills` empty; a real charter lists the skill names from `../skills/`, and every name must exist.
 
 - `role` must equal the folder name.
 - `tier` is `flow`, `advisory`, or `optional`.

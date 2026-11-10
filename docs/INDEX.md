@@ -7,11 +7,16 @@ Start here. This file is the map; open only what the task needs.
 - [Skill format](reference/skill-format.md): required front matter, folder shape, metadata, and quality rules.
 - [Why skills](explanation/why-skills.md): the context-budget reason for skills, and how they differ from roles and `AGENTS.md`.
 
+## Catalog
+
+- [Skills catalog](../SKILLS.md): generated list of every skill, grouped by category.
+
 ## Guides
 
 - [Write a skill](how-to/write-a-skill.md): from idea to validated pull request.
+- [Install skills](how-to/install-skills.md): copy a skill into Claude Code, OpenCode, or `.agents/skills`.
 
-Planned, not written yet: `how-to/install-skills.md` (Batch 1) and `how-to/port-to-repo-template.md` (Batch 5).
+Planned, not written yet: `how-to/port-to-repo-template.md` (Batch 5).
 
 ## Decisions
 
