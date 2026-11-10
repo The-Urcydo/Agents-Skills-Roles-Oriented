@@ -1,8 +1,8 @@
 # Code of conduct
 
-This repository is worked on by one human owner and several AI agents, and it
-welcomes contributions from other people. The same standards apply to everyone
-who takes part, whether human or agent.
+This repository is worked on by human maintainers and AI agents, and it welcomes
+contributions from other people. The same standards apply to everyone who takes
+part, whether human or agent.
 
 ## Our standards
 

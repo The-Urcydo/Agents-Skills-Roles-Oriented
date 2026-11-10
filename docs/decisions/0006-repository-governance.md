@@ -22,7 +22,8 @@ configuration, and no enforcement of the workflow pinning rule.
 ## Decision
 
 - `main` is protected by the `protect-main` ruleset: a pull request, one Code
-  Owner review, dismissal of stale reviews, approval of the latest push, the
+  Owner review, dismissal of stale reviews, approval of the latest push,
+  resolved review threads, an extra approval for unattributed changes, the
   `check` jobs, no bypass actors, and merge commits only.
 - `.github/CODEOWNERS` has a catch-all line for the human owners. Agent-operated
   accounts must never approve or hold admin.
@@ -51,10 +52,10 @@ configuration, and no enforcement of the workflow pinning rule.
 ## Known gap
 
 Every member of the `The-Urcydo` organization currently has organization admin
-and repository admin access, including the agent-operated accounts. An
-organization admin can change the ruleset or the security settings, so the
-review boundary is not a hard boundary until the organization access model is
-fixed. The intended state is that only human owners hold admin, and agent
-accounts get the least privilege they need on this repository. That change needs
-a separate, explicit approval because it affects other repositories in the
-organization.
+and repository admin access, including the agent-operated accounts. The
+organization does not require two-factor authentication. An organization admin
+can change the ruleset or the security settings, so the review boundary is not a
+hard boundary until the organization access model is fixed. The intended state
+is that only human owners hold admin, and agent accounts get the least privilege
+they need on this repository. That change needs a separate, explicit approval
+because it affects other repositories in the organization.

@@ -16,6 +16,11 @@ GOVERNANCE_FILES = (
     "CODE_OF_CONDUCT.md",
     ".github/dependabot.yml",
     ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/ISSUE_TEMPLATE/private_channel.yml",
+    ".github/ISSUE_TEMPLATE/question.yml",
+    ".github/ISSUE_TEMPLATE/skill_proposal.yml",
     "docs/decisions/0006-repository-governance.md",
 )
 LINKED_DOCS = ("SECURITY.md", "CONTRIBUTING.md", "CODE_OF_CONDUCT.md", "README.md")
@@ -57,7 +62,10 @@ class GovernanceTests(unittest.TestCase):
 
     def test_every_codeowners_line_uses_the_catch_all_owners(self) -> None:
         entries = parse_codeowners()
-        catch_all = next(owners for pattern, owners in entries if pattern == "*")
+        catch_all = next(
+            (owners for pattern, owners in entries if pattern == "*"), None
+        )
+        self.assertIsNotNone(catch_all, "CODEOWNERS needs a * catch-all line")
         problems = [
             f"{pattern!r} has {sorted(owners)}, expected {sorted(catch_all)}"
             for pattern, owners in entries

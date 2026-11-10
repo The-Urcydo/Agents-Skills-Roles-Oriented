@@ -45,10 +45,11 @@ python3 -m unittest discover -s tools/tests -v
 
 ## What the rules require
 
-- Do not push to `main` or force-push. Merge with a merge commit; the repository
+- Do not push or force-push to `main`. Merge with a merge commit; the repository
   does not use squash or rebase merges.
-- Changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or
-  `AGENTS.md` need the owner's approval.
+- Every pull request needs a code owner's approval. Changes under `skills/`,
+  `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` are never merged
+  without it.
 - A push after an approval makes that approval stale. Say so on the pull request
   before you push to an approved branch.
 - Workflows set `permissions` and pin every action to a full commit SHA.
@@ -64,8 +65,8 @@ imported skill needs `PROVENANCE.md` and an entry in
 
 CI runs `check.py --strict` and the unit tests on Python 3.9 and 3.13.
 Dependabot keeps the pinned actions current. The `protect-main` ruleset requires
-a code-owner review, the `check` jobs, and an approval of the latest push. If
-any are missing, leave the merge to the owner.
+a code-owner review, resolved review threads, the `check` jobs, and an approval
+of the latest push. If any are missing, leave the merge to the owner.
 
 ## Releasing
 

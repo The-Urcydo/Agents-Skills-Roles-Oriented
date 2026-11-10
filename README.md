@@ -65,7 +65,7 @@ Report vulnerabilities privately under [SECURITY.md](SECURITY.md). Secret scanni
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` need the owner's approval in a pull request. One topic per pull request, with evidence.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Every pull request needs a code owner's approval; changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` are never merged without it. One topic per pull request, with evidence.
 
 Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 

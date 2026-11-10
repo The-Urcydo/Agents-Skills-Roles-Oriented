@@ -29,10 +29,10 @@ A portable library of agent skills plus the role charters that consume them. The
 3. **No role logic in a skill.** A skill says what to do. A role charter says when that role uses it.
 4. **Imports carry provenance.** Every third-party skill has a `PROVENANCE.md` with the source URL, commit, license, and changes. Add it to `THIRD_PARTY_NOTICES.md`.
 5. **Never hand-edit generated files.** `SKILLS.md`, `roles/ROSTER.md`, and adapter outputs are generated. Edit the source and re-run the generator.
-6. **Owner approval.** Changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or this file need the owner's approval in a pull request. Only the handles in `.github/CODEOWNERS` are owners: `@nguyenquocduyloc` and `@NguyenLoc231`. Agent-operated accounts never approve. Do not push to `main` or force-push; merge with a merge commit, never squash or rebase.
+6. **Owner approval.** Every pull request needs the approval of a code owner in `.github/CODEOWNERS`: `@nguyenquocduyloc` and `@NguyenLoc231`. Changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or this file are never merged without it. Agent-operated accounts never approve. Do not push or force-push to `main`; merge with a merge commit, never squash-merge or rebase-merge.
 7. **No secrets or personal paths.** Skills are public instructions; never put credentials, tokens, or absolute home paths in them.
 8. **Do not modify Repo-Template from this repo.** Porting is a separate, explicit change in Repo-Template.
-9. **Evidence before handoff.** Run `python3 tools/check.py` and, when `tools/` changed, the unit tests. Put the command and result in the pull request.
+9. **Evidence before handoff.** Run `python3 tools/check.py --strict` and, when `tools/` changed, the unit tests. Put the command and result in the pull request.
 10. **Scripts need documentation.** A skill that runs code must state its runtime, dependencies, and whether it needs network access.
 11. **Report security problems privately.** Follow `SECURITY.md`; do not open a public issue with the details.
 12. **Workflows are code.** Set `permissions` and pin every action to a full commit SHA.
