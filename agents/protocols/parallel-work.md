@@ -6,7 +6,7 @@ Several agents at once is the normal case. Collisions are prevented by structure
 
 1. **One writer per path.** Folder ownership and per-role file lanes mean two agents never write the same file. If you need a change in a path you do not own, say so in the handoff for the owner.
 2. **One worktree per agent.** Each building agent works in its own git worktree on its own branch. Agents never share a working directory.
-3. **Locked shared tools.** Creating items, allocating decision numbers, and editing the human queue go through tools that take a file lock, so two agents cannot allocate the same number or corrupt a file.
+3. **Locked shared tools.** If the host has tools for creating items, allocating decision numbers, or editing the human queue, those tools take a file lock so two agents cannot allocate the same number or corrupt a file.
 
 ## What can run in parallel
 

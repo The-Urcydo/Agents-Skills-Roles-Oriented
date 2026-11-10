@@ -41,7 +41,7 @@ Every question carries a recommendation, a default, and the cost of guessing wro
 
 1. If there is an item, mark it blocked with the question, unless you can continue on a part that does not depend on the answer.
 2. Pick up another item. Never idle on one question.
-3. If the question outlives its default horizon, apply the default unless it is irreversible or about an ambiguous directive. Those wait, and that part stays not done.
+3. If the question outlives its default horizon (seven days unless the host sets one), apply the default unless it is irreversible or about an ambiguous directive. Those wait, and that part stays not done.
 
 ## Never
 

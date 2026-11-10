@@ -12,6 +12,16 @@ SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CATEGORIES = ("engineering", "productivity", "design", "repo")
 INVOCATIONS = ("model", "user", "both")
 TIERS = ("flow", "advisory", "optional")
+ROLE_FIELDS = (
+    "role",
+    "tier",
+    "mission",
+    "reads",
+    "skills",
+    "never",
+    "done_when",
+    "escalate_when",
+)
 
 
 def repo_root() -> Path:

@@ -34,7 +34,7 @@ Use this when work will continue in another session, another role, or after a pa
 
 ## In Repo-Template
 
-The handoff is `work/items/<id>/handoff.md`. Move the item with:
+The handoff is `work/items/<id>/handoff.md`, or `work/items/<id>.md` for a light item. Move the item with:
 
 ```bash
 python3 tools/transition.py <id> <status> --by <role> --next "<one sentence>" [--owner <role>] [--evidence "<command or link>"]

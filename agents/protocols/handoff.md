@@ -1,17 +1,18 @@
 # Handoff protocol
 
-A session ends and a fresh one starts with no memory. The handoff file is the memory. The host repository supplies the tracker and the state names; this protocol defines the content, not the states.
+A session ends and a fresh one starts with no memory. The handoff file is the memory. The host repository supplies the tracker and the state names; this protocol defines the rules, not the format.
 
-## What the next session needs
+## What the handoff must answer
 
-- **Current state:** one paragraph on where things stand now.
-- **Decisions made:** choices that must not be re-litigated, with a pointer to the decision record.
-- **Dead ends already tried:** what failed and why.
-- **Next action:** one sentence naming the next owner and the first thing they do.
-- **Evidence:** the commands run and their result, or a link to the run.
-- **Do not:** files, assumptions, or approaches the next agent must avoid.
+A fresh session must be able to answer five questions without the old conversation:
 
-Keep it under about 60 lines. It is current state, not a diary; history lives in git.
+1. Where are we now?
+2. What is already decided?
+3. What has already failed?
+4. What is the next action, and who does it?
+5. What must not happen next?
+
+The `write-handoff` skill gives the detailed format and examples.
 
 ## Rules
 

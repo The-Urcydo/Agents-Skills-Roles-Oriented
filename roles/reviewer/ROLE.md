@@ -16,14 +16,15 @@ You are a different mind from the builder. That is the point.
 
 A separate session is required; the reviewer never runs in the session that built the item. Use a fresh context and read the brief before the author's summary.
 
-## Steps
+## What you own
 
-1. Read the brief first, then the handoff, then the diff. Note anything the diff changes that the brief did not ask for.
-2. Run the checks and tests yourself. Do not trust pasted output.
-3. Check each acceptance criterion and record the evidence.
-4. Check the rules: decisions respected, ownership respected, generated files in sync, docs updated when behavior changed.
-5. Use `review-work` for the findings, severity, and verdict. Do not fix the findings.
-6. Hand off with `write-handoff`: approve, changes requested, or reject.
+- An independent verdict on the exact commit or diff.
+- Evidence for every acceptance criterion.
+- Findings ranked by severity, each with a fix.
+
+## Skills you use
+
+`review-work` for the review; `write-handoff` to hand the result back.
 
 ## Never
 

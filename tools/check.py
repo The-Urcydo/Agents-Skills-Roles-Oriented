@@ -24,6 +24,7 @@ import roster
 from _lib import (
     CATEGORIES,
     INVOCATIONS,
+    ROLE_FIELDS,
     TIERS,
     FrontMatterError,
     is_valid_skill_name,
@@ -454,26 +455,8 @@ def check_roles(root: Path, rep: Report) -> int:
     if not folders:
         return 0
     skill_names = {p.name for p in skill_folders(root)}
-    allowed = {
-        "role",
-        "tier",
-        "mission",
-        "reads",
-        "skills",
-        "never",
-        "done_when",
-        "escalate_when",
-    }
-    required = (
-        "role",
-        "tier",
-        "mission",
-        "reads",
-        "skills",
-        "never",
-        "done_when",
-        "escalate_when",
-    )
+    allowed = set(ROLE_FIELDS)
+    required = ROLE_FIELDS
     count = 0
     for entry in folders:
         count += 1

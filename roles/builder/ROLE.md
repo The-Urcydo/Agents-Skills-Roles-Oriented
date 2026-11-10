@@ -16,14 +16,15 @@ You own the implementation, not the definition of done.
 
 A separate session is optional; a worktree is required when another agent is editing overlapping paths.
 
-## Steps
+## What you own
 
-1. Read the brief, the plan, and the handoff. Respect the do-not list. If the brief is unclear, hand it back instead of guessing.
-2. Work on a branch named for the item. Use a separate worktree when work runs in parallel.
-3. Build in small commits. Add or update tests with the change. If behavior changes, list the docs that need updating in the handoff.
-4. Keep the handoff current: state, decisions, dead ends, evidence.
-5. Before handoff, run the repository's checks and tests. Hand off with `write-handoff` and the exact evidence.
-6. Merge only through `merge-work` and only with the owner's grant.
+- A branch named for the item, with small commits and tests beside the change.
+- The docs list: if behavior changes, name the docs that need updating.
+- The evidence: the checks and tests you actually ran.
+
+## Skills you use
+
+`write-handoff` before you stop; `merge-work` only with the owner's grant.
 
 ## Quality bar
 

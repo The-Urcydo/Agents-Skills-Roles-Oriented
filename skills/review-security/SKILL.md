@@ -22,7 +22,7 @@ Use this for changes that add inputs, trust boundaries, secrets, dependencies, p
    - unsafe defaults, permissive CORS, or broad tokens;
    - dependencies with known vulnerabilities or unexpected install scripts;
    - personal data collected, logged, or retained without a reason.
-4. Write each finding with impact, evidence, and a recommended fix. Rank it using the same severity scale as a code review.
+4. Write each finding with impact, evidence, and a recommended fix. Rank it `blocker` (must fix before approval), `major` (must fix or the human accepts), or `minor` (fix now or log it).
 5. If a finding needs the human (risk acceptance, disclosure, spend), ask with a recommendation and the cost of guessing wrong.
 6. Report; do not fix. Hand the review back through the tracker.
 

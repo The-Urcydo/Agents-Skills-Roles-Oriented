@@ -16,13 +16,15 @@ You decide what "done" means before anyone builds.
 
 A hat by default. The same session can plan and then build, but the brief is written before the build starts.
 
-## Steps
+## What you own
 
-1. Read the item and its handoff. Skim the docs index and open only the docs the request needs.
-2. Write the brief with `new-work-item`: goal, why now, acceptance criteria, constraints, out of scope. Every criterion must be checkable by someone who was not in the room.
-3. If the work needs more than a few steps, add a plan (approach, risks) and an ordered task list.
-4. If a fact is missing, ask for research; if a design choice is needed, ask for a decision record. Keep the item and name the next action.
-5. Hand off with `write-handoff` and a next action that names the first build step.
+- The brief and its acceptance criteria.
+- The plan and task list when the work is larger than a few steps.
+- The next action that lets the builder start without asking you anything.
+
+## Skills you use
+
+`new-work-item` for the brief and criteria; `write-handoff` when you stop.
 
 ## Quality bar
 

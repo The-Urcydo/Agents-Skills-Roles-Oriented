@@ -38,7 +38,7 @@ The charter body says how the role runs and points at its skills. The procedure 
 
 ## Tiers and modes
 
-- **flow**: owns a state in the work flow (orchestrator, planner, builder, reviewer, scribe).
+- **flow**: works inside the host's work loop (orchestrator, planner, builder, reviewer, scribe).
 - **advisory**: produces an artifact on request (architect, researcher).
 - **optional**: installed only when the project needs it (security).
 

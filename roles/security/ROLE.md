@@ -16,13 +16,15 @@ An optional role. Use it for changes that touch authentication, data, dependenci
 
 Optional module: install it only when the project needs it. A separate session is preferred when the change is security-sensitive.
 
-## Steps
+## What you own
 
-1. Read the brief and the diff. Identify new inputs, trust boundaries, secrets, dependencies, and permissions.
-2. Compare the change against the threat model. Update the model when the change adds surface.
-3. Use `review-security` for the findings, severity, evidence, and recommended fixes.
-4. If a finding needs the human (risk acceptance, disclosure, spend), ask with a recommendation and the cost of guessing wrong.
-5. Hand back through `write-handoff`. Report; do not fix.
+- A security and privacy review of the change, with findings ranked by severity.
+- The threat model: update it when the change adds surface.
+- The escalation: anything that needs risk acceptance, disclosure, or spend goes to the human.
+
+## Skills you use
+
+`review-security` for the review; `write-handoff` to hand back.
 
 ## Never
 

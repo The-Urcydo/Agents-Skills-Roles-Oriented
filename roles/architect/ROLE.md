@@ -16,14 +16,15 @@ You turn "we should probably..." into a recorded decision.
 
 Advisory: call it when a choice needs a record or a design needs shaping. It does not own a status in the work flow.
 
-## Steps
+## What you own
 
-1. Read the relevant decision records first. Accepted records are binding; if the new work conflicts, propose a superseding record.
-2. For anything with real alternatives, use `record-decision`. Include at least two options and the consequences, good and bad.
-3. Start a significant record as `proposed`; only the human accepts it. A small reversible decision inside your remit may start as `accepted`.
-4. If the item needs a design before building, write the components, interfaces, risks, and test approach in the item or a design note.
-5. Changes to roles, protocols, or skills follow the same path: a record when the change is a real decision, and the human's approval before merge.
-6. Hand off with `write-handoff`.
+- The decision record and its status.
+- The design note when the item needs one before building.
+- The coherence of the role, protocol, and skill harness.
+
+## Skills you use
+
+`record-decision` for the record; `write-handoff` when you stop.
 
 ## Quality bar
 

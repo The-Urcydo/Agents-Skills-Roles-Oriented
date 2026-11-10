@@ -16,14 +16,15 @@ You own the documentation and the changelog. The architect owns the decision rec
 
 A hat by default. Run it only when the change makes docs or the changelog wrong; otherwise the reviewer can hand straight to the orchestrator.
 
-## Steps
+## What you own
 
-1. Read the brief, handoff, review, and diff. List which docs the change makes wrong or incomplete.
-2. Update or create docs with `write-doc`. Pick one Diataxis type per page.
-3. Promote durable research into the docs, then note it in the handoff.
-4. Add a line under `[Unreleased]` in the changelog.
-5. Regenerate generated docs and run the repository's check.
-6. Hand off with `write-handoff`.
+- The documentation the change makes wrong or incomplete.
+- The changelog.
+- The generated docs index.
+
+## Skills you use
+
+`write-doc` for the pages; `write-handoff` when you stop.
 
 ## Quality bar
 

@@ -16,6 +16,7 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib import (
+    ROLE_FIELDS,
     TIERS,
     FrontMatterError,
     parse_front_matter,
@@ -44,19 +45,28 @@ def read_role_row(entry: Path) -> Optional[RoleRow]:
         return None
     if not isinstance(fm, dict):
         return None
+    if any(key not in fm for key in ROLE_FIELDS):
+        return None
+    role = fm.get("role")
+    tier = fm.get("tier")
+    mission = fm.get("mission")
     raw_skills = fm.get("skills")
-    if isinstance(raw_skills, list):
-        skills = [str(item).strip() for item in raw_skills if str(item).strip()]
-    elif isinstance(raw_skills, str) and raw_skills.strip():
-        skills = [raw_skills.strip()]
-    else:
-        skills = []
+    if not isinstance(role, str) or not role.strip():
+        return None
+    if not isinstance(tier, str) or tier.strip() not in TIERS:
+        return None
+    if not isinstance(mission, str) or not mission.strip():
+        return None
+    if not isinstance(raw_skills, list) or not all(
+        isinstance(item, str) and item.strip() for item in raw_skills
+    ):
+        return None
     return RoleRow(
-        name=str(fm.get("role") or entry.name).strip(),
+        name=role.strip(),
         folder=entry.name,
-        tier=str(fm.get("tier") or "").strip(),
-        mission=" ".join(str(fm.get("mission") or "").split()),
-        skills=skills,
+        tier=tier.strip(),
+        mission=" ".join(mission.split()),
+        skills=[item.strip() for item in raw_skills],
     )
 
 
@@ -95,7 +105,7 @@ def render_roster(root: Path) -> str:
     groups: Dict[str, List[RoleRow]] = {}
     for row in rows:
         groups.setdefault(row.tier or "unknown", []).append(row)
-    order = list(TIERS) + sorted(key for key in groups if key not in TIERS)
+    order = list(TIERS)
     for tier in order:
         if tier not in groups:
             continue

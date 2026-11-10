@@ -38,10 +38,12 @@ Use this when a choice has real alternatives and a future reader will need the r
 ## In Repo-Template
 
 ```bash
-python3 tools/new_adr.py "Title"
+python3 tools/new_adr.py "Title"                    # proposed by default
+python3 tools/new_adr.py "Title" --status accepted  # a small, reversible decision
+python3 tools/new_adr.py "Title" --supersedes 0003  # replace an accepted record
 ```
 
-ADRs live in `docs/decisions/`. The tool allocates the number. A significant ADR starts as `proposed`; the human accepts it.
+ADRs live in `docs/decisions/`. The tool allocates the number. A significant ADR starts as `proposed`; the human accepts it. `--supersedes` marks the older record `superseded` and links both directions.
 
 ## Stop and ask
 
