@@ -441,6 +441,24 @@ class CheckTests(unittest.TestCase):
             result = run_check(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_unreadable_agents_reports_cleanly(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            (root / "AGENTS.md").write_bytes(b"\xff")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("read", result.stdout)
+            self.assertNotIn("Traceback", result.stderr)
+
+    def test_unreadable_adr_reports_cleanly(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            (root / "docs/decisions/0002-bad.md").write_bytes(b"\xff")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("read", result.stdout)
+            self.assertNotIn("Traceback", result.stderr)
+
     def test_catalog_read_errors_are_reported_cleanly(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(Path(tmp))

@@ -123,7 +123,11 @@ def check_agents(root: Path, rep: Report) -> None:
     p = root / "AGENTS.md"
     if not p.exists():
         return
-    n = len(read_text(p).splitlines())
+    try:
+        n = len(read_text(p).splitlines())
+    except (OSError, UnicodeDecodeError) as exc:
+        rep.error("read", "AGENTS.md", str(exc))
+        return
     if n > MAX_AGENTS_LINES:
         rep.error(
             "agents-size",
@@ -394,7 +398,12 @@ def check_adrs(root: Path, rep: Report) -> None:
             rep.error("adr-number", rel(root, p), f"number {number} also used by {seen[number].name}")
         seen[number] = p
         try:
-            fm, _ = parse_front_matter(read_text(p))
+            text = read_text(p)
+        except (OSError, UnicodeDecodeError) as exc:
+            rep.error("read", rel(root, p), str(exc))
+            continue
+        try:
+            fm, _ = parse_front_matter(text)
         except FrontMatterError as exc:
             rep.error("adr-front-matter", rel(root, p), str(exc))
             continue
