@@ -8,7 +8,7 @@ A portable library of agent skills, with role charters that consume them. Built 
 
 This repo is the skills-focused sibling of [Repo-Template](https://github.com/The-Urcydo/Repo-Template). Repo-Template owns the runnable project skeleton: docs, work items, roles, protocols, tools. This repo owns the skill library and the role charters that use it. Skills developed here are ported into Repo-Template when they are ready; Repo-Template is not modified from this repo.
 
-**Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 adds the catalog, scaffold, installer, and the first skill (`write-skill`).
+**Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 added the catalog, scaffold, installer, and `write-skill`; Batch 4 ports the Repo-Template role charters, eight skills, and five protocols.
 
 ## Quick start
 
@@ -33,6 +33,7 @@ python3 tools/install.py --target claude --skill write-skill --project path/to/p
 | `skills/` | The library. One flat folder per skill: `skills/<name>/SKILL.md` |
 | `SKILLS.md` | Generated catalog of every skill, grouped by category |
 | `roles/` | Role charters. Each charter lists the skills it uses; skills stay role-agnostic |
+| `roles/ROSTER.md` | Generated table of roles, tiers, and skills. Do not hand-edit |
 | `agents/` | The harness around the skills: protocols, generated adapters, optional evals |
 | `docs/` | The skill contract, the reasoning, authoring guides, and decisions |
 | `tools/` | Standard-library Python: validation, catalog, scaffolding, installation |
@@ -53,11 +54,15 @@ The open format is specified at [agentskills.io](https://agentskills.io/specific
 
 Start with [docs/INDEX.md](docs/INDEX.md). The generated [SKILLS.md](SKILLS.md) lists every available skill.
 
+## Roles
+
+The library also carries eight role charters: orchestrator, planner, builder, reviewer, scribe, architect, researcher, and the optional security role. A charter says who is acting, what it reads, which skills it uses, and when it stops; the procedure stays in the skill. See the generated [role roster](roles/ROSTER.md) and [roles/README.md](roles/README.md).
+
 ## Relationship to Repo-Template
 
 - **Repo-Template** gives a new project its structure: docs, work items, role charters, protocols, and tools.
 - **This repo** gives agents their procedures: a curated, validated skill library, plus role charters that say which skills each role uses.
-- **Porting:** copy `skills/<name>/` into Repo-Template's `agents/skills/<name>/`; map `roles/<role>/ROLE.md` into Repo-Template's role bundle. The porting guide arrives in Batch 5.
+- **Porting:** copy `skills/<name>/` into Repo-Template's `agents/skills/<name>/`; map `roles/<role>/ROLE.md` into Repo-Template's role bundle. The porting guide arrives in Batch 5. The first port is recorded in [ADR 0007](docs/decisions/0007-port-the-agent-roles-and-skills.md).
 
 ## Security
 

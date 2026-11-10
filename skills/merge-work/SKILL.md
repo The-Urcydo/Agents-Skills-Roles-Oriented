@@ -28,7 +28,7 @@ The skill is the procedure; the repository's branch protection is the gate. Neve
    - conflict markers (`git grep -n -E '^(<<<<<<<|>>>>>>>)( |$)'`).
    Fix on the branch, then restart at step 3.
 5. **Main.** `git fetch origin main`. If main moved, merge it into the branch. Do not rebase and do not force-push. Regenerate generated files instead of merging them by hand.
-6. **Checks.** Run the repository's strict check and tests on the result. CI must be green on the branch's current head commit. A run from before the head, or before main moved, does not count; wait for a new one. Without CI, this step is the gate; say so in the handoff. The forge-specific checks are in [references/github.md](references/github.md).
+6. **Checks.** Run the repository's strict check and tests on the result. CI must be green on the branch's current head commit. A run from before the head, or before main moved, does not count; wait for a new one. Without CI, this step is the gate; say so in the handoff. The forge-specific checks are in [the GitHub merge gate](references/github.md).
 7. **Stop and ask** when any step fails or is unclear. Do not merge meanwhile. Ask the owner with the question, your recommendation, the default ("nothing is merged"), and the cost of guessing wrong.
 8. **Merge** with a merge commit unless the repository's rules say otherwise. Never force-push, amend a commit already on main, skip hooks, or bypass branch protection.
 9. **After.** Do the repository's post-merge steps. Give the owner the merge commit's SHA, put it in the handoff with the next change, and tell the owner in one line with the undo: `git revert -m 1 <merge-sha>` (after a squash or rebase merge, `git revert <sha>`).

@@ -63,6 +63,13 @@ Start with [docs/how-to/write-a-skill.md](docs/how-to/write-a-skill.md). An
 imported skill needs `PROVENANCE.md` and an entry in
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## Adding a role
+
+Role charters live in `roles/<role>/ROLE.md` and list the skills they use. A
+new role must pass the admission test in [roles/README.md](roles/README.md).
+Start with [docs/how-to/add-a-role.md](docs/how-to/add-a-role.md), then run
+`python3 tools/roster.py` and `python3 tools/check.py --strict`.
+
 ## What happens next
 
 CI runs `check.py --strict` and the unit tests on Python 3.9 and 3.13.

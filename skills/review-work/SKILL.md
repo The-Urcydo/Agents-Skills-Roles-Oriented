@@ -18,7 +18,7 @@ Use this when work is ready for an independent check. The review is a different 
 3. Check each acceptance criterion and record the evidence: the command, the output, the file, or the link. "Looks right" is not evidence.
 4. Check the rules: decisions respected, ownership respected, generated files in sync, docs updated when behavior changed.
 5. Look for what the criteria do not cover: unintended files, half-finished sections, leftover placeholders, secrets, unintended deletions, tests that pass for the wrong reason.
-6. Rank findings by severity using [references/severity.md](references/severity.md). Each finding states what, where, why it matters, and a recommended fix.
+6. Rank findings by severity using [the severity scale](references/severity.md). Each finding states what, where, why it matters, and a recommended fix.
 7. Write the verdict:
    - **approve:** all criteria met, no blocker or major finding;
    - **changes requested:** fix the findings and re-review;
