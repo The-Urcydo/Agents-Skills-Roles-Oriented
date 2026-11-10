@@ -46,7 +46,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     ap.add_argument("--root", type=Path, default=None, help="library root (default: this checkout)")
     ap.add_argument("--force", action="store_true", help="replace an existing skill folder")
-    ap.add_argument("--dry-run", action="store_true", help="show what would be copied")
+    ap.add_argument("--dry-run", action="store_true", help="show what would be copied; exits 1 when the real run would skip")
     args = ap.parse_args(argv)
 
     root = (args.root or repo_root()).resolve()
@@ -61,7 +61,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 2
     selected = skills if args.all else args.skill
     if not selected:
-        print("error: pass --skill NAME (repeatable) or --all", file=sys.stderr)
+        if args.all:
+            print("error: no skills to install", file=sys.stderr)
+        else:
+            print("error: pass --skill NAME (repeatable) or --all", file=sys.stderr)
         return 2
     missing = [s for s in selected if s not in skills]
     if missing:
@@ -80,6 +83,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if dest.exists() and not args.force:
             if args.dry_run:
                 print(f"would skip {name}: {dest} exists")
+                failed += 1
                 continue
             print(f"skip {name}: {dest} exists (use --force to replace)", file=sys.stderr)
             failed += 1

@@ -8,4 +8,4 @@
 
 | Skill | What it does | Invocation |
 |---|---|---|
-| [`write-skill`](skills/write-skill/SKILL.md) | Create or revise a skill in this repository. Use when adding a skill, fixing an existing skill, or asked how to write one. | both |
+| [`write-skill`](skills/write-skill/SKILL.md) | Create or revise an agent skill in this library or a project's agent skills directory. Use when adding a skill, fixing an existing skill, or asked how to write one. | both |

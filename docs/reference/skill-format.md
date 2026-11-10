@@ -51,9 +51,9 @@ allowed-tools: Read Grep Bash(git:*)
 | Key | Values | Meaning |
 |---|---|---|
 | `metadata.category` | `engineering`, `productivity`, `design`, `repo` | The catalog group. Required. |
-| `metadata.invocation` | `model`, `user`, `both` | Who may start the skill. Default `both`. `user` means the agent must not start it on its own; adapters map it to the tool's control. |
+| `metadata.invocation` | `model`, `user`, `both` | Who may start the skill. Default `both`. `user` means the agent must not start it on its own; use it for shared state, spend, or owner approval. Adapters map it to the tool's control. |
 
-Do **not** put role names in a skill. Role charters list the skills they use. Do not use Claude-only fields (`disable-model-invocation`, `argument-hint`, `hooks`, `context`) in the source; adapters add them.
+Do **not** put role names in a skill. Role charters list the skills they use. Do not use Claude-only fields (`disable-model-invocation`, `argument-hint`, `hooks`, `context`, `paths`) in the source; adapters add them. The checker rejects unknown top-level fields.
 
 ## Body
 

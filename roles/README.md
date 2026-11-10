@@ -17,7 +17,7 @@ escalate_when: The acceptance criteria look wrong, or you find a security or dat
 ---
 ```
 
-The example leaves `skills` empty because the reviewer skill (`code-review`) arrives in Batch 3. A real charter lists the skill names from `../skills/`; every name must exist.
+The example leaves `skills` empty; a real charter lists the skill names from `../skills/`, and every name must exist.
 
 - `role` must equal the folder name.
 - `tier` is `flow`, `advisory`, or `optional`.

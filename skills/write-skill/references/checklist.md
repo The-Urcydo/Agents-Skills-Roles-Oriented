@@ -1,5 +1,7 @@
 # Skill checklist
 
+This is the standalone checklist for an installed skill. The repository contract is `docs/reference/skill-format.md`.
+
 ## Front matter
 
 | Field | Rule |
@@ -8,7 +10,7 @@
 | `description` | 1-1024 chars; what it does and when to use it. |
 | `license` | `MIT` for original work; upstream license for imports. |
 | `metadata.category` | `engineering`, `productivity`, `design`, or `repo`. |
-| `metadata.invocation` | `model`, `user`, or `both`. Use `user` for shared-state or spend. |
+| `metadata.invocation` | `model`, `user`, or `both`. Use `user` for shared state, spend, or owner approval. |
 | `compatibility` | Optional; environment requirements only. |
 | `allowed-tools` | Optional; space-separated. |
 

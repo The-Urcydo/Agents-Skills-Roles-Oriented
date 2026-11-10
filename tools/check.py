@@ -23,15 +23,16 @@ import catalog
 from _lib import (
     CATEGORIES,
     INVOCATIONS,
-    SKILL_NAME_RE,
     FrontMatterError,
+    is_valid_skill_name,
     parse_front_matter,
     read_text,
     repo_root,
+    skill_folders,
 )
 
 ADR_NAME_RE = re.compile(r"^(\d{4})-[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
-MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
+MARKDOWN_LINK_RE = re.compile(r"(?<!\\)\[[^\]]*\]\(([^)]+)\)")
 FENCE_RE = re.compile(r"```.*?```", re.S)
 
 ADR_STATUSES = {"proposed", "accepted", "rejected", "deprecated", "superseded"}
@@ -121,6 +122,7 @@ def check_skills(root: Path, rep: Report) -> int:
     if not base.is_dir():
         return 0
     count = 0
+    valid = {p.name for p in skill_folders(root)}
     for entry in sorted(base.iterdir()):
         if entry.name == "README.md" or entry.name.startswith("."):
             continue
@@ -131,15 +133,19 @@ def check_skills(root: Path, rep: Report) -> int:
                 "skills/ holds one folder per skill (and README.md only)",
             )
             continue
-        sk = entry / "SKILL.md"
-        if not sk.exists():
+        if entry.name not in valid:
             rep.error("skill", rel(root, entry), "skill folder has no SKILL.md")
             continue
+        sk = entry / "SKILL.md"
         count += 1
-        text = read_text(sk)
         r = rel(root, sk)
         try:
-            fm, _ = parse_front_matter(text)
+            text = read_text(sk)
+        except (OSError, UnicodeDecodeError) as exc:
+            rep.error("skill-read", r, str(exc))
+            continue
+        try:
+            fm, body = parse_front_matter(text)
         except FrontMatterError as exc:
             rep.error("skill-front-matter", r, str(exc))
             continue
@@ -150,12 +156,26 @@ def check_skills(root: Path, rep: Report) -> int:
                 "missing front matter (name, description, license, metadata)",
             )
             continue
+        allowed_fields = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
+        unknown = sorted(set(fm) - allowed_fields)
+        if unknown:
+            rep.error("skill-field", r, f"unsupported front matter field(s): {', '.join(unknown)}")
+        if "compatibility" in fm:
+            compatibility = fm["compatibility"]
+            if (
+                not isinstance(compatibility, str)
+                or not compatibility.strip()
+                or len(compatibility) > 500
+            ):
+                rep.error("skill-compatibility", r, "compatibility must be 1-500 chars")
+        if "allowed-tools" in fm and not isinstance(fm["allowed-tools"], str):
+            rep.error("skill-tools", r, "allowed-tools must be a space-separated string")
         name = str(fm.get("name") or "").strip()
         desc = str(fm.get("description") or "").strip()
         license_name = str(fm.get("license") or "").strip()
         if not name:
             rep.error("skill-name", r, "missing 'name'")
-        elif not SKILL_NAME_RE.fullmatch(name) or len(name) > 64:
+        elif not is_valid_skill_name(name):
             rep.error(
                 "skill-name",
                 r,
@@ -175,6 +195,9 @@ def check_skills(root: Path, rep: Report) -> int:
         elif not isinstance(meta, dict):
             rep.error("skill-metadata", r, "'metadata' must be a map")
         else:
+            for key, value in meta.items():
+                if not isinstance(value, str):
+                    rep.error("skill-metadata", r, f"metadata.{key} must be a string")
             category = str(meta.get("category") or "").strip()
             if category not in CATEGORIES:
                 rep.error(
@@ -196,12 +219,12 @@ def check_skills(root: Path, rep: Report) -> int:
                 r,
                 f"{n} lines; move detail into references/ (spec recommends < {MAX_SKILL_LINES})",
             )
-        check_skill_links(root, entry, sk, rep)
+        check_skill_links(root, entry, sk, body, rep)
     return count
 
 
-def check_skill_links(root: Path, skill_dir: Path, sk: Path, rep: Report) -> None:
-    text = strip_fences(read_text(sk))
+def check_skill_links(root: Path, skill_dir: Path, sk: Path, body: str, rep: Report) -> None:
+    text = strip_fences(body)
     for target in MARKDOWN_LINK_RE.findall(text):
         target = target.strip()
         if target.startswith(("http://", "https://", "mailto:", "#")):
@@ -248,7 +271,11 @@ def check_docs(root: Path, rep: Report) -> int:
 
 
 def check_links(root: Path, p: Path, rep: Report) -> None:
-    text = strip_fences(read_text(p))
+    try:
+        text = strip_fences(read_text(p))
+    except (OSError, UnicodeDecodeError) as exc:
+        rep.error("read", rel(root, p), str(exc))
+        return
     for target in MARKDOWN_LINK_RE.findall(text):
         target = target.strip()
         if target.startswith(("http://", "https://", "mailto:", "#")):

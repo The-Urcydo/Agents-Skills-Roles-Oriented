@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -27,46 +28,52 @@ CATEGORY_LABELS = {
 }
 
 
-def skill_rows(root: Path) -> List[Dict[str, str]]:
+@dataclass
+class SkillRow:
+    name: str
+    description: str
+    category: str
+    invocation: str
+    path: str
+
+
+def read_skill_row(entry: Path) -> Optional[SkillRow]:
+    try:
+        fm, _ = parse_front_matter(read_text(entry / "SKILL.md"))
+    except (FrontMatterError, OSError, UnicodeDecodeError):
+        return None
+    if not isinstance(fm, dict):
+        return None
+    meta = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
+    return SkillRow(
+        name=str(fm.get("name") or entry.name).strip(),
+        description=" ".join(str(fm.get("description") or "").split()),
+        category=str(meta.get("category") or "uncategorized").strip(),
+        invocation=str(meta.get("invocation") or "both").strip(),
+        path=f"skills/{entry.name}/SKILL.md",
+    )
+
+
+def skill_rows(root: Path) -> List[SkillRow]:
     """One row per readable skill, sorted by folder name."""
-    rows: List[Dict[str, str]] = []
+    rows: List[SkillRow] = []
     for entry in skill_folders(root):
-        sk = entry / "SKILL.md"
-        try:
-            fm, _ = parse_front_matter(read_text(sk))
-        except FrontMatterError:
-            continue
-        if not isinstance(fm, dict):
-            continue
-        meta = fm.get("metadata") if isinstance(fm.get("metadata"), dict) else {}
-        rows.append(
-            {
-                "name": str(fm.get("name") or entry.name).strip(),
-                "description": " ".join(str(fm.get("description") or "").split()),
-                "category": str(meta.get("category") or "uncategorized").strip(),
-                "invocation": str(meta.get("invocation") or "both").strip(),
-                "path": f"skills/{entry.name}/SKILL.md",
-            }
-        )
+        row = read_skill_row(entry)
+        if row is not None:
+            rows.append(row)
     return rows
 
 
 def _escape_table_cell(text: str) -> str:
-    return text.replace("|", "\\|")
+    return text.replace("|", "\\|").replace("[", "\\[").replace("]", "\\]")
 
 
 def unreadable_skills(root: Path) -> List[str]:
-    bad: List[str] = []
-    for entry in skill_folders(root):
-        path = entry / "SKILL.md"
-        try:
-            fm, _ = parse_front_matter(read_text(path))
-        except FrontMatterError:
-            bad.append(f"skills/{entry.name}/SKILL.md")
-            continue
-        if not isinstance(fm, dict):
-            bad.append(f"skills/{entry.name}/SKILL.md")
-    return bad
+    return [
+        f"skills/{entry.name}/SKILL.md"
+        for entry in skill_folders(root)
+        if read_skill_row(entry) is None
+    ]
 
 
 def render_catalog(root: Path) -> str:
@@ -84,9 +91,9 @@ def render_catalog(root: Path) -> str:
         lines.append("")
         return "\n".join(lines)
 
-    groups: Dict[str, List[Dict[str, str]]] = {}
+    groups: Dict[str, List[SkillRow]] = {}
     for row in rows:
-        groups.setdefault(row["category"], []).append(row)
+        groups.setdefault(row.category, []).append(row)
     order = list(CATEGORY_ORDER) + sorted(k for k in groups if k not in CATEGORY_ORDER)
     for category in order:
         if category not in groups:
@@ -95,9 +102,9 @@ def render_catalog(root: Path) -> str:
         lines.append("")
         lines.append("| Skill | What it does | Invocation |")
         lines.append("|---|---|---|")
-        for row in sorted(groups[category], key=lambda r: r["name"]):
+        for row in sorted(groups[category], key=lambda r: r.name):
             lines.append(
-                f"| [`{row['name']}`]({row['path']}) | {_escape_table_cell(row['description'])} | {row['invocation']} |"
+                f"| [`{row.name}`]({row.path}) | {_escape_table_cell(row.description)} | {row.invocation} |"
             )
         lines.append("")
     return "\n".join(lines)
@@ -122,13 +129,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = ap.parse_args(argv)
     root = (args.root or repo_root()).resolve()
     path = root / CATALOG
+    bad = unreadable_skills(root)
+    if bad:
+        for bad_path in bad:
+            print(f"{bad_path}: unreadable front matter")
+        return 1
     want = render_catalog(root)
     if args.check:
-        bad = unreadable_skills(root)
-        if bad:
-            for path in bad:
-                print(f"{path}: unreadable front matter")
-            return 1
         if not path.exists():
             print(f"{CATALOG} is missing; run python3 tools/catalog.py")
             return 1

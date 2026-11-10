@@ -13,7 +13,7 @@ from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import catalog
-from _lib import CATEGORIES, INVOCATIONS, SKILL_NAME_RE, repo_root
+from _lib import CATEGORIES, INVOCATIONS, is_valid_skill_name, repo_root
 
 TEMPLATE = """---
 name: {name}
@@ -58,7 +58,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = ap.parse_args(argv)
 
     root = (args.root or repo_root()).resolve()
-    if not SKILL_NAME_RE.fullmatch(args.name) or len(args.name) > 64:
+    if not is_valid_skill_name(args.name):
         print(
             "error: name must be 1-64 chars: lowercase letters, digits, single hyphens",
             file=sys.stderr,
@@ -71,6 +71,13 @@ def main(argv: Optional[List[str]] = None) -> int:
             f"error: {folder.relative_to(root)} already exists (use --force to overwrite)",
             file=sys.stderr,
         )
+        return 2
+
+    bad = catalog.unreadable_skills(root)
+    if bad:
+        print("error: fix unreadable skills before scaffolding:", file=sys.stderr)
+        for path in bad:
+            print(f"  {path}", file=sys.stderr)
         return 2
 
     folder.mkdir(parents=True, exist_ok=True)

@@ -22,6 +22,10 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def is_valid_skill_name(name: str) -> bool:
+    return bool(SKILL_NAME_RE.fullmatch(name)) and 1 <= len(name) <= 64
+
+
 def skill_folders(root: Path) -> List[Path]:
     """Skill folders that contain a SKILL.md, sorted by name."""
     base = root / "skills"
