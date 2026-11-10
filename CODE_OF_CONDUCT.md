@@ -39,7 +39,7 @@ or edit comments, close or lock a discussion, and block someone temporarily or
 permanently, depending on how serious and how repeated the behavior is.
 
 To report a problem, contact an owner through the contact details on their
-GitHub profile. The owner accounts are listed in
+GitHub profile, if listed. The owner accounts are in
 [.github/CODEOWNERS](.github/CODEOWNERS). If you cannot find a private way to
 reach them, open a new issue with the **Request a private channel** form,
 without describing the incident. An owner will answer with a private way to
