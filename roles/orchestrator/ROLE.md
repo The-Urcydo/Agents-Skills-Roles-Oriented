@@ -25,9 +25,3 @@ A hat by default: the session holding the item reads this charter. No separate s
 ## Skills you use
 
 `new-work-item` for new requests, `write-handoff` for handoffs, and `merge-work` only with the owner's grant.
-
-## Never
-
-- Build the work yourself.
-- Answer a question that was meant for the human.
-- Mark an item verified or done.

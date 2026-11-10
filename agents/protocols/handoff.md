@@ -24,7 +24,7 @@ The `write-handoff` skill gives the detailed format and examples.
 
 ## Starting a session
 
-1. Read `AGENTS.md`, then find your item in the tracker.
+1. Read the repository's agent rules, then find your item in the tracker.
 2. Read its handoff. Respect the do-not list.
 3. If the handoff is stale, re-verify before trusting it.
 4. Do the next action. Update the handoff as you go; move the state when done.

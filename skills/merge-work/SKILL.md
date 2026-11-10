@@ -47,7 +47,7 @@ The skill is the procedure; the repository's branch protection is the gate. Neve
 - Run `python3 tools/check.py --strict` and the project tests.
 - Regenerate with `python3 tools/sync_indexes.py && python3 tools/sync_agents.py`.
 - Merge with a merge commit. `agents/protocols/parallel-work.md` lists the post-merge steps.
-- The owner's grant and the merge SHA go in `work/items/<id>/handoff.md`.
+- The owner's grant and the merge SHA go in `work/items/<id>/handoff.md`, or `work/items/<id>.md` for a light item. The dispatch table names the role that owns the post-merge status.
 
 ## Stop and ask
 

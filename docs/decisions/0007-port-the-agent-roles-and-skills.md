@@ -1,10 +1,12 @@
 ---
 title: Port the agent roles and skills from Repo-Template
-status: accepted
+status: proposed
 date: 2026-11-10
 summary: Bring the eight Repo-Template role charters, eight portable skills, and five protocols into this flat library, adapted to the skill contract.
 ---
 # 0007: Port the agent roles and skills from Repo-Template
+
+Status: proposed. The owner moves this record to accepted when approving the pull request.
 
 ## Context
 
@@ -23,7 +25,9 @@ Port the harness with these changes:
 - **Dropped:** `tailor-template`. It fills Copier placeholders and cuts modules, and this repository is not a Copier template (ADR 0001).
 - **Deferred:** the eight golden evals and the adapter generator. They need harness infrastructure that does not exist here yet; `agents/evals/` and `agents/adapters/` remain placeholders.
 
-The source is Repo-Template at commit `c0ab1a8` (MIT). This is a first-party port by the same owner, so no third-party `PROVENANCE.md` is added; this record is the provenance.
+The source is Repo-Template at commit `c0ab1a8` (MIT). This is a first-party port by the same owner. Each ported skill has a `PROVENANCE.md` with its source path and commit; `THIRD_PARTY_NOTICES.md` lists them as first-party ports.
+
+This is a one-time bootstrap port: after it, this repository is the source of the skills and Repo-Template receives them.
 
 ## Consequences
 

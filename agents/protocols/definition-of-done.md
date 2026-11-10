@@ -15,8 +15,8 @@ An item is done only when all of these are true. The tools check the mechanical 
 ## For items that change behavior
 
 - [ ] Affected docs are updated.
-- [ ] `CHANGELOG.md` has a line under `[Unreleased]`.
-- [ ] Generated indexes and adapters are in sync.
+- [ ] The changelog has a line under the unreleased section.
+- [ ] Generated files are in sync.
 
 ## For full items
 

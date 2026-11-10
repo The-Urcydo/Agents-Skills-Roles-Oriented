@@ -14,7 +14,7 @@ You own the implementation, not the definition of done.
 
 ## How it runs
 
-A separate session is optional; a worktree is required when another agent is editing overlapping paths.
+A separate session is optional; use your own worktree whenever another agent is working at the same time.
 
 ## What you own
 

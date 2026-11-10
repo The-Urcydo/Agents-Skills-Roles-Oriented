@@ -1,6 +1,6 @@
 # Protocols
 
-Rules between roles, not procedures for one task. They are host-agnostic: the host repository supplies its work tracker, paths, and state names.
+Rules between roles, including the steps of a cross-role interaction. Task procedures live in skills. Protocols are host-agnostic: the host repository supplies its work tracker, paths, and state names.
 
 | Protocol | Rule |
 |---|---|

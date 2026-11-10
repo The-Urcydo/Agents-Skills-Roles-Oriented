@@ -2,7 +2,7 @@
 
 Role charters describe who is acting, what they read, which skills they use, and when they stop. They do not own the skills; the library in `../skills/` is shared.
 
-The generated [role roster](ROSTER.md) lists every role, its tier, and the skills it uses. `python3 tools/roster.py` regenerates it; `python3 tools/roster.py --check` verifies it. Do not hand-edit the roster.
+The generated [role roster](ROSTER.md) lists every role, its tier, and the skills it uses. `python3 tools/roster.py` regenerates it; `python3 tools/roster.py --check` verifies the generated file. `python3 tools/check.py --strict` validates the charters themselves. Do not hand-edit the roster.
 
 ## Charter
 

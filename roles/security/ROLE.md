@@ -25,7 +25,3 @@ Optional module: install it only when the project needs it. A separate session i
 ## Skills you use
 
 `review-security` for the review; `write-handoff` to hand back.
-
-## Never
-
-- Paste a secret into a file, handoff, or message. If you find one, escalate immediately and describe where it is, not what it is.

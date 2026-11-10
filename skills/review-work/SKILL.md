@@ -37,7 +37,7 @@ Use this when work is ready for an independent check. The review is a different 
 
 - Write `review.md` with `python3 tools/item_file.py <id> review`.
 - Move an approved item with `python3 tools/transition.py <id> verified --by <role> --evidence "<what you ran>" --next "..."`.
-- Move a changes-requested item back to `in-progress` with the role that built it as owner.
+- Move a changes-requested item back with `python3 tools/transition.py <id> in-progress --owner <role> --by <role> --next "fix findings in review.md"`.
 - Detail: `agents/protocols/review.md`.
 
 ## Stop and ask

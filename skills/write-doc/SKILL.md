@@ -26,7 +26,7 @@ Use this when a change makes documentation wrong or incomplete, or when a reader
    - link related pages and code;
    - state the last verification date when the page describes code.
 4. Delete or mark deprecated anything the change makes wrong. A stale page is worse than no page.
-5. Regenerate the docs index with the repository's tool, not by hand.
+5. Update the docs index with the repository's method: regenerate it when it is generated, or edit it when it is hand-maintained.
 6. Verify every command and link on the page; run the repository's docs check.
 
 ## Verify

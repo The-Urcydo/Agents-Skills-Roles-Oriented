@@ -104,12 +104,11 @@ def render_roster(root: Path) -> str:
 
     groups: Dict[str, List[RoleRow]] = {}
     for row in rows:
-        groups.setdefault(row.tier or "unknown", []).append(row)
-    order = list(TIERS)
-    for tier in order:
+        groups.setdefault(row.tier, []).append(row)
+    for tier in TIERS:
         if tier not in groups:
             continue
-        lines.append(f"## {TIER_LABELS.get(tier, tier.title())}")
+        lines.append(f"## {TIER_LABELS[tier]}")
         lines.append("")
         lines.append("| Role | Mission | Skills |")
         lines.append("|---|---|---|")

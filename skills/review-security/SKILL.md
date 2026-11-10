@@ -38,7 +38,7 @@ Use this for changes that add inputs, trust boundaries, secrets, dependencies, p
 
 - Write `security-review.md` with `python3 tools/item_file.py <id> security-review`.
 - The threat model lives in `docs/security/`.
-- Hand back through `python3 tools/transition.py`; do not fix the findings.
+- Hand back with `python3 tools/transition.py <id> <status> --by <role> --next "<next action>" [--evidence "<what you ran>"]`; do not fix the findings.
 
 ## Stop and ask
 
