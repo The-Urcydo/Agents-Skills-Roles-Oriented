@@ -16,8 +16,10 @@ A skill is a procedure: steps, checks, and stop conditions. A fact ("the test co
 ## 3. Create the folder
 
 ```bash
-mkdir -p skills/my-skill
+python3 tools/new_skill.py my-skill --category engineering
 ```
+
+This creates `skills/my-skill/SKILL.md` and updates `SKILLS.md`. To do it by hand, `mkdir -p skills/my-skill`, write the file, then run `python3 tools/catalog.py`.
 
 Add `references/`, `scripts/`, or `assets/` only if the skill needs them.
 
@@ -59,10 +61,10 @@ If the skill comes from another repository, add `PROVENANCE.md` with the source 
 ## 8. Validate
 
 ```bash
-python3 tools/check.py
+python3 tools/check.py --strict
 ```
 
-Fix every error. Warnings do not fail the default check, but `--strict` makes them fail and CI uses `--strict`.
+Fix every error. Warnings do not fail the default check, but CI uses `--strict`. The checker also fails when `SKILLS.md` is out of date; run `python3 tools/catalog.py` after adding or editing a skill. A fresh scaffold contains `TODO` markers; replace them, because `--strict` warns on any remaining placeholder.
 
 ## 9. Open the pull request
 
@@ -73,6 +75,13 @@ Include:
 - one example of the skill working, or a clear reason it cannot be exercised yet;
 - for imports, the provenance file and the license.
 
+A quick installation test:
+
+```bash
+mkdir -p /tmp/skill-test
+python3 tools/install.py --target claude --skill my-skill --project /tmp/skill-test
+```
+
 ## Checklist
 
 - [ ] Name matches the folder and is unique.
@@ -80,6 +89,8 @@ Include:
 - [ ] License is present.
 - [ ] `metadata.category` is valid.
 - [ ] No role logic and no tool-specific front matter.
-- [ ] Links resolve; body is under 500 lines.
+- [ ] No TODO placeholders remain.
+- [ ] Links resolve from the skill folder root; body is under 500 lines.
+- [ ] `SKILLS.md` is up to date.
 - [ ] Imported skill has `PROVENANCE.md`.
 - [ ] `python3 tools/check.py --strict` passes.

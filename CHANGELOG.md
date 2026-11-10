@@ -7,6 +7,7 @@ All notable changes to this repository are recorded here. The format follows [Ke
 ### Added
 
 - Bootstrap the skills-first repository: folder shape, skill contract, checker, decisions, docs, and CI.
+- Batch 1: `tools/new_skill.py`, `tools/catalog.py`, `tools/install.py`, generated `SKILLS.md`, the first skill (`write-skill`), and the installation guide.
 
 ### Security
 

@@ -22,17 +22,26 @@ skills/
 - A skill never contains role logic. Role charters list the skills they use.
 - Keep `SKILL.md` under 500 lines; put detail in `references/`.
 - Imported skills need `PROVENANCE.md` and an entry in `THIRD_PARTY_NOTICES.md`.
-- `SKILLS.md` at the repository root is generated from `metadata.category`; do not hand-edit it.
+- `SKILLS.md` at the repository root is generated from the skill front matter, grouped by `metadata.category`; do not hand-edit it.
 
 ## Add a skill
 
 ```bash
-mkdir -p skills/my-skill
-# write skills/my-skill/SKILL.md
-python3 tools/check.py
+python3 tools/new_skill.py my-skill --category engineering
+# fill in skills/my-skill/SKILL.md
+python3 tools/catalog.py
+python3 tools/check.py --strict
 ```
 
-The scaffolding, catalog, and installation tools arrive in Batch 1. Until then, create the folder and `SKILL.md` by hand.
+The scaffold creates the folder and updates `SKILLS.md`. A fresh scaffold contains `TODO` markers; replace them before merging. To do it by hand, create `skills/my-skill/SKILL.md` and run `python3 tools/catalog.py` afterwards.
+
+## Install a skill
+
+```bash
+python3 tools/install.py --target claude --skill my-skill --project path/to/project
+```
+
+Targets: `claude` (`.claude/skills`), `opencode` (`.opencode/skills`), `agents` (`.agents/skills`). See [the install guide](../docs/how-to/install-skills.md).
 
 ## Categories
 
