@@ -399,6 +399,48 @@ class CheckTests(unittest.TestCase):
             result = run_check(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_block_scalar_reports_clear_error(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(
+                root / "skills/example-skill/SKILL.md",
+                (
+                    "---\n"
+                    "name: example-skill\n"
+                    "description: >\n"
+                    "  folded text\n"
+                    "license: MIT\n"
+                    "metadata:\n"
+                    "  category: engineering\n"
+                    "---\n"
+                ),
+            )
+            refresh_catalog(root)
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("block scalars", result.stdout)
+            self.assertNotIn("Traceback", result.stderr)
+
+    def test_bom_front_matter_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(
+                root / "skills/example-skill/SKILL.md",
+                (
+                    "\ufeff---\n"
+                    "name: example-skill\n"
+                    "description: Does a thing. Use when testing.\n"
+                    "license: MIT\n"
+                    "metadata:\n"
+                    "  category: engineering\n"
+                    "---\n"
+                    "# Example\n"
+                ),
+            )
+            refresh_catalog(root)
+            result = run_check(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_catalog_read_errors_are_reported_cleanly(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(Path(tmp))
@@ -923,6 +965,41 @@ class ToolTests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertEqual((dest / "SKILL.md").read_text(encoding="utf-8"), "old\n")
             self.assertEqual(list(dest.parent.glob(".example-skill.*")), [])
+
+    def test_install_all_continues_after_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            project = Path(tmp) / "project"
+            project.mkdir()
+            for name in ("a-broken", "b-good"):
+                created = run_tool(
+                    NEW_SKILL,
+                    root,
+                    name,
+                    "--category",
+                    "engineering",
+                    "--description",
+                    "Use when testing install all.",
+                )
+                self.assertEqual(created.returncode, 0, created.stdout + created.stderr)
+            try:
+                (root / "skills/a-broken/broken-link").symlink_to("/nonexistent/target")
+            except OSError:
+                self.skipTest("symlinks are not available")
+            result = run_tool(
+                INSTALL,
+                root,
+                "--target",
+                "claude",
+                "--all",
+                "--project",
+                str(project),
+                "--force",
+            )
+            self.assertEqual(result.returncode, 1)
+            self.assertTrue((project / ".claude/skills/b-good/SKILL.md").exists())
+            self.assertFalse((project / ".claude/skills/a-broken").exists())
+            self.assertEqual(list((project / ".claude/skills").glob(".*")), [])
 
 
 if __name__ == "__main__":
