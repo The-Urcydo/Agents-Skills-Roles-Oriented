@@ -45,6 +45,17 @@ class FrontMatterError(ValueError):
     """Raised when YAML front matter cannot be parsed."""
 
 
+BLOCK_SCALAR_VALUES = (">", "|", ">-", "|-", ">+", "|+")
+
+
+def _reject_block_scalar(value: str, lineno: int) -> None:
+    if value in BLOCK_SCALAR_VALUES:
+        raise FrontMatterError(
+            f"line {lineno}: block scalars ({value}) are not supported; "
+            "use a single-line quoted string"
+        )
+
+
 def _scalar(value: str) -> Any:
     value = value.strip()
     if len(value) >= 2 and value[0] == value[-1] == '"':
@@ -71,6 +82,8 @@ def parse_front_matter(text: str) -> Tuple[Optional[Dict[str, Any]], str]:
     lists, and one level of nested maps or lists. Returns (data, body); data is
     None when there is no front matter.
     """
+    if text.startswith("\ufeff"):
+        text = text[1:]
     if not text.startswith("---\n"):
         return None, text
     end = text.find("\n---", 4)
@@ -100,11 +113,14 @@ def parse_front_matter(text: str) -> Tuple[Optional[Dict[str, Any]], str]:
             if current_kind == "list":
                 if not stripped.startswith("- "):
                     raise FrontMatterError(f"line {lineno}: expected a list item")
-                data[current_key].append(_scalar(stripped[2:]))
+                item = stripped[2:].strip()
+                _reject_block_scalar(item, lineno)
+                data[current_key].append(_scalar(item))
             else:
                 key, sep, value = stripped.partition(":")
                 if not sep:
                     raise FrontMatterError(f"line {lineno}: expected 'key: value'")
+                _reject_block_scalar(value.strip(), lineno)
                 data[current_key][key.strip()] = _scalar(value)
             continue
 
@@ -115,6 +131,7 @@ def parse_front_matter(text: str) -> Tuple[Optional[Dict[str, Any]], str]:
         value = value.strip()
         if not key:
             raise FrontMatterError(f"line {lineno}: empty key")
+        _reject_block_scalar(value, lineno)
         if value == "":
             data[key] = None
             current_key = key

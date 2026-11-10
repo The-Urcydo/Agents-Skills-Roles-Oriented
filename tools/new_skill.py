@@ -57,12 +57,20 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--root", type=Path, default=None, help="repository root")
     args = ap.parse_args(argv)
 
-    root = (args.root or repo_root()).resolve()
+    root = (args.root or repo_root()).expanduser().resolve()
     if not is_valid_skill_name(args.name):
         print(
             "error: name must be 1-64 chars: lowercase letters, digits, single hyphens",
             file=sys.stderr,
         )
+        return 2
+
+    description = " ".join(args.description.split())
+    if not description:
+        print("error: description must not be empty", file=sys.stderr)
+        return 2
+    if len(description) > 1024:
+        print("error: description must be 1024 characters or fewer", file=sys.stderr)
         return 2
 
     folder = root / "skills" / args.name
@@ -73,25 +81,38 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
         return 2
 
-    bad = catalog.unreadable_skills(root)
+    target = f"skills/{args.name}/SKILL.md"
+    bad = [path for path in catalog.unreadable_skills(root) if path != target]
     if bad:
         print("error: fix unreadable skills before scaffolding:", file=sys.stderr)
         for path in bad:
             print(f"  {path}", file=sys.stderr)
         return 2
 
-    folder.mkdir(parents=True, exist_ok=True)
-    description = " ".join(args.description.split())
-    description = description.replace("\\", "\\\\").replace('"', '\\"')
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        print(f"error: cannot create {folder}: {exc}", file=sys.stderr)
+        return 2
+
+    escaped = description.replace("\\", "\\\\").replace('"', '\\"')
     content = TEMPLATE.format(
         name=args.name,
-        description=description,
+        description=escaped,
         category=args.category,
         invocation=args.invocation,
         title=args.name.replace("-", " ").title(),
     )
-    (folder / "SKILL.md").write_text(content, encoding="utf-8")
-    changed = catalog.write_catalog(root)
+    try:
+        (folder / "SKILL.md").write_text(content, encoding="utf-8")
+    except OSError as exc:
+        print(f"error: cannot write {folder / 'SKILL.md'}: {exc}", file=sys.stderr)
+        return 2
+    try:
+        changed = catalog.write_catalog(root)
+    except OSError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
     print(f"created {folder.relative_to(root)}/SKILL.md")
     print("updated SKILLS.md" if changed else "SKILLS.md already up to date")
     return 0

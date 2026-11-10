@@ -34,6 +34,9 @@ from _lib import (
 ADR_NAME_RE = re.compile(r"^(\d{4})-[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
 MARKDOWN_LINK_RE = re.compile(r"(?<!\\)\[[^\]]*\]\(([^)]+)\)")
 FENCE_RE = re.compile(r"```.*?```", re.S)
+INLINE_CODE_RE = re.compile(r"`[^`\n]*`")
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
+PLACEHOLDER_RE = re.compile(r"\bTODO\b")
 
 ADR_STATUSES = {"proposed", "accepted", "rejected", "deprecated", "superseded"}
 REQUIRED = (
@@ -53,6 +56,11 @@ REQUIRED = (
     ".github/CODEOWNERS",
     ".github/pull_request_template.md",
     ".github/workflows/check.yml",
+    "tools/_lib.py",
+    "tools/catalog.py",
+    "tools/check.py",
+    "tools/install.py",
+    "tools/new_skill.py",
     "tools/tests/test_tools.py",
 )
 MAX_AGENTS_LINES = 100
@@ -95,6 +103,13 @@ def strip_fences(text: str) -> str:
     return FENCE_RE.sub("", text)
 
 
+def strip_noise(text: str) -> str:
+    """Remove fenced blocks, inline code, and HTML comments before link checks."""
+    text = strip_fences(text)
+    text = INLINE_CODE_RE.sub("", text)
+    return HTML_COMMENT_RE.sub("", text)
+
+
 def check_required(root: Path, rep: Report) -> None:
     for item in REQUIRED:
         p = root / item
@@ -115,6 +130,22 @@ def check_agents(root: Path, rep: Report) -> None:
             "AGENTS.md",
             f"{n} lines; keep the always-loaded file under {MAX_AGENTS_LINES}",
         )
+
+
+def _field_string(
+    fm: Dict[str, object], key: str, rep: Report, where: str, missing_code: str
+) -> str:
+    value = fm.get(key)
+    if value is None:
+        rep.error(missing_code, where, f"missing '{key}'")
+        return ""
+    if not isinstance(value, str):
+        rep.error("skill-type", where, f"'{key}' must be a string")
+        return ""
+    value = value.strip()
+    if not value:
+        rep.error(missing_code, where, f"missing '{key}'")
+    return value
 
 
 def check_skills(root: Path, rep: Report) -> int:
@@ -145,7 +176,7 @@ def check_skills(root: Path, rep: Report) -> int:
             rep.error("skill-read", r, str(exc))
             continue
         try:
-            fm, body = parse_front_matter(text)
+            fm, _ = parse_front_matter(text)
         except FrontMatterError as exc:
             rep.error("skill-front-matter", r, str(exc))
             continue
@@ -168,27 +199,31 @@ def check_skills(root: Path, rep: Report) -> int:
                 or len(compatibility) > 500
             ):
                 rep.error("skill-compatibility", r, "compatibility must be 1-500 chars")
-        if "allowed-tools" in fm and not isinstance(fm["allowed-tools"], str):
-            rep.error("skill-tools", r, "allowed-tools must be a space-separated string")
-        name = str(fm.get("name") or "").strip()
-        desc = str(fm.get("description") or "").strip()
-        license_name = str(fm.get("license") or "").strip()
-        if not name:
-            rep.error("skill-name", r, "missing 'name'")
-        elif not is_valid_skill_name(name):
+        if "allowed-tools" in fm:
+            tools = fm["allowed-tools"]
+            if not isinstance(tools, str):
+                rep.error("skill-tools", r, "allowed-tools must be a space-separated string")
+            elif not tools.strip():
+                rep.error("skill-tools", r, "allowed-tools must not be empty")
+            elif "," in tools:
+                rep.error(
+                    "skill-tools",
+                    r,
+                    "allowed-tools must be space-separated, not comma-separated",
+                )
+        name = _field_string(fm, "name", rep, r, "skill-name")
+        desc = _field_string(fm, "description", rep, r, "skill-description")
+        _field_string(fm, "license", rep, r, "skill-license")
+        if name and not is_valid_skill_name(name):
             rep.error(
                 "skill-name",
                 r,
                 "name must be 1-64 chars: lowercase letters, digits, single hyphens",
             )
-        elif name != entry.name:
+        elif name and name != entry.name:
             rep.error("skill-name", r, f"name '{name}' must match the folder '{entry.name}'")
-        if not desc:
-            rep.error("skill-description", r, "missing 'description'")
-        elif len(desc) > 1024:
+        if len(desc) > 1024:
             rep.error("skill-description", r, f"description is {len(desc)} chars; max 1024")
-        if not license_name:
-            rep.error("skill-license", r, "missing 'license' (required by this repository)")
         meta = fm.get("metadata")
         if meta is None:
             rep.error("skill-metadata", r, "missing 'metadata.category'")
@@ -212,6 +247,12 @@ def check_skills(root: Path, rep: Report) -> int:
                     r,
                     f"metadata.invocation must be one of {', '.join(sorted(INVOCATIONS))}",
                 )
+        if PLACEHOLDER_RE.search(text):
+            rep.warn(
+                "skill-placeholder",
+                r,
+                "contains a TODO placeholder; finish the skill before merging",
+            )
         n = len(text.splitlines())
         if n > MAX_SKILL_LINES:
             rep.warn(
@@ -219,35 +260,82 @@ def check_skills(root: Path, rep: Report) -> int:
                 r,
                 f"{n} lines; move detail into references/ (spec recommends < {MAX_SKILL_LINES})",
             )
-        check_skill_links(root, entry, sk, body, rep)
+        check_skill_links(root, entry, rep)
     return count
 
 
-def check_skill_links(root: Path, skill_dir: Path, sk: Path, body: str, rep: Report) -> None:
-    text = strip_fences(body)
-    for target in MARKDOWN_LINK_RE.findall(text):
+def check_markdown_links(
+    root: Path,
+    p: Path,
+    base: Path,
+    contain: Path,
+    rep: Report,
+    outside_code: str,
+    broken_code: str,
+    scope: str,
+    text: str,
+) -> None:
+    contain = contain.resolve()
+    for target in MARKDOWN_LINK_RE.findall(strip_noise(text)):
         target = target.strip()
         if target.startswith(("http://", "https://", "mailto:", "#")):
             continue
         target = target.split("#", 1)[0]
         if not target:
             continue
-        dest = (skill_dir / target).resolve()
+        dest = (base / target).resolve()
         try:
-            dest.relative_to(skill_dir.resolve())
+            dest.relative_to(contain)
         except ValueError:
-            rep.error("skill-link", rel(root, sk), f"link leaves the skill folder: {target}")
+            rep.error(outside_code, rel(root, p), f"link leaves the {scope}: {target}")
             continue
         if not dest.exists():
-            rep.error("skill-link", rel(root, sk), f"link target not found: {target}")
+            rep.error(broken_code, rel(root, p), f"link target not found: {target}")
+
+
+def check_skill_links(root: Path, skill_dir: Path, rep: Report) -> None:
+    contain = skill_dir.resolve()
+    for p in sorted(skill_dir.rglob("*.md")):
+        try:
+            p.resolve().relative_to(contain)
+        except ValueError:
+            rep.error("skill-link", rel(root, p), "skill file resolves outside the skill folder")
+            continue
+        try:
+            raw = read_text(p)
+        except (OSError, UnicodeDecodeError) as exc:
+            rep.error("skill-read", rel(root, p), str(exc))
+            continue
+        text = raw
+        if p.name == "SKILL.md":
+            try:
+                _, text = parse_front_matter(raw)
+            except FrontMatterError:
+                text = raw
+        check_markdown_links(
+            root,
+            p,
+            skill_dir,
+            skill_dir,
+            rep,
+            "skill-link",
+            "skill-link",
+            "skill folder",
+            text,
+        )
 
 
 def check_catalog(root: Path, rep: Report) -> None:
     p = root / "SKILLS.md"
-    if not p.exists():
+    try:
+        current = catalog.read_catalog(p)
+    except OSError as exc:
+        rep.error("catalog-read", "SKILLS.md", str(exc))
+        return
+    if current is None:
         rep.error("catalog", "SKILLS.md", "generated catalog is missing; run python3 tools/catalog.py")
         return
-    if read_text(p) != catalog.render_catalog(root):
+    if current != catalog.render_catalog(root):
         rep.error("catalog", "SKILLS.md", "generated catalog is out of date; run python3 tools/catalog.py")
 
 
@@ -272,25 +360,21 @@ def check_docs(root: Path, rep: Report) -> int:
 
 def check_links(root: Path, p: Path, rep: Report) -> None:
     try:
-        text = strip_fences(read_text(p))
+        text = read_text(p)
     except (OSError, UnicodeDecodeError) as exc:
         rep.error("read", rel(root, p), str(exc))
         return
-    for target in MARKDOWN_LINK_RE.findall(text):
-        target = target.strip()
-        if target.startswith(("http://", "https://", "mailto:", "#")):
-            continue
-        target = target.split("#", 1)[0]
-        if not target:
-            continue
-        dest = (p.parent / target).resolve()
-        try:
-            dest.relative_to(root.resolve())
-        except ValueError:
-            rep.error("link-outside", rel(root, p), f"link leaves the repository: {target}")
-            continue
-        if not dest.exists():
-            rep.error("broken-link", rel(root, p), f"link target not found: {target}")
+    check_markdown_links(
+        root,
+        p,
+        p.parent,
+        root,
+        rep,
+        "link-outside",
+        "broken-link",
+        "repository",
+        text,
+    )
 
 
 def check_adrs(root: Path, rep: Report) -> None:

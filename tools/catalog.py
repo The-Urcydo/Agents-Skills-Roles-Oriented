@@ -65,7 +65,12 @@ def skill_rows(root: Path) -> List[SkillRow]:
 
 
 def _escape_table_cell(text: str) -> str:
-    return text.replace("|", "\\|").replace("[", "\\[").replace("]", "\\]")
+    return (
+        text.replace("\\", "\\\\")
+        .replace("|", "\\|")
+        .replace("[", "\\[")
+        .replace("]", "\\]")
+    )
 
 
 def unreadable_skills(root: Path) -> List[str]:
@@ -110,11 +115,24 @@ def render_catalog(root: Path) -> str:
     return "\n".join(lines)
 
 
+def read_catalog(path: Path) -> Optional[str]:
+    """Return the catalog text, or None when the file does not exist.
+
+    Raises OSError when the file exists but cannot be read as UTF-8 text.
+    """
+    if not (path.exists() or path.is_symlink()):
+        return None
+    try:
+        return read_text(path)
+    except (OSError, UnicodeDecodeError) as exc:
+        raise OSError(f"cannot read {path.name}: {exc}") from exc
+
+
 def write_catalog(root: Path) -> bool:
     """Write SKILLS.md if it changed. Returns True when the file changed."""
     path = root / CATALOG
     content = render_catalog(root)
-    if path.exists() and read_text(path) == content:
+    if read_catalog(path) == content:
         return False
     path.write_text(content, encoding="utf-8")
     return True
@@ -127,28 +145,34 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--check", action="store_true", help="exit 1 if SKILLS.md is out of date")
     ap.add_argument("--root", type=Path, default=None, help="repository root")
     args = ap.parse_args(argv)
-    root = (args.root or repo_root()).resolve()
+    root = (args.root or repo_root()).expanduser().resolve()
     path = root / CATALOG
     bad = unreadable_skills(root)
     if bad:
         for bad_path in bad:
             print(f"{bad_path}: unreadable front matter")
         return 1
-    want = render_catalog(root)
     if args.check:
-        if not path.exists():
+        try:
+            current = read_catalog(path)
+        except OSError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 1
+        want = render_catalog(root)
+        if current is None:
             print(f"{CATALOG} is missing; run python3 tools/catalog.py")
             return 1
-        if read_text(path) != want:
+        if current != want:
             print(f"{CATALOG} is out of date; run python3 tools/catalog.py")
             return 1
         print(f"{CATALOG} is up to date")
         return 0
-    if path.exists() and read_text(path) == want:
-        print(f"unchanged {CATALOG}")
-        return 0
-    path.write_text(want, encoding="utf-8")
-    print(f"wrote {CATALOG}")
+    try:
+        changed = write_catalog(root)
+    except OSError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+    print(f"{'wrote' if changed else 'unchanged'} {CATALOG}")
     return 0
 
 
