@@ -33,6 +33,8 @@ configuration, and no enforcement of the workflow pinning rule.
   updates, and private vulnerability reporting are enabled.
 - Workflows use a read-only default token, set `permissions`, and pin every
   action to a full commit SHA. Dependabot keeps the pins current.
+- CodeQL default setup scans GitHub Actions and Python on pushes, pull requests,
+  and a weekly schedule. It is not a required check yet.
 - The repository uses merge commits. Squash and rebase merges are disabled.
 
 ## Consequences
