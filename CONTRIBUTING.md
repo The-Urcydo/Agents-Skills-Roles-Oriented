@@ -22,6 +22,7 @@ there is nothing to install.
 
 ```bash
 python3 tools/check.py --strict
+python3 tools/roster.py --check
 python3 -m unittest discover -s tools/tests -v
 ```
 
@@ -35,6 +36,7 @@ python3 -m unittest discover -s tools/tests -v
 
    ```bash
    python3 tools/check.py --strict
+   python3 tools/roster.py --check
    python3 -m unittest discover -s tools/tests -v
    ```
 

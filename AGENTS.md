@@ -10,6 +10,8 @@ A portable library of agent skills plus the role charters that consume them. The
 - Scaffold a skill: `python3 tools/new_skill.py <name> --category <category>`
 - Regenerate the catalog: `python3 tools/catalog.py`
 - Verify the catalog: `python3 tools/catalog.py --check`
+- Regenerate the role roster: `python3 tools/roster.py`
+- Verify the role roster: `python3 tools/roster.py --check`
 - Install into an agent: `python3 tools/install.py --target <claude|opencode|agents> --skill <name> --project <path>`
 
 ## Where things are
@@ -17,6 +19,7 @@ A portable library of agent skills plus the role charters that consume them. The
 - `skills/<name>/SKILL.md`: the canonical skill library. Flat, one folder per skill.
 - `SKILLS.md`: generated catalog. Do not hand-edit it.
 - `roles/<role>/ROLE.md`: a role charter. It lists the skills the role uses; it does not own them.
+- `roles/ROSTER.md`: generated table of roles, tiers, and skills. Do not hand-edit it.
 - `agents/`: protocols, generated adapters, optional evals. Not the skill library. Adapter sync (`tools/sync_adapters.py`) arrives in Batch 4.
 - `docs/`: the skill contract (`docs/reference/skill-format.md`), reasoning, how-tos, and decisions.
 - `tools/`: standard-library Python. Tests live in `tools/tests/`.

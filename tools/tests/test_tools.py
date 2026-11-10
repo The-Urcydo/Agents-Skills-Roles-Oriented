@@ -13,9 +13,11 @@ CHECK = ROOT / "tools" / "check.py"
 NEW_SKILL = ROOT / "tools" / "new_skill.py"
 CATALOG = ROOT / "tools" / "catalog.py"
 INSTALL = ROOT / "tools" / "install.py"
+ROSTER_TOOL = ROOT / "tools" / "roster.py"
 
 sys.path.insert(0, str(ROOT / "tools"))
 import catalog  # noqa: E402
+import roster  # noqa: E402
 
 
 def write(path: Path, text: str) -> None:
@@ -30,6 +32,26 @@ def refresh_catalog(root: Path) -> None:
 def write_skill(root: Path, name: str, front_matter: str, body: str = "# Example\n") -> None:
     write(root / f"skills/{name}/SKILL.md", f"---\n{front_matter}---\n{body}")
     refresh_catalog(root)
+
+
+def role_front_matter(
+    name: str = "reviewer", tier: str = "flow", skills: str = "[]"
+) -> str:
+    return (
+        f"role: {name}\n"
+        f"tier: {tier}\n"
+        "mission: Verify finished work.\n"
+        "reads: [AGENTS.md]\n"
+        f"skills: {skills}\n"
+        "never: [review work you built]\n"
+        "done_when: The review has a verdict.\n"
+        "escalate_when: The criteria are wrong.\n"
+    )
+
+
+def write_role(root: Path, name: str, front_matter: str, body: str = "# Example\n") -> None:
+    write(root / f"roles/{name}/ROLE.md", f"---\n{front_matter}---\n{body}")
+    write(root / "roles/ROSTER.md", roster.render_roster(root))
 
 
 def make_repo(tmp: Path) -> Path:
@@ -470,6 +492,103 @@ class CheckTests(unittest.TestCase):
             catalog_result = run_tool(CATALOG, root, "--check")
             self.assertEqual(catalog_result.returncode, 1)
             self.assertIn("cannot read", catalog_result.stderr)
+
+
+class RoleTests(unittest.TestCase):
+    def test_valid_role_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter())
+            result = run_check(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn("1 role(s)", result.stdout)
+
+    def test_role_name_must_match_folder(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter(name="builder"))
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("must match the folder", result.stdout)
+
+    def test_role_tier_must_be_known(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter(tier="boss"))
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("tier must be one of", result.stdout)
+
+    def test_role_skill_must_exist(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter(skills="[missing-skill]"))
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("does not exist", result.stdout)
+
+    def test_role_reads_must_be_a_list(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            front_matter = role_front_matter().replace("reads: [AGENTS.md]", "reads: AGENTS.md")
+            write_role(root, "reviewer", front_matter)
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("reads must be a non-empty list", result.stdout)
+
+    def test_unknown_role_field_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            front_matter = role_front_matter() + "item_files: [brief.md]\n"
+            write_role(root, "reviewer", front_matter)
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("unsupported front matter field", result.stdout)
+
+    def test_missing_role_roster_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(
+                root / "roles/reviewer/ROLE.md",
+                f"---\n{role_front_matter()}---\n# Example\n",
+            )
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("generated roster is missing", result.stdout)
+
+    def test_stale_role_roster_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter())
+            write(root / "roles/ROSTER.md", "# Old roster\n")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("generated roster is out of date", result.stdout)
+
+    def test_unreadable_role_reports_cleanly(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter())
+            (root / "roles/reviewer/ROLE.md").write_bytes(b"\xff")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("role-read", result.stdout)
+            self.assertNotIn("Traceback", result.stderr)
+
+    def test_roster_tool_writes_and_checks(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(
+                root / "roles/reviewer/ROLE.md",
+                f"---\n{role_front_matter()}---\n# Example\n",
+            )
+            written = run_tool(ROSTER_TOOL, root)
+            self.assertEqual(written.returncode, 0, written.stdout + written.stderr)
+            self.assertTrue((root / "roles/ROSTER.md").exists())
+            checked = run_tool(ROSTER_TOOL, root, "--check")
+            self.assertEqual(checked.returncode, 0, checked.stdout + checked.stderr)
+            check = run_check(root)
+            self.assertEqual(check.returncode, 0, check.stdout + check.stderr)
 
 
 class ToolTests(unittest.TestCase):

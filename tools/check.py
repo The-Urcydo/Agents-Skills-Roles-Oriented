@@ -20,14 +20,17 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import catalog
+import roster
 from _lib import (
     CATEGORIES,
     INVOCATIONS,
+    TIERS,
     FrontMatterError,
     is_valid_skill_name,
     parse_front_matter,
     read_text,
     repo_root,
+    role_folders,
     skill_folders,
 )
 
@@ -351,14 +354,28 @@ def check_docs(root: Path, rep: Report) -> int:
     for p in sorted(base.rglob("*.md")):
         count += 1
         check_links(root, p, rep)
-    for name in ("README.md", "AGENTS.md", "SKILLS.md"):
+    seen = set()
+    for name in (
+        "README.md",
+        "AGENTS.md",
+        "SKILLS.md",
+        "skills/README.md",
+        "roles/README.md",
+        "roles/ROSTER.md",
+        "agents/README.md",
+        "agents/protocols/README.md",
+    ):
         p = root / name
-        if p.exists():
+        if p.exists() and p not in seen:
+            seen.add(p)
             check_links(root, p, rep)
-    for name in ("skills/README.md", "roles/README.md", "agents/README.md"):
-        p = root / name
-        if p.exists():
-            check_links(root, p, rep)
+    for folder in ("roles", "agents/protocols"):
+        d = root / folder
+        if d.is_dir():
+            for p in sorted(d.rglob("*.md")):
+                if p not in seen:
+                    seen.add(p)
+                    check_links(root, p, rep)
     return count
 
 
@@ -432,6 +449,119 @@ def check_adrs(root: Path, rep: Report) -> None:
                 rep.error("adr-date", rel(root, p), f"date '{date}' is not ISO YYYY-MM-DD")
 
 
+def check_roles(root: Path, rep: Report) -> int:
+    folders = role_folders(root)
+    if not folders:
+        return 0
+    skill_names = {p.name for p in skill_folders(root)}
+    allowed = {
+        "role",
+        "tier",
+        "mission",
+        "reads",
+        "skills",
+        "never",
+        "done_when",
+        "escalate_when",
+    }
+    required = (
+        "role",
+        "tier",
+        "mission",
+        "reads",
+        "skills",
+        "never",
+        "done_when",
+        "escalate_when",
+    )
+    count = 0
+    for entry in folders:
+        count += 1
+        r = rel(root, entry / "ROLE.md")
+        try:
+            text = read_text(entry / "ROLE.md")
+        except (OSError, UnicodeDecodeError) as exc:
+            rep.error("role-read", r, str(exc))
+            continue
+        try:
+            fm, _ = parse_front_matter(text)
+        except FrontMatterError as exc:
+            rep.error("role-front-matter", r, str(exc))
+            continue
+        if fm is None:
+            rep.error(
+                "role-front-matter",
+                r,
+                "missing front matter (role, tier, mission, reads, skills, never, done_when, escalate_when)",
+            )
+            continue
+        unknown = sorted(set(fm) - allowed)
+        if unknown:
+            rep.error("role-field", r, f"unsupported front matter field(s): {', '.join(unknown)}")
+        for key in required:
+            if key not in fm:
+                rep.error("role-field", r, f"missing '{key}'")
+
+        role = fm.get("role")
+        if not isinstance(role, str) or not role.strip():
+            rep.error("role-name", r, "role must be a non-empty string")
+        elif role.strip() != entry.name:
+            rep.error("role-name", r, f"role '{role.strip()}' must match the folder '{entry.name}'")
+
+        tier = fm.get("tier")
+        if not isinstance(tier, str) or tier.strip() not in TIERS:
+            rep.error("role-tier", r, f"tier must be one of {', '.join(TIERS)}")
+
+        mission = fm.get("mission")
+        if not isinstance(mission, str) or not mission.strip():
+            rep.error("role-field", r, "mission must be a non-empty string")
+
+        for key in ("reads", "never"):
+            value = fm.get(key)
+            if not isinstance(value, list) or not value:
+                rep.error("role-field", r, f"{key} must be a non-empty list")
+            elif not all(isinstance(item, str) and item.strip() for item in value):
+                rep.error("role-field", r, f"{key} must contain non-empty strings")
+
+        skills = fm.get("skills")
+        if not isinstance(skills, list):
+            rep.error("role-field", r, "skills must be a list (empty is allowed)")
+        else:
+            for name in skills:
+                if not isinstance(name, str) or not name.strip():
+                    rep.error("role-field", r, "skills must contain non-empty strings")
+                elif name.strip() not in skill_names:
+                    rep.error("role-skill", r, f"skill '{name.strip()}' does not exist")
+
+        done = fm.get("done_when")
+        if not isinstance(done, str) or not done.strip():
+            rep.error("role-field", r, "done_when must be a non-empty string")
+
+        escalate = fm.get("escalate_when")
+        if isinstance(escalate, list):
+            if not escalate or not all(isinstance(item, str) and item.strip() for item in escalate):
+                rep.error("role-field", r, "escalate_when must be a non-empty string or list")
+        elif not isinstance(escalate, str) or not escalate.strip():
+            rep.error("role-field", r, "escalate_when must be a non-empty string or list")
+
+    roster_path = root / "roles" / "ROSTER.md"
+    if not roster_path.exists():
+        rep.error("roster", "roles/ROSTER.md", "generated roster is missing; run python3 tools/roster.py")
+    else:
+        try:
+            current = roster.read_roster(roster_path)
+        except OSError as exc:
+            rep.error("roster-read", "roles/ROSTER.md", str(exc))
+        else:
+            if current != roster.render_roster(root):
+                rep.error(
+                    "roster",
+                    "roles/ROSTER.md",
+                    "generated roster is out of date; run python3 tools/roster.py",
+                )
+    return count
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -448,6 +578,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     check_agents(root, rep)
     skills = check_skills(root, rep)
     check_catalog(root, rep)
+    roles = check_roles(root, rep)
     docs = check_docs(root, rep)
     check_adrs(root, rep)
     for f in sorted(rep.items, key=lambda x: (x.level, x.where, x.code)):
@@ -457,7 +588,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if errors or (args.strict and warnings):
         print(f"failed: {errors} error(s), {warnings} warning(s)")
         return 1
-    print(f"ok: {skills} skill(s), {docs} doc(s), {warnings} warning(s)")
+    print(f"ok: {skills} skill(s), {roles} role(s), {docs} doc(s), {warnings} warning(s)")
     return 0
 
 
