@@ -1,0 +1,12 @@
+# Keep line endings stable across operating systems.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+
+# Generated files: collapse in diffs on GitHub.
+SKILLS.md linguist-generated
+roles/ROSTER.md linguist-generated
+agents/adapters/manifest.json linguist-generated

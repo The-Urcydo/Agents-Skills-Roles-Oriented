@@ -1,0 +1,75 @@
+name: Skill proposal
+description: Propose a new skill or a change to an existing skill
+title: "[Skill]: "
+labels: ["enhancement", "skill"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read the [skill format](https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/blob/main/docs/reference/skill-format.md)
+        and the [writing guide](https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/blob/main/docs/how-to/write-a-skill.md)
+        before opening this proposal.
+  - type: input
+    id: name
+    attributes:
+      label: Skill name
+      description: Lowercase letters, digits, and single hyphens. It must match the folder name.
+      placeholder: review-a-diff
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - engineering
+        - productivity
+        - design
+        - repo
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this skill solve?
+      description: Describe the repeated task and the trigger that should load the skill.
+    validations:
+      required: true
+  - type: textarea
+    id: procedure
+    attributes:
+      label: Proposed procedure
+      description: The steps, the verification, and the stop conditions.
+    validations:
+      required: true
+  - type: dropdown
+    id: origin
+    attributes:
+      label: Origin
+      options:
+        - Original skill
+        - Imported or adapted from another repository
+    validations:
+      required: true
+  - type: input
+    id: provenance
+    attributes:
+      label: Provenance
+      description: For an import, give the source URL and the exact commit or tag.
+      placeholder: https://github.com/owner/repo @ <sha>
+  - type: textarea
+    id: scripts
+    attributes:
+      label: Scripts, dependencies, and network access
+      description: State the runtime, dependencies, whether network access is needed, and the failure behavior. Write "None" when the skill only uses instructions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: The skill contains no role logic, secrets, or personal absolute paths.
+          required: true
+        - label: I read the skill format and the writing guide.
+          required: true

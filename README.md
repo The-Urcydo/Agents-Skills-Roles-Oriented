@@ -2,6 +2,10 @@
 
 A portable library of agent skills, with role charters that consume them. Built to be copied into an agent-ready repository, or installed directly into an agent's skills folder.
 
+[![check](https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/actions/workflows/check.yml/badge.svg?branch=main)](https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/github/license/The-Urcydo/Agents-Skills-Roles-Oriented)](LICENSE)
+[![Security policy](https://img.shields.io/badge/security-policy-blue)](SECURITY.md)
+
 This repo is the skills-focused sibling of [Repo-Template](https://github.com/The-Urcydo/Repo-Template). Repo-Template owns the runnable project skeleton: docs, work items, roles, protocols, tools. This repo owns the skill library and the role charters that use it. Skills developed here are ported into Repo-Template when they are ready; Repo-Template is not modified from this repo.
 
 **Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 adds the catalog, scaffold, installer, and the first skill (`write-skill`).
@@ -55,9 +59,15 @@ Start with [docs/INDEX.md](docs/INDEX.md). The generated [SKILLS.md](SKILLS.md) 
 - **This repo** gives agents their procedures: a curated, validated skill library, plus role charters that say which skills each role uses.
 - **Porting:** copy `skills/<name>/` into Repo-Template's `agents/skills/<name>/`; map `roles/<role>/ROLE.md` into Repo-Template's role bundle. The porting guide arrives in Batch 5.
 
+## Security
+
+Report vulnerabilities privately under [SECURITY.md](SECURITY.md). Secret scanning, push protection, and private vulnerability reporting are enabled.
+
 ## Contributing
 
-Changes to `skills/`, `roles/`, `agents/`, `tools/`, or `.github/` need the owner's approval, like Repo-Template's harness rules. One topic per pull request, with evidence. Read [AGENTS.md](AGENTS.md) before you start.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Every pull request needs a code owner's approval; changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` are never merged without it. One topic per pull request, with evidence.
+
+Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

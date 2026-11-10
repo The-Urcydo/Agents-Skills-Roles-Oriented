@@ -1,0 +1,11 @@
+# Keep the SHA-pinned actions in .github/workflows/ current.
+# The repository has no package dependencies, so there is no pip ecosystem here.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
