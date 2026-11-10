@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/blob/main/docs/INDEX.md
+    about: Start with the documentation index.
+  - name: Report a security vulnerability
+    url: https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/security/policy
+    about: Please do not open a public issue for a vulnerability. Follow the security policy.

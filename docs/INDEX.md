@@ -7,6 +7,12 @@ Start here. This file is the map; open only what the task needs.
 - [Skill format](reference/skill-format.md): required front matter, folder shape, metadata, and quality rules.
 - [Why skills](explanation/why-skills.md): the context-budget reason for skills, and how they differ from roles and `AGENTS.md`.
 
+## Project
+
+- [Contributing](../CONTRIBUTING.md): setup, checks, pull requests, and the merge policy.
+- [Security policy](../SECURITY.md): how to report a vulnerability privately.
+- [Code of conduct](../CODE_OF_CONDUCT.md): standards for humans and agents.
+
 ## Guides
 
 - [Write a skill](how-to/write-a-skill.md): from idea to validated pull request.

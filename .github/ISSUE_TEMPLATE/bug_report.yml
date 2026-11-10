@@ -1,0 +1,58 @@
+name: Bug report
+description: Something in the skill library, tools, or CI does not work
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security problems do not belong here. Follow the [security policy](https://github.com/The-Urcydo/Agents-Skills-Roles-Oriented/security/policy).
+  - type: input
+    id: version
+    attributes:
+      label: Commit or version
+      description: The commit, branch, or release you are using.
+      placeholder: main @ 45749bf
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Python and operating system
+      placeholder: Python 3.14, macOS 26
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you see, and where?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: The exact commands you ran, in order.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or logs
+      description: If `tools/check.py` is involved, include its full output.
+      render: shell
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and this is not a duplicate.
+          required: true
+        - label: This is not a security problem; I will report those privately.
+          required: true

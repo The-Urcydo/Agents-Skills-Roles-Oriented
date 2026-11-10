@@ -1,0 +1,17 @@
+name: Question
+description: Ask how to use the library, a skill, or the tools
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What are you trying to do, and where are you stuck?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: The agent or tool you use, the commands you ran, and anything you already tried.

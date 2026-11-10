@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest an improvement to the skill library, roles, tools, or governance
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Say who benefits and what the change would cost. This repository is a
+        portable library, so changes should keep skills role-agnostic and
+        tool-neutral.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation you ran into, not only the solution you have in mind.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: What should the repository do differently?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area?
+      options:
+        - Skill library
+        - Role charters
+        - Tools and CI
+        - Documentation
+        - Governance and security
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
