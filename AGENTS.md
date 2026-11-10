@@ -11,14 +11,13 @@ A portable library of agent skills plus the role charters that consume them. The
 - Regenerate the catalog: `python3 tools/catalog.py`
 - Verify the catalog: `python3 tools/catalog.py --check`
 - Install into an agent: `python3 tools/install.py --target <claude|opencode|agents> --skill <name> --project <path>`
-- Sync adapters (Batch 4): `python3 tools/sync_adapters.py`
 
 ## Where things are
 
 - `skills/<name>/SKILL.md`: the canonical skill library. Flat, one folder per skill.
 - `SKILLS.md`: generated catalog. Do not hand-edit it.
 - `roles/<role>/ROLE.md`: a role charter. It lists the skills the role uses; it does not own them.
-- `agents/`: protocols, generated adapters, optional evals. Not the skill library.
+- `agents/`: protocols, generated adapters, optional evals. Not the skill library. Adapter sync (`tools/sync_adapters.py`) arrives in Batch 4.
 - `docs/`: the skill contract (`docs/reference/skill-format.md`), reasoning, how-tos, and decisions.
 - `tools/`: standard-library Python. Tests live in `tools/tests/`.
 
@@ -41,7 +40,7 @@ A portable library of agent skills plus the role charters that consume them. The
 2. Create the folder with `python3 tools/new_skill.py <name> --category <category>`, or create `skills/<name>/SKILL.md` by hand.
 3. Write a description that says what the skill does and when to use it.
 4. Add `references/`, `scripts/`, or `assets/` only if the skill needs them.
-5. Run `python3 tools/check.py --strict`.
+5. Run `python3 tools/catalog.py` and `python3 tools/check.py --strict`.
 6. Open a pull request with the check output and a one-line summary.
 
 ## Work tracking

@@ -22,7 +22,7 @@ skills/
 - A skill never contains role logic. Role charters list the skills they use.
 - Keep `SKILL.md` under 500 lines; put detail in `references/`.
 - Imported skills need `PROVENANCE.md` and an entry in `THIRD_PARTY_NOTICES.md`.
-- `SKILLS.md` at the repository root is generated from `metadata.category`; do not hand-edit it.
+- `SKILLS.md` at the repository root is generated from the skill front matter, grouped by `metadata.category`; do not hand-edit it.
 
 ## Add a skill
 
@@ -33,7 +33,7 @@ python3 tools/catalog.py
 python3 tools/check.py --strict
 ```
 
-The scaffold creates the folder and updates `SKILLS.md`. To do it by hand, create `skills/my-skill/SKILL.md` and run `python3 tools/catalog.py` afterwards.
+The scaffold creates the folder and updates `SKILLS.md`. A fresh scaffold contains `TODO` markers; replace them before merging. To do it by hand, create `skills/my-skill/SKILL.md` and run `python3 tools/catalog.py` afterwards.
 
 ## Install a skill
 

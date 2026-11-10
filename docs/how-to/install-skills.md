@@ -51,13 +51,14 @@ npx skills add . --list
 npx skills add . --skill write-skill -y
 ```
 
-From another project, use the repository URL instead of `.`.
+From another project, use the repository URL instead of `.`. The Skills CLI is a Node.js package; running it requires Node.js and network access.
 
 ## Notes
 
-- The installer copies; it does not symlink. Re-run it after changing a skill, or use `--force`.
+- The installer copies; it does not symlink. Re-run it with `--force` after changing a skill. Without `--force`, an existing destination is skipped and the command exits 1.
+- `--force` replaces the entire installed folder. Local edits inside that folder are lost; keep changes in the library or back them up.
 - `--dry-run` writes nothing and exits 1 when a destination would be skipped, matching the real run.
 - `write-skill` is repo-native: it uses this library's tools when present and falls back to manual steps elsewhere.
 - `tools/check.py` validates the source library, not the installed copy.
-- The local installer remains the supported path in v0.1; the Skills CLI is a convenience.
+- The local installer remains the supported path in v0.1; the Skills CLI is a convenience that requires Node.js and network access.
 - There is no uninstall command yet; delete the installed folder.

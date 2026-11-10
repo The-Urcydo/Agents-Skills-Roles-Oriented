@@ -64,7 +64,7 @@ If the skill comes from another repository, add `PROVENANCE.md` with the source 
 python3 tools/check.py --strict
 ```
 
-Fix every error. Warnings do not fail the default check, but CI uses `--strict`. The checker also fails when `SKILLS.md` is out of date; run `python3 tools/catalog.py` after adding or editing a skill.
+Fix every error. Warnings do not fail the default check, but CI uses `--strict`. The checker also fails when `SKILLS.md` is out of date; run `python3 tools/catalog.py` after adding or editing a skill. A fresh scaffold contains `TODO` markers; replace them, because `--strict` warns on any remaining placeholder.
 
 ## 9. Open the pull request
 
@@ -89,6 +89,8 @@ python3 tools/install.py --target claude --skill my-skill --project /tmp/skill-t
 - [ ] License is present.
 - [ ] `metadata.category` is valid.
 - [ ] No role logic and no tool-specific front matter.
-- [ ] Links resolve; body is under 500 lines.
+- [ ] No TODO placeholders remain.
+- [ ] Links resolve from the skill folder root; body is under 500 lines.
+- [ ] `SKILLS.md` is up to date.
 - [ ] Imported skill has `PROVENANCE.md`.
 - [ ] `python3 tools/check.py --strict` passes.

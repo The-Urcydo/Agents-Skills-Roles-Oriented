@@ -1,20 +1,20 @@
 # Skill checklist
 
-This is the standalone checklist for an installed skill. The repository contract is `docs/reference/skill-format.md`.
+In this library, the canonical contract is `docs/reference/skill-format.md` at the repository root. When this skill is installed in another project, this checklist is the standalone contract.
 
 ## Front matter
 
 | Field | Rule |
 |---|---|
-| `name` | 1-64 chars; lowercase letters, digits, single hyphens; equals the folder name. |
-| `description` | 1-1024 chars; what it does and when to use it. |
-| `license` | `MIT` for original work; upstream license for imports. |
+| `name` | String, 1-64 chars; lowercase letters, digits, single hyphens; equals the folder name. |
+| `description` | String, 1-1024 chars; what it does and when to use it. |
+| `license` | String; `MIT` for original work; upstream license for imports. |
 | `metadata.category` | `engineering`, `productivity`, `design`, or `repo`. |
 | `metadata.invocation` | `model`, `user`, or `both`. Use `user` for shared state, spend, or owner approval. |
-| `compatibility` | Optional; environment requirements only. |
-| `allowed-tools` | Optional; space-separated. |
+| `compatibility` | Optional string; 1-500 chars; environment requirements only. |
+| `allowed-tools` | Optional string; space-separated; no commas. |
 
-Do not use Claude-only fields in the source: `disable-model-invocation`, `argument-hint`, `hooks`, `context`, `paths`.
+Only the fields in this table are allowed. Claude-only fields (for example `disable-model-invocation`, `argument-hint`, `hooks`, `context`, `paths`) are rejected.
 
 ## Body
 
@@ -23,9 +23,15 @@ Do not use Claude-only fields in the source: `disable-model-invocation`, `argume
 - [ ] Verification is a command, check, or observable result.
 - [ ] Stop conditions are explicit.
 - [ ] Under 500 lines; detail is in `references/`.
-- [ ] Relative links stay inside the skill folder.
+- [ ] No TODO placeholders remain.
+- [ ] Relative links resolve from the skill folder root.
 - [ ] No secrets, personal paths, or machine-specific assumptions.
 - [ ] No role names; role charters list the skills they use.
+
+## Validation
+
+- In this library: `python3 tools/catalog.py --check` and `python3 tools/check.py --strict`.
+- Elsewhere: `skills-ref validate <skill-folder>` if available. `skills-ref` is a separate Python package; installing it may need network access. Otherwise, use this checklist.
 
 ## Imported skills
 

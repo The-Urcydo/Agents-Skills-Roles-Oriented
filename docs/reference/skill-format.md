@@ -30,21 +30,25 @@ allowed-tools: Read Grep Bash(git:*)
 ---
 ```
 
+### Front matter parsing
+
+The checker reads the YAML subset this repository uses: single-line scalars, single- and double-quoted strings, inline lists, and one level of nested maps or lists. Block scalars (`>` or `|`) are not supported; put a long value on one line or use a quoted string. A UTF-8 BOM is tolerated.
+
 ### Required
 
 | Field | Rule |
 |---|---|
-| `name` | 1-64 chars; lowercase letters, digits, single hyphens; must equal the folder name. |
-| `description` | 1-1024 chars; says what the skill does **and when to use it**. |
-| `license` | Required by this repository (the open spec makes it optional). Use `MIT` for original skills; use the upstream license for imports. |
+| `name` | String, 1-64 chars; lowercase letters, digits, single hyphens; must equal the folder name. |
+| `description` | String, 1-1024 chars; says what the skill does **and when to use it**. |
+| `license` | String. Required by this repository (the open spec makes it optional). Use `MIT` for original skills; use the upstream license for imports. |
 
 ### Optional
 
 | Field | Rule |
 |---|---|
-| `compatibility` | 1-500 chars; environment requirements only. |
+| `compatibility` | Optional string, 1-500 chars; environment requirements only. |
 | `metadata` | String map. This repo uses `category` and `invocation`. |
-| `allowed-tools` | Space-separated pre-approved tools. Experimental; document the need. |
+| `allowed-tools` | Optional string; space-separated pre-approved tools; no commas. Experimental; document the need. |
 
 ### Repository metadata
 
@@ -53,7 +57,7 @@ allowed-tools: Read Grep Bash(git:*)
 | `metadata.category` | `engineering`, `productivity`, `design`, `repo` | The catalog group. Required. |
 | `metadata.invocation` | `model`, `user`, `both` | Who may start the skill. Default `both`. `user` means the agent must not start it on its own; use it for shared state, spend, or owner approval. Adapters map it to the tool's control. |
 
-Do **not** put role names in a skill. Role charters list the skills they use. Do not use Claude-only fields (`disable-model-invocation`, `argument-hint`, `hooks`, `context`, `paths`) in the source; adapters add them. The checker rejects unknown top-level fields.
+Do **not** put role names in a skill. Role charters list the skills they use. Only the fields above are allowed; the checker rejects unknown top-level fields. Claude-only fields such as `disable-model-invocation`, `argument-hint`, `hooks`, `context`, and `paths` belong in adapters, not in the source.
 
 ## Body
 
@@ -62,7 +66,7 @@ Do **not** put role names in a skill. Role charters list the skills they use. Do
 - State the verification: the command, check, or observable result.
 - List edge cases and stop conditions.
 - Keep `SKILL.md` under 500 lines. Move detail into `references/`.
-- Keep file references one level deep from `SKILL.md`.
+- Keep file references one level deep from `SKILL.md`; resolve relative links from the skill folder root.
 - No secrets, credentials, personal paths, or machine-specific assumptions.
 
 ## Progressive disclosure
@@ -72,22 +76,24 @@ The agent sees `name` and `description` at startup. It loads the body only when 
 ## Validation
 
 ```bash
-python3 tools/check.py
+python3 tools/check.py --strict
 ```
 
-The checker validates names, front matter, license, metadata, links, and the 500-line limit. `--strict` makes warnings fail. It also fails when `SKILLS.md` does not match the skill folders.
+The checker validates names, front matter, license, metadata, links, and the 500-line limit. CI uses `--strict`; without it, warnings are printed but do not fail. It also fails when `SKILLS.md` does not match the skill folders.
 
 ```bash
 python3 tools/catalog.py --check
 ```
 
-If the reference validator is available, `skills-ref validate skills/<name>` should also pass.
+If the reference validator is available, `skills-ref validate skills/<name>` should also pass. `skills-ref` is a separate Python package; installing it may require network access.
 
 ## Quality checklist
 
 - [ ] The description names both the job and the trigger.
 - [ ] The body has a clear first step and a verification step.
-- [ ] Every relative link resolves.
+- [ ] Every relative link resolves from the skill folder root.
+- [ ] No TODO placeholders remain.
 - [ ] No role logic and no tool-specific front matter.
 - [ ] An imported skill has `PROVENANCE.md`.
-- [ ] `python3 tools/check.py` passes.
+- [ ] `SKILLS.md` is up to date.
+- [ ] `python3 tools/check.py --strict` passes.
