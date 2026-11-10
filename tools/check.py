@@ -20,15 +20,20 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import catalog
-from _lib import FrontMatterError, parse_front_matter, read_text, repo_root
+from _lib import (
+    CATEGORIES,
+    INVOCATIONS,
+    SKILL_NAME_RE,
+    FrontMatterError,
+    parse_front_matter,
+    read_text,
+    repo_root,
+)
 
-SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 ADR_NAME_RE = re.compile(r"^(\d{4})-[a-z0-9]+(?:-[a-z0-9]+)*\.md$")
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\(([^)]+)\)")
 FENCE_RE = re.compile(r"```.*?```", re.S)
 
-CATEGORIES = {"engineering", "productivity", "design", "repo"}
-INVOCATIONS = {"model", "user", "both"}
 ADR_STATUSES = {"proposed", "accepted", "rejected", "deprecated", "superseded"}
 REQUIRED = (
     "README.md",

@@ -2,8 +2,15 @@
 """Shared helpers for the repository tools. Standard library only."""
 from __future__ import annotations
 
+import json
+import re
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+
+
+SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+CATEGORIES = ("engineering", "productivity", "design", "repo")
+INVOCATIONS = ("model", "user", "both")
 
 
 def repo_root() -> Path:
@@ -15,14 +22,34 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+def skill_folders(root: Path) -> List[Path]:
+    """Skill folders that contain a SKILL.md, sorted by name."""
+    base = root / "skills"
+    if not base.is_dir():
+        return []
+    return [
+        p
+        for p in sorted(base.iterdir())
+        if p.is_dir()
+        and not p.name.startswith(".")
+        and p.name != "README.md"
+        and (p / "SKILL.md").exists()
+    ]
+
+
 class FrontMatterError(ValueError):
     """Raised when YAML front matter cannot be parsed."""
 
 
 def _scalar(value: str) -> Any:
     value = value.strip()
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
-        return value[1:-1]
+    if len(value) >= 2 and value[0] == value[-1] == '"':
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            return value[1:-1]
+    if len(value) >= 2 and value[0] == value[-1] == "'":
+        return value[1:-1].replace("''", "'")
     if value.startswith("[") and value.endswith("]"):
         inner = value[1:-1].strip()
         if not inner:

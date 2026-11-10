@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib import repo_root
+from _lib import repo_root, skill_folders
 
 TARGETS = {
     "claude": ".claude/skills",
@@ -28,14 +28,7 @@ TARGETS = {
 
 
 def available_skills(root: Path) -> List[str]:
-    base = root / "skills"
-    if not base.is_dir():
-        return []
-    return sorted(
-        p.name
-        for p in base.iterdir()
-        if p.is_dir() and not p.name.startswith(".") and (p / "SKILL.md").exists()
-    )
+    return [p.name for p in skill_folders(root)]
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -63,6 +56,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 2
 
     skills = available_skills(root)
+    if args.all and args.skill:
+        print("error: use either --all or --skill, not both", file=sys.stderr)
+        return 2
     selected = skills if args.all else args.skill
     if not selected:
         print("error: pass --skill NAME (repeatable) or --all", file=sys.stderr)
@@ -82,11 +78,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         src = root / "skills" / name
         dest = dest_root / name
         if dest.exists() and not args.force:
+            if args.dry_run:
+                print(f"would skip {name}: {dest} exists")
+                continue
             print(f"skip {name}: {dest} exists (use --force to replace)", file=sys.stderr)
             failed += 1
             continue
         if args.dry_run:
-            print(f"would install {name} -> {dest}")
+            action = "replace" if dest.exists() else "install"
+            print(f"would {action} {name} -> {dest}")
             continue
         if dest.exists():
             shutil.rmtree(dest)

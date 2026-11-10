@@ -7,18 +7,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import re
 import sys
 from pathlib import Path
 from typing import List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import catalog
-from _lib import repo_root
-
-NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-CATEGORIES = ("engineering", "productivity", "design", "repo")
-INVOCATIONS = ("model", "user", "both")
+from _lib import CATEGORIES, INVOCATIONS, SKILL_NAME_RE, repo_root
 
 TEMPLATE = """---
 name: {name}
@@ -63,7 +58,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = ap.parse_args(argv)
 
     root = (args.root or repo_root()).resolve()
-    if not NAME_RE.fullmatch(args.name) or len(args.name) > 64:
+    if not SKILL_NAME_RE.fullmatch(args.name) or len(args.name) > 64:
         print(
             "error: name must be 1-64 chars: lowercase letters, digits, single hyphens",
             file=sys.stderr,
@@ -89,9 +84,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         title=args.name.replace("-", " ").title(),
     )
     (folder / "SKILL.md").write_text(content, encoding="utf-8")
-    catalog.write_catalog(root)
+    changed = catalog.write_catalog(root)
     print(f"created {folder.relative_to(root)}/SKILL.md")
-    print("updated SKILLS.md")
+    print("updated SKILLS.md" if changed else "SKILLS.md already up to date")
     return 0
 
 

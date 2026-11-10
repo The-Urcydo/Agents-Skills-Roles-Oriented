@@ -56,6 +56,7 @@ From another project, use the repository URL instead of `.`.
 ## Notes
 
 - The installer copies; it does not symlink. Re-run it after changing a skill, or use `--force`.
+- `write-skill` is repo-native: it uses this library's tools when present and falls back to manual steps elsewhere.
 - `tools/check.py` validates the source library, not the installed copy.
 - The local installer remains the supported path in v0.1; the Skills CLI is a convenience.
 - There is no uninstall command yet; delete the installed folder.

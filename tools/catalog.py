@@ -14,10 +14,10 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _lib import FrontMatterError, parse_front_matter, read_text, repo_root
+from _lib import CATEGORIES, FrontMatterError, parse_front_matter, read_text, repo_root, skill_folders
 
 CATALOG = "SKILLS.md"
-CATEGORY_ORDER = ("engineering", "productivity", "design", "repo")
+CATEGORY_ORDER = CATEGORIES
 CATEGORY_LABELS = {
     "engineering": "Engineering",
     "productivity": "Productivity",
@@ -29,16 +29,9 @@ CATEGORY_LABELS = {
 
 def skill_rows(root: Path) -> List[Dict[str, str]]:
     """One row per readable skill, sorted by folder name."""
-    base = root / "skills"
     rows: List[Dict[str, str]] = []
-    if not base.is_dir():
-        return rows
-    for entry in sorted(base.iterdir()):
-        if entry.name.startswith(".") or entry.name == "README.md" or not entry.is_dir():
-            continue
+    for entry in skill_folders(root):
         sk = entry / "SKILL.md"
-        if not sk.exists():
-            continue
         try:
             fm, _ = parse_front_matter(read_text(sk))
         except FrontMatterError:
@@ -58,8 +51,22 @@ def skill_rows(root: Path) -> List[Dict[str, str]]:
     return rows
 
 
-def _escape(text: str) -> str:
+def _escape_table_cell(text: str) -> str:
     return text.replace("|", "\\|")
+
+
+def unreadable_skills(root: Path) -> List[str]:
+    bad: List[str] = []
+    for entry in skill_folders(root):
+        path = entry / "SKILL.md"
+        try:
+            fm, _ = parse_front_matter(read_text(path))
+        except FrontMatterError:
+            bad.append(f"skills/{entry.name}/SKILL.md")
+            continue
+        if not isinstance(fm, dict):
+            bad.append(f"skills/{entry.name}/SKILL.md")
+    return bad
 
 
 def render_catalog(root: Path) -> str:
@@ -90,7 +97,7 @@ def render_catalog(root: Path) -> str:
         lines.append("|---|---|---|")
         for row in sorted(groups[category], key=lambda r: r["name"]):
             lines.append(
-                f"| [`{row['name']}`]({row['path']}) | {_escape(row['description'])} | {row['invocation']} |"
+                f"| [`{row['name']}`]({row['path']}) | {_escape_table_cell(row['description'])} | {row['invocation']} |"
             )
         lines.append("")
     return "\n".join(lines)
@@ -117,6 +124,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     path = root / CATALOG
     want = render_catalog(root)
     if args.check:
+        bad = unreadable_skills(root)
+        if bad:
+            for path in bad:
+                print(f"{path}: unreadable front matter")
+            return 1
         if not path.exists():
             print(f"{CATALOG} is missing; run python3 tools/catalog.py")
             return 1
@@ -125,8 +137,11 @@ def main(argv: Optional[List[str]] = None) -> int:
             return 1
         print(f"{CATALOG} is up to date")
         return 0
-    changed = write_catalog(root)
-    print(f"{'wrote' if changed else 'unchanged'} {CATALOG}")
+    if path.exists() and read_text(path) == want:
+        print(f"unchanged {CATALOG}")
+        return 0
+    path.write_text(want, encoding="utf-8")
+    print(f"wrote {CATALOG}")
     return 0
 
 

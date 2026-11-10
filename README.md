@@ -47,11 +47,7 @@ skills/code-review/
 
 The open format is specified at [agentskills.io](https://agentskills.io/specification). This repo keeps the source in that format and puts tool-specific behavior in generated adapters, so the same skill works in Claude Code, OpenCode, and other agents.
 
-Start with [docs/INDEX.md](docs/INDEX.md).
-
-## Available skills
-
-- [`write-skill`](skills/write-skill/SKILL.md): create or revise a skill in this library.
+Start with [docs/INDEX.md](docs/INDEX.md). The generated [SKILLS.md](SKILLS.md) lists every available skill.
 
 ## Relationship to Repo-Template
 
