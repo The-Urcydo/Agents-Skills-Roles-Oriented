@@ -11,6 +11,12 @@ Start here. This file is the map; open only what the task needs.
 
 - [Skills catalog](../SKILLS.md): generated list of every skill, grouped by category.
 
+## Roles and protocols
+
+- [Roles](../roles/README.md): what a charter contains, the tiers, and how to add one.
+- [Role roster](../roles/ROSTER.md): generated table of roles, skills, and shared use.
+- [Protocols](../agents/protocols/README.md): handoff, review, escalation, definition of done, and parallel work.
+
 ## Project
 
 - [Contributing](../CONTRIBUTING.md): setup, checks, pull requests, and the merge policy.
@@ -20,6 +26,7 @@ Start here. This file is the map; open only what the task needs.
 ## Guides
 
 - [Write a skill](how-to/write-a-skill.md): from idea to validated pull request.
+- [Add a role](how-to/add-a-role.md): pass the admission test, write the charter, and regenerate the roster.
 - [Install skills](how-to/install-skills.md): copy a skill into Claude Code, OpenCode, or `.agents/skills`.
 
 Planned, not written yet: `how-to/port-to-repo-template.md` (Batch 5).
@@ -32,4 +39,5 @@ Planned, not written yet: `how-to/port-to-repo-template.md` (Batch 5).
 - [0004: Open spec first, adapter extensions](decisions/0004-open-spec-with-adapter-extensions.md)
 - [0005: Flat skills layout with a generated catalog](decisions/0005-flat-skills-layout.md)
 - [0006: Protect main and report security privately](decisions/0006-repository-governance.md)
+- [0007: Port the agent roles and skills from Repo-Template](decisions/0007-port-the-agent-roles-and-skills.md)
 - [Decision record rules](decisions/README.md)

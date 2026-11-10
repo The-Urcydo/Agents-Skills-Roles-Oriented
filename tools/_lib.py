@@ -11,6 +11,17 @@ from typing import Any, Dict, List, Optional, Tuple
 SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CATEGORIES = ("engineering", "productivity", "design", "repo")
 INVOCATIONS = ("model", "user", "both")
+TIERS = ("flow", "advisory", "optional")
+ROLE_FIELDS = (
+    "role",
+    "tier",
+    "mission",
+    "reads",
+    "skills",
+    "never",
+    "done_when",
+    "escalate_when",
+)
 
 
 def repo_root() -> Path:
@@ -38,6 +49,18 @@ def skill_folders(root: Path) -> List[Path]:
         and not p.name.startswith(".")
         and p.name != "README.md"
         and (p / "SKILL.md").exists()
+    ]
+
+
+def role_folders(root: Path) -> List[Path]:
+    """Role folders that contain a ROLE.md, sorted by name."""
+    base = root / "roles"
+    if not base.is_dir():
+        return []
+    return [
+        p
+        for p in sorted(base.iterdir())
+        if p.is_dir() and not p.name.startswith(".") and (p / "ROLE.md").exists()
     ]
 
 

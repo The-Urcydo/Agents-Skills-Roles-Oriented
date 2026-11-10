@@ -22,6 +22,12 @@ The result: a library of detailed procedures without paying for all of them on e
 
 A role charter says *when* a role uses a skill. A skill says *what* to do. Neither should duplicate the other.
 
+## Roles consume skills
+
+The reviewer charter, for example, lists `review-work` and `write-handoff`; the procedure for evidence, severity, and verdict lives in the skill. The planner uses `new-work-item`; the scribe uses `write-doc`. This keeps one copy of each procedure and lets a second role use it without duplicating the text. The generated [role roster](../../roles/ROSTER.md) shows which skills each role consumes.
+
+The library ports the Repo-Template harness; [ADR 0007](../decisions/0007-port-the-agent-roles-and-skills.md) records what changed in the port and what stayed behind.
+
 ## Model-invoked vs user-invoked
 
 Most skills are safe for the agent to start when the task matches. Some change shared state, spend money, or need the owner's explicit grant. Those are user-invoked: the agent must not start them on its own. In the source, record that as `metadata.invocation: user`; the adapter for each tool translates it into the tool's own control.
