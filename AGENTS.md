@@ -27,11 +27,13 @@ A portable library of agent skills plus the role charters that consume them. The
 
 ## Organization accounts
 
-Every account in `The-Urcydo` is the owner's. `nguyenquocduyloc` and
-`NguyenLoc231` are the owner's accounts; `kusarine`, `shiniroku`, `shinkir6u`,
-and `Shinkirou231` are agent-operated clones. Agent-operated accounts never
-approve a pull request or hold a review role. The organization keeps its
-`admin` default and does not require 2FA; the owner accepted that risk in
+Every account in `The-Urcydo` belongs to the same owner, one per home machine:
+`nguyenquocduyloc`, `NguyenLoc231`, `shiniroku`, and `shinkir6u`. The owner
+drives agent sessions from those machines; they are not independent
+maintainers. The remote-machine accounts keep organization owner roles so those
+machines can create and work on repositories. The organization requires 2FA.
+Accounts used to drive unattended agent sessions never approve a pull request or
+hold a review role. The access tradeoff is recorded in
 [ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
 
 ## Hard rules

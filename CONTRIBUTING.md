@@ -79,12 +79,14 @@ to the owner.
 
 ## Organization access
 
-Every account in the `The-Urcydo` organization belongs to the owner.
-`nguyenquocduyloc` and `NguyenLoc231` are the owner's accounts; `kusarine`,
-`shiniroku`, `shinkir6u`, and `Shinkirou231` are agent-operated clones, not
-independent maintainers. The current access model and its accepted risk are
-recorded in [ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
-Agent accounts never approve a pull request or merge.
+Every account in the `The-Urcydo` organization belongs to the same owner, one
+per home machine: `nguyenquocduyloc`, `NguyenLoc231`, `shiniroku`, and
+`shinkir6u`. They are not independent maintainers; the remote-machine accounts
+keep organization owner roles so those machines can create and work on
+repositories. The organization requires 2FA. Accounts used to drive unattended
+agent sessions never approve a pull request or merge. See
+[ADR 0008](docs/decisions/0008-single-owner-organization-access.md) for the
+tradeoff.
 
 ## Releasing
 
