@@ -7,6 +7,13 @@ summary: Use a GitHub ruleset, Code Owner review, pinned CI, Dependabot, and pri
 
 # 0006: Protect main and report security privately
 
+> **Amended 2026-11-12:** CodeQL is now a required check and CI tests Python
+> 3.13 and 3.14. [ADR 0008](0008-single-owner-organization-access.md)
+> supersedes in part the "Agent-operated accounts must never approve or hold
+> admin" bullet and the "CodeQL is not a required check yet" sentence. The 2FA
+> gap is closed: the organization now requires 2FA. See
+> [Amendments](#amendments).
+
 ## Context
 
 This is a public library of agent instructions and standard-library Python
@@ -59,3 +66,19 @@ hard boundary until the organization access model is fixed. The intended state
 is that only human owners hold admin, and agent accounts get the least privilege
 they need on this repository. That change needs a separate, explicit approval
 because it affects other repositories in the organization.
+
+> **Accepted 2026-11-12:** the organization has one human owner with four
+> per-machine accounts. The owner keeps the current admin default and the owner
+> roles; the 2FA part is resolved because the organization now requires 2FA. See
+> [ADR 0008](0008-single-owner-organization-access.md).
+
+## Amendments
+
+- 2026-11-12: The `check` jobs now run Python 3.13 and 3.14 on `ubuntu-24.04`;
+  Python 3.9 is no longer tested. The `CodeQL`, `Analyze (actions)`, and
+  `Analyze (python)` checks are required on `main`. The organization keeps the
+  `admin` default and the per-machine owner roles, and now requires 2FA; see
+  [ADR 0008](0008-single-owner-organization-access.md). ADR 0008 supersedes in
+  part the "Agent-operated accounts must never approve or hold admin" bullet and
+  the "CodeQL is not a required check yet" sentence; the historical text is kept
+  unchanged.

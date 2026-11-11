@@ -25,6 +25,17 @@ A portable library of agent skills plus the role charters that consume them. The
 - `tools/`: standard-library Python. Tests live in `tools/tests/`.
 - `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`: reporting, contribution, and conduct.
 
+## Organization accounts
+
+Every account in `The-Urcydo` belongs to the same owner, one per home machine:
+`nguyenquocduyloc`, `NguyenLoc231`, `shiniroku`, and `shinkir6u`. The owner
+drives agent sessions from those machines; they are not independent
+maintainers. The owner's accounts keep organization owner roles so each machine
+can create and work on repositories. The organization requires 2FA.
+Accounts used to drive unattended agent sessions never approve a pull request or
+hold a review role. The access tradeoff is recorded in
+[ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
+
 ## Hard rules
 
 1. **Open format first.** A `SKILL.md` source uses only `name`, `description`, `license`, `compatibility`, `metadata`, and `allowed-tools`. Tool-specific fields belong in generated adapters, not in the source.
@@ -32,7 +43,7 @@ A portable library of agent skills plus the role charters that consume them. The
 3. **No role logic in a skill.** A skill says what to do. A role charter says when that role uses it.
 4. **Imports carry provenance.** Every third-party skill has a `PROVENANCE.md` with the source URL, commit, license, and changes. Add it to `THIRD_PARTY_NOTICES.md`.
 5. **Never hand-edit generated files.** `SKILLS.md`, `roles/ROSTER.md`, and adapter outputs are generated. Edit the source and re-run the generator.
-6. **Owner approval.** Every pull request needs the approval of a code owner in `.github/CODEOWNERS`: `@nguyenquocduyloc` and `@NguyenLoc231`. Changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or this file are never merged without it. Agent-operated accounts never approve. Do not push or force-push to `main`; merge with a merge commit, never squash-merge or rebase-merge.
+6. **Owner approval.** Every pull request needs the approval of a code owner in `.github/CODEOWNERS`: `@nguyenquocduyloc` and `@NguyenLoc231`. The `*` catch-all covers every path, so every change needs it. Agent-operated accounts never approve. Do not push or force-push to `main`; merge with a merge commit, never squash-merge or rebase-merge.
 7. **No secrets or personal paths.** Skills are public instructions; never put credentials, tokens, or absolute home paths in them.
 8. **Do not modify Repo-Template from this repo.** Porting is a separate, explicit change in Repo-Template.
 9. **Evidence before handoff.** Run `python3 tools/check.py --strict` and, when `tools/` changed, the unit tests. Put the command and result in the pull request.

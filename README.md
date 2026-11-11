@@ -67,11 +67,11 @@ The library also carries eight role charters: orchestrator, planner, builder, re
 
 ## Security
 
-Report vulnerabilities privately under [SECURITY.md](SECURITY.md). Secret scanning, push protection, and private vulnerability reporting are enabled.
+Report vulnerabilities privately under [SECURITY.md](SECURITY.md). Secret scanning, push protection, and private vulnerability reporting are enabled. CodeQL scans GitHub Actions and Python; its checks are required on `main`.
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Every pull request needs a code owner's approval; changes under `skills/`, `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` are never merged without it. One topic per pull request, with evidence.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md). Every pull request needs a code owner's approval; the `*` catch-all in `.github/CODEOWNERS` covers every path. One topic per pull request, with evidence.
 
 Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 

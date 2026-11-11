@@ -348,35 +348,29 @@ def check_catalog(root: Path, rep: Report) -> None:
 
 
 def check_docs(root: Path, rep: Report) -> int:
-    base = root / "docs"
-    if not base.is_dir():
-        return 0
     count = 0
-    for p in sorted(base.rglob("*.md")):
+    base = root / "docs"
+    if base.is_dir():
+        for p in sorted(base.rglob("*.md")):
+            count += 1
+            check_links(root, p, rep)
+    for p in sorted(root.glob("*.md")):
         count += 1
         check_links(root, p, rep)
-    seen = set()
-    for name in (
-        "README.md",
-        "AGENTS.md",
-        "SKILLS.md",
-        "skills/README.md",
-        "roles/README.md",
-        "roles/ROSTER.md",
-        "agents/README.md",
-        "agents/protocols/README.md",
-    ):
-        p = root / name
-        if p.exists() and p not in seen:
-            seen.add(p)
-            check_links(root, p, rep)
+    # Top-level index files such as skills/README.md and agents/README.md.
+    # Skill folders are covered by check_skill_links, not here.
+    for folder in ("skills", "agents"):
+        d = root / folder
+        if d.is_dir():
+            for p in sorted(d.glob("*.md")):
+                count += 1
+                check_links(root, p, rep)
     for folder in ("roles", "agents/protocols"):
         d = root / folder
         if d.is_dir():
             for p in sorted(d.rglob("*.md")):
-                if p not in seen:
-                    seen.add(p)
-                    check_links(root, p, rep)
+                count += 1
+                check_links(root, p, rep)
     return count
 
 

@@ -18,17 +18,13 @@ permissions:
 jobs:
   check:
     name: check (${{ matrix.python-version }})
-    runs-on: ${{ matrix.os }}
+    # Pin the image: an ubuntu-latest migration must not change CI mid-review.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # 3.9 is not available on ubuntu-latest (26.04); pin the LTS image.
-          - python-version: "3.9"
-            os: ubuntu-24.04
-          - python-version: "3.13"
-            os: ubuntu-latest
+        python-version: ["3.13", "3.14"]
     steps:
       # Actions are pinned to full commit SHAs (a tag can be moved). Dependabot keeps them current.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

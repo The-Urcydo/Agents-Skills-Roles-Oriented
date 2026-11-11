@@ -265,6 +265,26 @@ class CheckTests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("link target not found", result.stdout)
 
+    def test_broken_root_doc_link_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write(root / "SECURITY.md", "See [missing](missing.md).\n")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("broken-link", result.stdout)
+            self.assertIn("SECURITY.md", result.stdout)
+
+    def test_broken_nested_readme_link_fails(self) -> None:
+        for name in ("skills/README.md", "agents/README.md"):
+            with self.subTest(name=name):
+                with tempfile.TemporaryDirectory() as tmp:
+                    root = make_repo(Path(tmp))
+                    write(root / name, "See [missing](missing.md).\n")
+                    result = run_check(root)
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn("broken-link", result.stdout)
+                    self.assertIn(name, result.stdout)
+
     def test_core_fields_must_be_strings(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(Path(tmp))
