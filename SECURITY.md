@@ -46,9 +46,9 @@ a small project, so there is no fixed response time.
 ## Organization access
 
 The `The-Urcydo` organization is a single-owner setup. Every account belongs to
-the owner, one per home machine; the remote-machine accounts keep organization
-owner roles so those machines can create and work on repositories. The
-organization requires 2FA. Treat a compromised machine account as a compromised
+the owner, one per home machine; the owner's accounts keep organization owner
+roles so each machine can create and work on repositories. The organization
+requires 2FA. Treat a compromised machine account as a compromised
 owner account. See
 [ADR 0008](docs/decisions/0008-single-owner-organization-access.md) for the
 access model and its residual risk.
