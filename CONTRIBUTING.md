@@ -82,10 +82,9 @@ to the owner.
 Every account in the `The-Urcydo` organization belongs to the owner.
 `nguyenquocduyloc` and `NguyenLoc231` are the owner's accounts; `kusarine`,
 `shiniroku`, `shinkir6u`, and `Shinkirou231` are agent-operated clones, not
-independent maintainers. The organization keeps the current `admin` default and
-does not require two-factor authentication; the owner accepted that risk in
-[ADR 0008](docs/decisions/0008-single-owner-organization-access.md). Agent
-accounts never approve a pull request or merge.
+independent maintainers. The current access model and its accepted risk are
+recorded in [ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
+Agent accounts never approve a pull request or merge.
 
 ## Releasing
 

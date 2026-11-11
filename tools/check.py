@@ -355,11 +355,21 @@ def check_docs(root: Path, rep: Report) -> int:
             count += 1
             check_links(root, p, rep)
     for p in sorted(root.glob("*.md")):
+        count += 1
         check_links(root, p, rep)
+    # Top-level index files such as skills/README.md and agents/README.md.
+    # Skill folders are covered by check_skill_links, not here.
+    for folder in ("skills", "agents"):
+        d = root / folder
+        if d.is_dir():
+            for p in sorted(d.glob("*.md")):
+                count += 1
+                check_links(root, p, rep)
     for folder in ("roles", "agents/protocols"):
         d = root / folder
         if d.is_dir():
             for p in sorted(d.rglob("*.md")):
+                count += 1
                 check_links(root, p, rep)
     return count
 

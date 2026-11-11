@@ -7,6 +7,9 @@ summary: Every organization account belongs to the owner; keep the admin default
 
 # 0008: Keep the single-owner organization access model
 
+Status: accepted. The owner approved this decision when approving the plan for
+PR #4; the pull-request approval confirms it.
+
 ## Context
 
 [ADR 0006](0006-repository-governance.md) recorded a gap: every member of the

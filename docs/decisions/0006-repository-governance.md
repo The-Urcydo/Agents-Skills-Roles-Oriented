@@ -8,8 +8,9 @@ summary: Use a GitHub ruleset, Code Owner review, pinned CI, Dependabot, and pri
 # 0006: Protect main and report security privately
 
 > **Amended 2026-11-11:** CodeQL is now a required check and CI tests Python
-> 3.13 and 3.14. The organization access gap is accepted, not fixed, in
-> [ADR 0008](0008-single-owner-organization-access.md). See
+> 3.13 and 3.14. [ADR 0008](0008-single-owner-organization-access.md)
+> supersedes in part the “only human owners hold admin” clause and accepts the
+> 2FA gap; the historical text below is kept unchanged. See
 > [Amendments](#amendments).
 
 ## Context
@@ -76,4 +77,6 @@ because it affects other repositories in the organization.
   Python 3.9 is no longer tested. The `CodeQL`, `Analyze (actions)`, and
   `Analyze (python)` checks are required on `main`. The organization access gap
   is accepted by [ADR 0008](0008-single-owner-organization-access.md) instead of
-  being fixed.
+  being fixed. ADR 0008 supersedes in part the “only human owners hold admin”
+  clause and the “CodeQL is not a required check yet” sentence; the historical
+  text is kept unchanged.
