@@ -8,7 +8,7 @@ summary: Every organization account belongs to the owner; keep the admin default
 # 0008: Keep the single-owner organization access model
 
 Status: accepted. The owner approved this decision when approving the plan for
-PR #4; the pull-request approval confirms it.
+PR #4; the pull-request approval will confirm it.
 
 ## Context
 
