@@ -10,7 +10,7 @@ metadata:
 
 Use this when a procedure should become a skill. A skill is a procedure, not a fact and not a role rule.
 
-When working in this library, the commands use Python 3.9+ and the standard library only; they need no network access.
+When working in this library, the commands use Python 3.13+ and the standard library only; they need no network access.
 
 1. Confirm the content is a skill. Facts every session needs go in `AGENTS.md`. Role ownership and stop conditions go in `roles/<role>/ROLE.md`. A one-off change belongs in the pull request.
 2. Read [references/checklist.md](references/checklist.md) for the front matter and quality rules.

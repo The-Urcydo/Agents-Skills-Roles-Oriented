@@ -15,10 +15,15 @@ All notable changes to this repository are recorded here. The format follows [Ke
 
 - The `agents/` harness now has protocols in place; adapters and evals remain documented placeholders.
 - `AGENTS.md` and `CONTRIBUTING.md` include the roster check.
+- Move CI from Python 3.9 to Python 3.13 and 3.14, and pin the runner to `ubuntu-24.04`.
+- Simplify `.github/CODEOWNERS` to one `*` catch-all line and remove the redundant test that policed the duplicate lines.
+- Check links in every root `*.md` document from `tools/check.py` instead of a separate governance test.
 
 ### Security
 
 - Enable secret scanning, push protection, Dependabot alerts and security updates, private vulnerability reporting, and CodeQL.
+- Require the CodeQL and `Analyze` checks on `main`.
+- Record the single-owner organization access model and its accepted risk in [ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
 - Protect `main` with Code Owner review, required checks, merge-only commits, and a release-tag ruleset.
 - Add `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue forms, and a governance ADR.
 - Harden CI with concurrency, a timeout, manual dispatch, and tests for pinned actions and governance files.

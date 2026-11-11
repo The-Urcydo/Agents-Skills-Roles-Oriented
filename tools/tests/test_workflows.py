@@ -60,6 +60,15 @@ class WorkflowSecurityTests(unittest.TestCase):
                 problems.append(f"{path.name}: add a top-level permissions: block")
         self.assertEqual(problems, [], "\n".join(problems))
 
+    def test_check_workflow_pins_the_runner(self) -> None:
+        text = read(WORKFLOW_DIR / "check.yml")
+        runners = [
+            line.strip()
+            for line in text.splitlines()
+            if line.strip().startswith("runs-on:")
+        ]
+        self.assertEqual(runners, ["runs-on: ubuntu-24.04"])
+
 
 if __name__ == "__main__":
     unittest.main()

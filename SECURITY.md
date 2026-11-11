@@ -43,6 +43,14 @@ a small project, so there is no fixed response time.
 - Content that is clearly a test fixture or an example and cannot affect a real
   agent.
 
+## Organization access
+
+The `The-Urcydo` organization is a single-owner setup. Every account belongs to
+the owner; the non-owner accounts are agent-operated clones. The organization
+keeps the `admin` default and does not require 2FA. Treat a compromised agent
+account as a compromised owner account. The decision and its residual risk are
+recorded in [ADR 0008](docs/decisions/0008-single-owner-organization-access.md).
+
 ## Safe use
 
 - Never commit credentials, tokens, or private keys. Secret scanning and push

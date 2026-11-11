@@ -40,4 +40,5 @@ Planned, not written yet: `how-to/port-to-repo-template.md` (Batch 5).
 - [0005: Flat skills layout with a generated catalog](decisions/0005-flat-skills-layout.md)
 - [0006: Protect main and report security privately](decisions/0006-repository-governance.md)
 - [0007: Port the agent roles and skills from Repo-Template](decisions/0007-port-the-agent-roles-and-skills.md)
+- [0008: Keep the single-owner organization access model](decisions/0008-single-owner-organization-access.md)
 - [Decision record rules](decisions/README.md)

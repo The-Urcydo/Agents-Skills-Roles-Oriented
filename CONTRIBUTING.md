@@ -17,7 +17,7 @@ The rules for working here are in [AGENTS.md](AGENTS.md). If this page and
 
 ## Set up
 
-Requires Python 3.9 or newer and git. The tools use only the standard library;
+Requires Python 3.13 or newer and git. The tools use only the standard library;
 there is nothing to install.
 
 ```bash
@@ -49,9 +49,8 @@ python3 -m unittest discover -s tools/tests -v
 
 - Do not push or force-push to `main`. Merge with a merge commit; the repository
   does not use squash or rebase merges.
-- Every pull request needs a code owner's approval. Changes under `skills/`,
-  `roles/`, `agents/`, `tools/`, `.github/`, or `AGENTS.md` are never merged
-  without it.
+- Every pull request needs a code owner's approval. The `*` catch-all in
+  `.github/CODEOWNERS` covers every path, so every change is covered.
 - A push after an approval makes that approval stale. Say so on the pull request
   before you push to an approved branch.
 - Workflows set `permissions` and pin every action to a full commit SHA.
@@ -72,10 +71,21 @@ Start with [docs/how-to/add-a-role.md](docs/how-to/add-a-role.md), then run
 
 ## What happens next
 
-CI runs `check.py --strict` and the unit tests on Python 3.9 and 3.13.
+CI runs `check.py --strict` and the unit tests on Python 3.13 and 3.14.
 Dependabot keeps the pinned actions current. The `protect-main` ruleset requires
-a code-owner review, resolved review threads, the `check` jobs, and an approval
-of the latest push. If any are missing, leave the merge to the owner.
+a code-owner review, resolved review threads, the `check` jobs, the CodeQL
+checks, and an approval of the latest push. If any are missing, leave the merge
+to the owner.
+
+## Organization access
+
+Every account in the `The-Urcydo` organization belongs to the owner.
+`nguyenquocduyloc` and `NguyenLoc231` are the owner's accounts; `kusarine`,
+`shiniroku`, `shinkir6u`, and `Shinkirou231` are agent-operated clones, not
+independent maintainers. The organization keeps the current `admin` default and
+does not require two-factor authentication; the owner accepted that risk in
+[ADR 0008](docs/decisions/0008-single-owner-organization-access.md). Agent
+accounts never approve a pull request or merge.
 
 ## Releasing
 

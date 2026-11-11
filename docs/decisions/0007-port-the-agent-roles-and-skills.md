@@ -1,12 +1,12 @@
 ---
 title: Port the agent roles and skills from Repo-Template
-status: proposed
+status: accepted
 date: 2026-11-10
 summary: Bring the eight Repo-Template role charters, eight portable skills, and five protocols into this flat library, adapted to the skill contract.
 ---
 # 0007: Port the agent roles and skills from Repo-Template
 
-Status: proposed. The owner moves this record to accepted when approving the pull request.
+Status: accepted. The owner approved this port when merging PR #3.
 
 ## Context
 
