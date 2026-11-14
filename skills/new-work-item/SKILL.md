@@ -25,6 +25,7 @@ A one-off change with no follow-up does not need an item. A decision that needs 
    - **Acceptance criteria:** each one observable and checkable by someone who was not in the room. Prefer a command, a file, or a behavior over an adjective.
    - **Constraints:** time, compatibility, files, or decisions already made.
    - **Out of scope:** what this item will not do.
+   - **Security review:** `required` or `not needed`, with the reason. Required when the work touches authentication or authorization, secrets or personal data, dependencies, infrastructure, or anything exposed to users.
 4. Link the related docs, decisions, and prior items. Check the index and the decision records before writing; do not duplicate an existing item.
 5. Set the first action: who acts next and what they do first. If the request is ambiguous, stop and ask instead of choosing a reading.
 6. Verify the item exists in the tracker, the criteria are checkable, and the next action names one owner.
@@ -32,6 +33,7 @@ A one-off change with no follow-up does not need an item. A decision that needs 
 ## Verify
 
 - The item has a goal, at least one acceptance criterion, and an explicit out-of-scope.
+- The security-review decision is filled, not left as a placeholder.
 - Every criterion can be checked without asking the requester.
 - The item is visible in the tracker's active list.
 - No second tracker was created.

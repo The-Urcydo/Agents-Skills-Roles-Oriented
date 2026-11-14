@@ -13,17 +13,17 @@ Use this when work is ready for an independent check. The review is a different 
 
 ## Steps
 
-1. Read the brief, issue, or acceptance criteria first, then the handoff, then the diff. Do not start from the author's summary.
+1. Read the brief, issue, or acceptance criteria first, then the handoff, then the diff. Do not start from the author's summary. If the brief requires a security review, follow the host's review protocol and role charter before you start; do not review around a missing security review.
 2. Run the repository's checks and tests yourself. Do not trust pasted output.
 3. Check each acceptance criterion and record the evidence: the command, the output, the file, or the link. "Looks right" is not evidence.
-4. Check the rules: decisions respected, ownership respected, generated files in sync, docs updated when behavior changed.
+4. Check the rules: decisions respected, ownership respected, generated files in sync, the security-review decision resolved, and the builder's docs-for-the-scribe line holds against the diff. Docs and the changelog are the scribe's job after the review.
 5. Look for what the criteria do not cover: unintended files, half-finished sections, leftover placeholders, secrets, unintended deletions, tests that pass for the wrong reason.
 6. Rank findings by severity using [the severity scale](references/severity.md). Each finding states what, where, why it matters, and a recommended fix.
 7. Write the verdict:
    - **approve:** all criteria met, no blocker or major finding;
    - **changes requested:** fix the findings and re-review;
    - **reject:** the approach is wrong; re-plan or drop it.
-8. Hand the review back through the tracker's state transition. Do not fix the findings yourself.
+8. Hand the review back through the host's state transition. On approve, route on the docs-for-the-scribe line: a confirmed `none, behavior unchanged.` goes to closure; anything else goes to the docs owner. Do not fix the findings yourself.
 
 ## Verify
 
@@ -32,6 +32,7 @@ Use this when work is ready for an independent check. The review is a different 
 - The checks were run by the agent doing the review, not copied.
 - Findings are ranked and actionable.
 - The verdict matches the findings.
+- The security-review decision and the docs-for-the-scribe line were checked against the brief and the diff.
 
 ## In Repo-Template
 

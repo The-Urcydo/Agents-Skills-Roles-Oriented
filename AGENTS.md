@@ -20,7 +20,7 @@ A portable library of agent skills plus the role charters that consume them. The
 - `SKILLS.md`: generated catalog. Do not hand-edit it.
 - `roles/<role>/ROLE.md`: a role charter. It lists the skills the role uses; it does not own them.
 - `roles/ROSTER.md`: generated table of roles, tiers, and skills. Do not hand-edit it.
-- `agents/protocols/`: rules between roles: handoff, review, escalation, definition of done, and parallel work. `agents/adapters/` and `agents/evals/` remain documented placeholders.
+- `agents/protocols/`: rules between roles: handoff, review, escalation, definition of done, and parallel work. `agents/adapters/` and `agents/evals/` remain documented placeholders. `agents/AGENTS.md` holds the rules for changing the harness.
 - `docs/`: the skill contract (`docs/reference/skill-format.md`), reasoning, how-tos, and decisions.
 - `tools/`: standard-library Python. Tests live in `tools/tests/`.
 - `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`: reporting, contribution, and conduct.
