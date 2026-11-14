@@ -1,6 +1,6 @@
 # Roles
 
-Role charters describe who is acting, what they read, which skills they use, and when they stop. They do not own the skills; the library in `../skills/` is shared.
+Role charters describe who is acting, what they read, which skills they use, and when they stop. They do not own the skills; the library in `../skills/` is shared. The full field contract is in [the role format](../docs/reference/role-format.md).
 
 The generated [role roster](ROSTER.md) lists every role, its tier, and the skills it uses. `python3 tools/roster.py` regenerates it; `python3 tools/roster.py --check` verifies the generated file. `python3 tools/check.py --strict` validates the charters themselves. Do not hand-edit the roster.
 
@@ -13,11 +13,12 @@ A charter lives at `roles/<role>/ROLE.md`. The front matter is:
 role: reviewer
 tier: flow
 mission: Independently verify that finished work meets its acceptance criteria and the repository's rules.
-reads: [AGENTS.md, "the work item", "the diff"]
+reads: [AGENTS.md, SKILLS.md, "the work item", "the diff under review"]
 skills: [review-work, write-handoff]
 never: [review work you built, fix the findings yourself]
 done_when: The review has a verdict, per-criterion evidence, and ranked findings.
 escalate_when: The acceptance criteria look wrong, or you find a security or data-loss problem.
+access: read-only
 ---
 ```
 
@@ -33,8 +34,20 @@ Only these fields are allowed:
 | `never` | Non-empty list of things the role must not do. |
 | `done_when` | One observable condition. |
 | `escalate_when` | One sentence or a list: when the role stops and asks. |
+| `access` | Optional. `full` (the default) or `read-only`. A tool-neutral hint; the `never` list is the binding rule. |
+| `use_when` | Optional. A short phrase that completes "Use when ..."; set it for a callable role that does not own the flow. |
 
 The charter body says how the role runs and points at its skills. The procedure belongs in `SKILL.md`; the charter does not duplicate it.
+
+## Charter or skill?
+
+| Content | Home |
+|---|---|
+| Who acts, what it owns, when it stops | Role charter |
+| The procedure for one task | Skill |
+| A fact about how the repository is | `docs/` |
+
+A role that is mostly routing needs no skill. A role that produces an artifact and has a method of its own gets one. A skill that only restates its charter is not added. This is the same split as [Repo-Template ADR 0009](https://github.com/The-Urcydo/Repo-Template/blob/main/template/docs/decisions/0009-split-each-role-into-a-charter-and-skills.md), adapted to a flat skill library where every skill is role-agnostic.
 
 ## Tiers and modes
 

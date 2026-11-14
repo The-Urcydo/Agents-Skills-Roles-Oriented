@@ -565,6 +565,40 @@ class RoleTests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("unsupported front matter field", result.stdout)
 
+    def test_role_access_read_only_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter() + "access: read-only\n")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_role_access_must_be_known(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter() + "access: write\n")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("access must be one of", result.stdout)
+
+    def test_role_use_when_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(
+                root,
+                "reviewer",
+                role_front_matter() + "use_when: a caller needs a fact checked\n",
+            )
+            result = run_check(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_role_use_when_must_be_non_empty(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = make_repo(Path(tmp))
+            write_role(root, "reviewer", role_front_matter() + "use_when:\n")
+            result = run_check(root)
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("use_when must be a non-empty string", result.stdout)
+
     def test_missing_role_roster_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = make_repo(Path(tmp))

@@ -5,6 +5,7 @@ Start here. This file is the map; open only what the task needs.
 ## Contract
 
 - [Skill format](reference/skill-format.md): required front matter, folder shape, metadata, and quality rules.
+- [Role format](reference/role-format.md): required and optional charter fields, and the charter/skill split.
 - [Why skills](explanation/why-skills.md): the context-budget reason for skills, and how they differ from roles and `AGENTS.md`.
 
 ## Catalog

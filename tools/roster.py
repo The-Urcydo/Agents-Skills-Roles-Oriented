@@ -16,7 +16,7 @@ from typing import Dict, List, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _lib import (
-    ROLE_FIELDS,
+    ROLE_REQUIRED_FIELDS,
     TIERS,
     FrontMatterError,
     parse_front_matter,
@@ -45,7 +45,7 @@ def read_role_row(entry: Path) -> Optional[RoleRow]:
         return None
     if not isinstance(fm, dict):
         return None
-    if any(key not in fm for key in ROLE_FIELDS):
+    if any(key not in fm for key in ROLE_REQUIRED_FIELDS):
         return None
     role = fm.get("role")
     tier = fm.get("tier")
