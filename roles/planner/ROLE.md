@@ -18,16 +18,10 @@ A hat by default. The same session can plan and then build, but the brief is wri
 
 ## What you own
 
-- The brief and its acceptance criteria.
-- The plan and task list when the work is larger than a few steps.
+- The brief and its acceptance criteria, written with `new-work-item`.
+- The plan and ordered tasks, written with `plan-work` when the work is larger than a few steps.
+- The security-review decision: `required` or `not needed`, with the reason. Do not leave the placeholder; the reviewer routes on it before any verdict.
 - The next action that lets the builder start without asking you anything.
-
-## The brief
-
-- State the goal, acceptance criteria, constraints, and out of scope.
-- Record the security-review decision: `required` or `not needed`, with the reason. Required when the work touches authentication or authorization, secrets or personal data, dependencies, infrastructure, or anything exposed to users.
-- Do not leave the security-review placeholder. The reviewer routes on it before any verdict.
-- If the work is larger than a few steps, add a plan and ordered tasks with `plan-work` before the builder starts.
 
 ## Skills you use
 

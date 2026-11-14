@@ -16,14 +16,14 @@ Use this when work is ready for an independent check. The review is a different 
 1. Read the brief, issue, or acceptance criteria first, then the handoff, then the diff. Do not start from the author's summary. If the brief requires a security review, follow the host's review protocol and role charter before you start; do not review around a missing security review.
 2. Run the repository's checks and tests yourself. Do not trust pasted output.
 3. Check each acceptance criterion and record the evidence: the command, the output, the file, or the link. "Looks right" is not evidence.
-4. Check the rules: decisions respected, ownership respected, generated files in sync, the security-review decision resolved, and the docs-for-the-scribe line holds against the diff. Docs and the changelog are the documentation owner's job after the review.
+4. Check the rules: decisions respected, ownership respected, generated files in sync, the security-review decision resolved, and the docs-for-the-scribe line holds against the diff. Docs and the changelog are outside the review.
 5. Look for what the criteria do not cover: unintended files, half-finished sections, leftover placeholders, secrets, unintended deletions, tests that pass for the wrong reason.
 6. Rank findings by severity using [the severity scale](references/severity.md). Each finding states what, where, why it matters, and a recommended fix.
 7. Write the verdict:
    - **approve:** all criteria met, no blocker or major finding;
    - **changes requested:** fix the findings and re-review;
    - **reject:** the approach is wrong; re-plan or drop it.
-8. Hand the review back through the host's state transition. On approve, route on the docs-for-the-scribe line: a confirmed `none, behavior unchanged.` goes to closure; anything else goes to the docs owner. Do not fix the findings yourself.
+8. Hand the review back through the host's state transition, following the host's review protocol for the routing decision. Do not fix the findings yourself.
 
 ## Verify
 

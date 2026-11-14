@@ -30,3 +30,8 @@ Record the review and hand the item back to the reviewer. Do not change the revi
 ## Skills you use
 
 `review-security` for the review method; `write-handoff` to hand back. The routing above is the charter's; the skill does not repeat it.
+
+## Quality bar
+
+Every finding has impact, evidence, and a recommended fix. No secret is repeated in the report.
+

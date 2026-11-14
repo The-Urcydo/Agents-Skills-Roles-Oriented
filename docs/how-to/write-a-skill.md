@@ -6,11 +6,7 @@ Use this when a procedure is repeated across sessions and does not belong in the
 
 A skill is a procedure: steps, checks, and stop conditions. A fact ("the test command is X") belongs in `AGENTS.md`. A role's ownership ("the reviewer never fixes findings") belongs in a role charter. If the content is a one-off, it belongs in the pull request.
 
-| Content | Home |
-|---|---|
-| Who acts, what it owns, when it stops | Role charter |
-| The procedure for one task | Skill |
-| A fact about how the repository is | `docs/` |
+The split is in [the skill format](../reference/skill-format.md#charter-skill-or-document): a charter holds routing and limits, a skill holds the procedure, and a fact about the repository belongs in `docs/`.
 
 Routing that changes who owns a work item or what its status is belongs in a role charter or a protocol, not a skill. A skill may point to that rule; it must not restate it. If a skill only restates its charter, it is not worth adding.
 

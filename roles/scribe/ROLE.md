@@ -27,3 +27,8 @@ If you pick up an item and find nothing to update, change no doc, add no changel
 ## Skills you use
 
 `write-doc` for the pages; `write-handoff` when you stop. The routing above is the charter's; the skills hold the method.
+
+## Quality bar
+
+Delete before you add. A repo with fewer, truer docs beats one with many stale ones.
+

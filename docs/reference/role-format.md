@@ -58,20 +58,13 @@ The body says how the role runs and what it owns. It does not repeat a skill's s
 - **How it runs:** hat, separate session, callable, or optional install.
 - **What you own:** the artifact or decision the role is accountable for.
 - **Skills you use:** a pointer to each skill, not a copy of its procedure.
-- **Quality bar:** what a good result looks like.
+- **Quality bar:** what a good result looks like; every charter has one.
 
 A fact lives in one place. Routing, ownership, and stop rules belong in the charter; read order, checks, templates, and commands that do not move a work item belong in a skill. If both need a fact, the charter states the rule and the skill points to it.
 
 ## Charter or skill?
 
-| Content | Home |
-|---|---|
-| Who acts, what it owns, when it stops | Role charter |
-| The procedure for one task | Skill |
-| A fact about how the repository is | `docs/` |
-| A one-off change | The pull request |
-
-A role that is mostly routing needs no skill. A role that produces an artifact and has a method of its own gets one. A skill that only restates its charter is not added.
+The split is in [the skill format](skill-format.md#charter-skill-or-document): a charter holds routing and limits, a skill holds the procedure, and a fact about the repository belongs in `docs/`. A role that is mostly routing needs no skill; a role that produces an artifact and has a method of its own gets one. A skill that only restates its charter is not added.
 
 ## Validation
 

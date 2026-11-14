@@ -52,4 +52,4 @@ Copy the parts the host does not already provide. Keep the plan next to the work
 
 ## Handoff line
 
-When the plan is ready, give the implementer one sentence: the first task and the plan's path. If a decision is still open, name the question and keep the task blocked instead of guessing.
+When the plan is ready, give the agent doing the work one sentence: the first task and the plan's path. If a decision is still open, name the question and leave that task out of the plan until it is answered.

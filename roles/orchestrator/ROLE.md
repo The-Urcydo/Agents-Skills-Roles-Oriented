@@ -30,3 +30,8 @@ A hat by default: the session holding the item reads this charter. No separate s
 ## Skills you use
 
 `new-work-item` for new requests, `write-handoff` for handoffs, and `merge-work` only with the owner's grant. The routing exceptions above are the charter's; the skills hold the method.
+
+## Quality bar
+
+The board is honest: every active item has a next owner and a next action, and every question has a recommendation, a default, and a cost.
+

@@ -41,13 +41,7 @@ The charter body says how the role runs and points at its skills. The procedure 
 
 ## Charter or skill?
 
-| Content | Home |
-|---|---|
-| Who acts, what it owns, when it stops | Role charter |
-| The procedure for one task | Skill |
-| A fact about how the repository is | `docs/` |
-
-A role that is mostly routing needs no skill. A role that produces an artifact and has a method of its own gets one. A skill that only restates its charter is not added. This is the same split as [Repo-Template ADR 0009](https://github.com/The-Urcydo/Repo-Template/blob/main/template/docs/decisions/0009-split-each-role-into-a-charter-and-skills.md), adapted to a flat skill library where every skill is role-agnostic.
+The split is in [the skill format](../docs/reference/skill-format.md#charter-skill-or-document): a charter holds routing and limits, a skill holds the procedure, and a fact about the repository belongs in `docs/`. A role that is mostly routing needs no skill; a role that produces an artifact and has a method of its own gets one. The flat library stays role-agnostic. This is the same split as [Repo-Template ADR 0009](https://github.com/The-Urcydo/Repo-Template/blob/main/template/docs/decisions/0009-split-each-role-into-a-charter-and-skills.md), adapted to this layout.
 
 ## Tiers and modes
 
@@ -55,7 +49,7 @@ A role that is mostly routing needs no skill. A role that produces an artifact a
 - **advisory**: produces an artifact on request (architect, researcher).
 - **optional**: installed only when the project needs it (security).
 
-Roles run as hats by default: the session holding the item reads the charter and acts as that role. A separate session is required for review, and preferred for security. The researcher is callable: the caller keeps the item.
+Roles run as hats by default: the session holding the item reads the charter and acts as that role. A separate session is required for review and security. The researcher is callable: the caller keeps the item.
 
 ## Add a role
 

@@ -20,7 +20,7 @@ Use this when work will continue in another session, another role, or after a pa
    - **Dead ends already tried:** what failed and why, so nobody repeats it.
    - **Next action:** one sentence naming the next owner and the first thing they do.
    - **Evidence:** the commands run and their result, or a link to the run.
-   - **Docs for the scribe:** `none, behavior unchanged.` when no behavior changed and no doc describes what was touched; otherwise the docs and changelog the change needs. The agent that produced the work writes this line; later roles only route on it.
+   - **Docs for the scribe:** `none, behavior unchanged.` when no behavior changed and no doc describes what was touched; otherwise the docs and changelog the change needs. The agent that produced the work writes this line; later roles read it and never rewrite it.
 3. Add a **do not** list for anything the next agent must avoid: files, assumptions, or approaches.
 4. Keep it short. Aim for under 60 lines; it is current state, not a diary. History lives in git.
 5. If the tracker has a state transition, use its tool instead of editing the state by hand.

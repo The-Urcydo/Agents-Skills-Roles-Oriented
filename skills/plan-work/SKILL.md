@@ -18,10 +18,10 @@ Use this when the work is too large for one session or the brief needs decomposi
 4. Choose the approach. Name the files, components, or interfaces involved. If a design decision is needed before building, hand it to the decision owner or record it first.
 5. List the risks and unknowns with a likelihood and a mitigation. Include what would make the plan wrong.
 6. Sequence the work: what must happen first, what can run in parallel, and what must wait for a merge.
-7. Write ordered tasks. Each task should be small enough for one session and end with a check the implementer can run.
+7. Write ordered tasks. Each task should be small enough for one session and end with a check the agent doing the work can run.
 8. Define how the plan will be tested: the commands, the observable behavior, and the evidence the verifier will need.
 9. Record the plan in the host's tracker or in a plan document next to the item, and link it from the handoff. If the host has a plan template, use it.
-10. Hand off to the implementer. Do not start building; the plan is the planning artifact.
+10. Hand off the plan to the agent doing the work. Do not start building; the plan is the planning artifact.
 
 ## Verify
 

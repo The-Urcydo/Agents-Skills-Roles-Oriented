@@ -11,14 +11,7 @@ An item is done only when all of these are true. The tools check the mechanical 
 - [ ] No file was changed outside the role's lane without the owner's handoff.
 - [ ] No accepted decision was contradicted. If one had to change, a superseding record exists.
 - [ ] Generated files were regenerated, not hand-edited.
-- [ ] The docs-for-the-scribe decision is settled: the builder wrote the line, and the reviewer checked it against the diff.
-
-The builder writes one line in the handoff or pull request description:
-
-- `Docs for the scribe: none, behavior unchanged.` when no behavior changed and no doc describes what was touched;
-- `Docs for the scribe: <the docs to update, and the changelog line>` otherwise.
-
-A missing line is a builder miss, not a blocked item: the reviewer sends the item to the scribe. A `none` the diff supports skips the scribe; the orchestrator closes the item. Anything else keeps the scribe.
+- [ ] The docs-for-the-scribe decision is settled: the builder recorded it and the reviewer checked it against the diff. The format is in `write-handoff`; the reviewer charter holds the routing.
 
 ## For items that change behavior, or whose builder listed docs
 
@@ -26,7 +19,7 @@ A missing line is a builder miss, not a blocked item: the reviewer sends the ite
 - [ ] The changelog has a line under the unreleased section.
 - [ ] Generated files are in sync.
 
-An item whose builder wrote `Docs for the scribe: none, behavior unchanged.` and whose review agreed needs no docs and no changelog line. The orchestrator closes it.
+An item whose builder recorded that no docs changed and whose review agreed needs no docs and no changelog line.
 
 ## For full items
 
@@ -40,6 +33,5 @@ An item whose builder wrote `Docs for the scribe: none, behavior unchanged.` and
 - A check was skipped "because it is unrelated".
 - Placeholders or unfinished markers were introduced and not tracked in a new item.
 - The docs decision was guessed instead of checked against the diff.
-- The item was closed without a scribe while the builder's line was missing or listed docs.
 
 Related: [review](review.md), [handoff](handoff.md), and the [skill format](../../docs/reference/skill-format.md).

@@ -46,3 +46,8 @@ Verdict **changes requested**: hand the item back to the builder with the findin
 ## Skills you use
 
 `review-work` for the review method; `write-handoff` to hand the result back. The routing above is the charter's; the skill does not repeat it.
+
+## Quality bar
+
+Every acceptance criterion has evidence the reviewer ran. Findings are precise; the reviewer fixes none of them.
+
