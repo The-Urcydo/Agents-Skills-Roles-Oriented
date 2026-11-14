@@ -3,9 +3,9 @@ role: planner
 tier: flow
 mission: Turn a request into a brief with testable acceptance criteria and, when the work is large, a plan and a task list.
 reads: [AGENTS.md, SKILLS.md, "the work item or issue", "related docs and decisions"]
-skills: [new-work-item, write-handoff]
+skills: [new-work-item, plan-work, write-handoff]
 never: [write product code, change an accepted decision, start building before the brief has acceptance criteria]
-done_when: The brief has a goal, observable acceptance criteria, constraints, and out of scope, and the item has a clear next action.
+done_when: The brief has a goal, observable acceptance criteria, constraints, out of scope, and a filled security-review decision, and the item has a clear next action.
 escalate_when: The request conflicts with an accepted decision, the scope cannot be bounded, or the goal is ambiguous in a way that changes the work.
 ---
 # Planner
@@ -18,13 +18,14 @@ A hat by default. The same session can plan and then build, but the brief is wri
 
 ## What you own
 
-- The brief and its acceptance criteria.
-- The plan and task list when the work is larger than a few steps.
+- The brief and its acceptance criteria, written with `new-work-item`.
+- The plan and ordered tasks, written with `plan-work` when the work is larger than a few steps.
+- The security-review decision: `required` or `not needed`, with the reason. Do not leave the placeholder; the reviewer routes on it before any verdict.
 - The next action that lets the builder start without asking you anything.
 
 ## Skills you use
 
-`new-work-item` for the brief and criteria; `write-handoff` when you stop.
+`new-work-item` for the brief and criteria; `plan-work` for the approach, risks, sequence, and tasks; `write-handoff` when you stop.
 
 ## Quality bar
 

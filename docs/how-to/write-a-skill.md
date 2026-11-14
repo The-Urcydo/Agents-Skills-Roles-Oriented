@@ -6,6 +6,10 @@ Use this when a procedure is repeated across sessions and does not belong in the
 
 A skill is a procedure: steps, checks, and stop conditions. A fact ("the test command is X") belongs in `AGENTS.md`. A role's ownership ("the reviewer never fixes findings") belongs in a role charter. If the content is a one-off, it belongs in the pull request.
 
+The split is in [the skill format](../reference/skill-format.md#charter-skill-or-document): a charter holds routing and limits, a skill holds the procedure, and a fact about the repository belongs in `docs/`.
+
+Routing that changes who owns a work item or what its status is belongs in a role charter or a protocol, not a skill. A skill may point to that rule; it must not restate it. If a skill only restates its charter, it is not worth adding.
+
 ## 2. Pick the name
 
 - Lowercase letters, digits, and single hyphens.
@@ -46,7 +50,7 @@ metadata:
 4. List edge cases and when to stop and ask.
 5. Keep it under 500 lines; move the long tail into `references/`.
 
-Do not put role names in the skill. If a role should use it, add the skill name to that role's charter.
+Do not put role names in the skill. If a role should use it, add the skill name to that role's charter. Do not put routing that changes a work item's owner or status in the skill; that belongs in the charter or protocol.
 
 ## 6. Add resources
 

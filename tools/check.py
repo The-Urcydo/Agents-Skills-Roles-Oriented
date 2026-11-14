@@ -24,7 +24,9 @@ import roster
 from _lib import (
     CATEGORIES,
     INVOCATIONS,
+    ROLE_ACCESS,
     ROLE_FIELDS,
+    ROLE_REQUIRED_FIELDS,
     TIERS,
     FrontMatterError,
     is_valid_skill_name,
@@ -450,7 +452,7 @@ def check_roles(root: Path, rep: Report) -> int:
         return 0
     skill_names = {p.name for p in skill_folders(root)}
     allowed = set(ROLE_FIELDS)
-    required = ROLE_FIELDS
+    required = ROLE_REQUIRED_FIELDS
     count = 0
     for entry in folders:
         count += 1
@@ -520,6 +522,16 @@ def check_roles(root: Path, rep: Report) -> int:
                 rep.error("role-field", r, "escalate_when must be a non-empty string or list")
         elif not isinstance(escalate, str) or not escalate.strip():
             rep.error("role-field", r, "escalate_when must be a non-empty string or list")
+
+        if "access" in fm:
+            access = fm.get("access")
+            if not isinstance(access, str) or access.strip() not in ROLE_ACCESS:
+                rep.error("role-access", r, f"access must be one of {', '.join(ROLE_ACCESS)}")
+
+        if "use_when" in fm:
+            use_when = fm.get("use_when")
+            if not isinstance(use_when, str) or not use_when.strip():
+                rep.error("role-use-when", r, "use_when must be a non-empty string")
 
     roster_path = root / "roles" / "ROSTER.md"
     if not roster_path.exists():

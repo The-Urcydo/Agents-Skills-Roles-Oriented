@@ -18,6 +18,7 @@ These skills come from another repository owned by the same owner. Each has a `P
 | `record-decision` | Repo-Template `template/agents/roles/architect/ROLE.md` and `template/docs/dev/how-to/write-an-adr.md` | `c0ab1a8` | MIT |
 | `research-question` | Repo-Template `template/agents/roles/researcher/ROLE.md` | `c0ab1a8` | MIT |
 | `review-security` | Repo-Template `template/agents/roles/security/ROLE.md` | `c0ab1a8` | MIT |
+| `plan-work` | Repo-Template `template/agents/roles/planner/ROLE.md` and `template/work/_templates/plan.md`, `tasks.md`, `brief.md` | `a9233bf` | MIT |
 
 ## Entry format
 

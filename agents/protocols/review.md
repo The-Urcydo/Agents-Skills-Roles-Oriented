@@ -7,12 +7,16 @@ Independent review is the main quality gate in a repo with no human in the loop 
 - The agent doing the review is never the agent that built the item. With a single model playing both parts, use a fresh session with no memory of the build, and read the brief before the author's summary.
 - The review does not fix findings. Fixing makes the review a second builder and removes the second pair of eyes.
 
+## Route before the verdict
+
+If the brief requires a security review, the reviewer hands the item to the security role before any verdict and reads the security review before starting. If the role is not installed, or the item has no place for a separate review, the reviewer stops and asks. The exact conditions are in the reviewer charter.
+
 ## Rules
 
 - The review starts from the brief, not the author's summary.
 - The reviewer runs the checks. Pasted output is not evidence.
 - Every acceptance criterion gets evidence: a command, an output, a file, or a link.
-- Check the rules: decisions respected, ownership respected, generated files in sync, docs updated.
+- Check the rules: decisions respected, ownership respected, generated files in sync, the security-review decision resolved, and the builder's docs-for-the-scribe line holds against the diff. Docs and the changelog are the scribe's job after the review.
 - Rank findings and state what, where, why, and the fix. Do not fix them.
 - The verdict names the exact commit or diff and matches the findings.
 
@@ -25,5 +29,9 @@ The `review-work` skill is the procedure. The severity scale is in [the review-w
 - **reject:** the approach is wrong; re-plan or drop it.
 
 A second review is needed after changes requested if any blocker was found.
+
+## Route after the verdict
+
+An approved item goes to the scribe unless the builder's `Docs for the scribe:` line is `none, behavior unchanged.` and the diff agrees; that item goes to the orchestrator to close. Changes requested go back to the builder; a reject goes back to planning or is dropped. The exact conditions are in the reviewer charter.
 
 Related: [definition of done](definition-of-done.md), [escalation](escalation.md), and the `review-work` skill.

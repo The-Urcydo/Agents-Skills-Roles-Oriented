@@ -23,7 +23,9 @@ Several agents at once is the normal case. Collisions are prevented by structure
 ## Merging
 
 - Merging needs the owner's grant. Follow the `merge-work` skill.
+- Merge only when the item is verified, the review has no open blocker or major finding, and CI is green on the current head commit.
 - After merging, regenerate the generated files, then run the check.
-- Remove the sibling worktree when the item is finished, but only after the branch is merged or abandoned.
+- Record the merge commit's SHA and the undo command in the handoff: `git revert -m 1 <merge-sha>` after a merge commit, or `git revert <sha>` after a squash or rebase merge.
+- Remove the sibling worktree when the item is finished, but only after the branch is merged or abandoned. Do not delete unmerged work.
 
 Related: [handoff](handoff.md), [review](review.md), and the `merge-work` skill.

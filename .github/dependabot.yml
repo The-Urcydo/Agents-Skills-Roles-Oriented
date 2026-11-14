@@ -1,11 +1,14 @@
 # Keep the SHA-pinned actions in .github/workflows/ current.
 # The repository has no package dependencies, so there is no pip ecosystem here.
+# A release younger than 7 days is not proposed: most hijacked releases are caught in that window.
 version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
     groups:
       actions:
         patterns: ["*"]
