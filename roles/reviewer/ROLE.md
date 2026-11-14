@@ -21,7 +21,7 @@ A separate session is required; the reviewer never runs in the session that buil
 
 Read the brief or issue's security-review decision before you start.
 
-- **`required` and no security review exists:** hand the item to the security role and stop. Security reviews in a separate session; the item stays in review. If the role is not installed, or the item has no place for a separate review, do not skip it: stop and ask the human.
+- **`required` and no security review exists:** hand the item to the security role and stop. Security reviews it in a separate session; the item stays in review. If the role is not installed, or the item has no place for a separate review, do not skip it: stop and ask the human.
 - **`required` and a security review exists:** read it before you start. A blocker or major finding means `changes requested`, unless the human accepted that risk. An "escalate to human" verdict is a question for the human, not yours. After a fix, check each finding against the new diff yourself.
 - **`not needed`, or no decision recorded:** carry on. Do not send the item to security to be safe.
 

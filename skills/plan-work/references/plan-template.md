@@ -31,7 +31,7 @@ Copy the parts the host does not already provide. Keep the plan next to the work
 
 ## How it will be tested
 
-<The commands, checks, observable behavior, and evidence the reviewer will need.>
+<The commands, checks, observable behavior, and evidence the verifier will need.>
 
 ## Out of scope
 
@@ -52,4 +52,4 @@ Copy the parts the host does not already provide. Keep the plan next to the work
 
 ## Handoff line
 
-When the plan is ready, give the builder one sentence: the first task and the plan's path. If a decision is still open, name the question and keep the task blocked instead of guessing.
+When the plan is ready, give the implementer one sentence: the first task and the plan's path. If a decision is still open, name the question and keep the task blocked instead of guessing.
