@@ -10,7 +10,7 @@
 |---|---|---|
 | [`builder`](builder/ROLE.md) | Implement the brief in small verifiable steps, keep the handoff current, and hand over a clean branch with evidence. | [`write-handoff`](../skills/write-handoff/SKILL.md), [`merge-work`](../skills/merge-work/SKILL.md) |
 | [`orchestrator`](orchestrator/ROLE.md) | Keep work flowing by triaging requests, routing each item to the right role, clearing blocks, and keeping the human's queue short. | [`new-work-item`](../skills/new-work-item/SKILL.md), [`write-handoff`](../skills/write-handoff/SKILL.md), [`merge-work`](../skills/merge-work/SKILL.md) |
-| [`planner`](planner/ROLE.md) | Turn a request into a brief with testable acceptance criteria and, when the work is large, a plan and a task list. | [`new-work-item`](../skills/new-work-item/SKILL.md), [`plan-work`](../skills/plan-work/SKILL.md), [`write-handoff`](../skills/write-handoff/SKILL.md) |
+| [`planner`](planner/ROLE.md) | Turn a request into a brief with testable acceptance criteria and, when the work is large, a plan and a task list. | [`new-work-item`](../skills/new-work-item/SKILL.md), [`plan-work`](../skills/plan-work/SKILL.md), [`write-handoff`](../skills/write-handoff/SKILL.md), [`write-task-context`](../skills/write-task-context/SKILL.md) |
 | [`reviewer`](reviewer/ROLE.md) | Independently verify that finished work meets its acceptance criteria and the repository's rules, and say so with evidence. | [`review-work`](../skills/review-work/SKILL.md), [`write-handoff`](../skills/write-handoff/SKILL.md) |
 | [`scribe`](scribe/ROLE.md) | Keep the docs and changelog true, findable, and in the right Diataxis quadrant after every change. | [`write-doc`](../skills/write-doc/SKILL.md), [`write-handoff`](../skills/write-handoff/SKILL.md) |
 

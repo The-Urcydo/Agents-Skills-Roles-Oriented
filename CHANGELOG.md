@@ -12,6 +12,7 @@ All notable changes to this repository are recorded here. The format follows [Ke
 - Add `tools/roster.py`, role front matter and skill-name validation in `check.py`, and tests for both.
 - Batch 5: add optional `access` and `use_when` role fields with checker validation, [the role format](docs/reference/role-format.md), [the harness rules](agents/AGENTS.md), and [the porting guide](docs/how-to/port-to-repo-template.md).
 - Add the `plan-work` skill, extracted from the Repo-Template planner method and templates, so the planner charter stays routing.
+- Add `write-task-context`, the planner method for handing one task to a cold agent with a bounded read-first pack, trust marks, a verify step, and a return contract.
 - Add [ADR 0009](docs/decisions/0009-split-role-routing-from-skill-method.md), recording the Repo-Template charter/method port and its deliberate exclusions.
 - Add `workflow-lint` to CI: actionlint and zizmor over `.github/`, both pinned and checksummed.
 
