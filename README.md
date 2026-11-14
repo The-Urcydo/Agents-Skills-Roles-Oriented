@@ -8,7 +8,7 @@ A portable library of agent skills, with role charters that consume them. Built 
 
 This repo is the skills-focused sibling of [Repo-Template](https://github.com/The-Urcydo/Repo-Template). Repo-Template owns the runnable project skeleton: docs, work items, roles, protocols, tools. This repo owns the skill library and the role charters that use it. Skills developed here are ported into Repo-Template when they are ready; Repo-Template is not modified from this repo.
 
-**Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 added the catalog, scaffold, installer, and `write-skill`; Batch 4 ported the Repo-Template role charters, eight skills, and five protocols; Batch 5 ports the newer charter/method split, adds optional role fields, writes the porting guide, and adds `plan-work`.
+**Status:** v0.1 in progress. Batch 0 established the contract and checker; Batch 1 added the catalog, scaffold, installer, and `write-skill`; Batch 4 ported the Repo-Template role charters, eight skills, and five protocols; Batch 5 ports the newer charter/method split, adds optional role fields, writes the porting guide, adds `plan-work`, and adds `workflow-lint`.
 
 ## Quick start
 

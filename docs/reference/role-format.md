@@ -47,7 +47,7 @@ access: read-only
 | `access` | `full` (the default when the key is absent) or `read-only`. |
 | `use_when` | A short phrase that completes "Use when ...". Set it for a role that is called and does not own the flow; leave it out for a role that is handed items. |
 
-`access: read-only` is a tool-neutral hint, not a security boundary. It means the role researches or reviews but does not edit the work under review; it may still write its own artifact, such as a review note. The `never` list is the binding rule. A future adapter may turn `access` into a tool limit; until then, nothing enforces it mechanically.
+`access: read-only` is a tool-neutral hint, not a security boundary. It means the role researches or reviews but does not edit the work under review; it may still write its own artifact, such as a review note, and the files it owns, such as the threat model. The `never` list is the binding rule. A future adapter may turn `access` into a tool limit; until then, nothing enforces it mechanically.
 
 `use_when` is for callable roles such as the researcher and the architect. A role that is handed a work item does not need it: its trigger is the item's owner.
 

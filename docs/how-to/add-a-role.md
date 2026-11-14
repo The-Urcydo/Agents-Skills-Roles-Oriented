@@ -35,7 +35,7 @@ use_when: a caller needs a fact checked   # optional: for a callable role
 - `role` equals the folder name.
 - `tier` is `flow`, `advisory`, or `optional`.
 - `skills` lists existing names from the shared `skills/` library.
-- `access` is optional. `read-only` means the role researches or reviews without editing the work under review; it may still write its own artifact. The `never` list is the binding rule.
+- `access` is optional. `read-only` means the role researches or reviews without editing the work under review; it may still write its own artifact and the files it owns, such as the threat model. The `never` list is the binding rule.
 - `use_when` is optional. Set it for a role that is called and does not own the flow, such as the researcher or architect.
 - The body says how the role runs and points at its skills. Do not copy the procedure into the charter.
 

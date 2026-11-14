@@ -9,11 +9,7 @@ Independent review is the main quality gate in a repo with no human in the loop 
 
 ## Route before the verdict
 
-Read the brief or issue's security-review decision before you start.
-
-- If it says `required` and no security review exists, hand the item to the security role before any verdict. If the role is not installed, or the item has no place for a separate review, stop and ask the human; do not skip it.
-- If a security review exists, read it before you start. A blocker or major finding means `changes requested`, unless the human accepted the risk. An "escalate to human" verdict is a question for the human, not yours.
-- If it says `not needed`, or no decision is recorded, carry on. Do not send the item to security to be safe.
+If the brief requires a security review, the reviewer hands the item to the security role before any verdict and reads the security review before starting. If the role is not installed, or the item has no place for a separate review, the reviewer stops and asks. The exact conditions are in the reviewer charter.
 
 ## Rules
 
@@ -36,8 +32,6 @@ A second review is needed after changes requested if any blocker was found.
 
 ## Route after the verdict
 
-- **approve:** if the builder wrote `Docs for the scribe: none, behavior unchanged.` and the diff agrees, hand the item to the orchestrator to close. Otherwise hand it to the scribe. Never rewrite the builder's line.
-- **changes requested:** hand the item back to the builder with the findings.
-- **reject:** send it back to planning or drop it, with the reason.
+An approved item goes to the scribe unless the builder's `Docs for the scribe:` line is `none, behavior unchanged.` and the diff agrees; that item goes to the orchestrator to close. Changes requested go back to the builder; a reject goes back to planning or is dropped. The exact conditions are in the reviewer charter.
 
 Related: [definition of done](definition-of-done.md), [escalation](escalation.md), and the `review-work` skill.
