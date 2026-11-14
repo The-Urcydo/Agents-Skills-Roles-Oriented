@@ -20,6 +20,29 @@ gh pr merge <number> --merge
 
 `gh pr merge --merge` uses a merge commit. Do not pass `--squash` or `--rebase`. If the repository requires a different method, follow the repository's rule.
 
+## REST fallback
+
+Use these when `gh pr` (GraphQL) is blocked but `gh api` (REST) works. Replace `<o>/<r>` with the owner and repository, and `<n>` with the pull request number.
+
+```bash
+# Files the PR changes
+gh api repos/<o>/<r>/pulls/<n>/files --jq '.[].filename'
+
+# Head SHA and mergeability
+gh api repos/<o>/<r>/pulls/<n> --jq '.head.sha, .mergeable_state'
+
+# Checks and commit statuses on that exact head
+gh api repos/<o>/<r>/commits/<sha>/check-runs \
+  --jq '.check_runs[] | [.name, .status, .conclusion] | @tsv'
+gh api repos/<o>/<r>/commits/<sha>/status --jq .state
+
+# Merge commit, pinned to the head you checked
+gh api -X PUT repos/<o>/<r>/pulls/<n>/merge \
+  -f merge_method=merge -f sha=<sha>
+```
+
+`mergeable_state` values: `clean` can merge; `behind`, `blocked`, `dirty`, and `unstable` cannot yet. Passing `sha` makes GitHub refuse the merge if the branch moved after the checks.
+
 ## Stop
 
 - A required check is missing or red on the head commit.
