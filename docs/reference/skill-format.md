@@ -59,6 +59,17 @@ The checker reads the YAML subset this repository uses: single-line scalars, sin
 
 Do **not** put role names in a skill. Role charters list the skills they use. Only the fields above are allowed; the checker rejects unknown top-level fields. Claude-only fields such as `disable-model-invocation`, `argument-hint`, `hooks`, `context`, and `paths` belong in adapters, not in the source.
 
+## Charter, skill, or document?
+
+| Content | Home |
+|---|---|
+| Who acts, what it owns, when it stops | Role charter (`roles/<role>/ROLE.md`) |
+| The procedure for one task | Skill (`skills/<name>/SKILL.md`) |
+| A fact about how the repository is | `docs/` |
+| A one-off change | The pull request |
+
+A skill is a procedure, not a fact and not a role rule. Routing that changes who owns a work item or what its status is belongs in a role charter or a protocol; a skill may point to that rule but must not restate it.
+
 ## Body
 
 - Start with what the skill does and when it applies.

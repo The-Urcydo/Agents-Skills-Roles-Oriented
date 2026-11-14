@@ -10,10 +10,14 @@ All notable changes to this repository are recorded here. The format follows [Ke
 - Batch 1: `tools/new_skill.py`, `tools/catalog.py`, `tools/install.py`, generated `SKILLS.md`, the first skill (`write-skill`), and the installation guide.
 - Batch 4: port the Repo-Template agent harness: eight role charters, eight skills (`new-work-item`, `write-handoff`, `merge-work`, `write-doc`, `review-work`, `record-decision`, `research-question`, `review-security`), five protocols, and the generated `roles/ROSTER.md`.
 - Add `tools/roster.py`, role front matter and skill-name validation in `check.py`, and tests for both.
+- Batch 5: add optional `access` and `use_when` role fields with checker validation, [the role format](docs/reference/role-format.md), [the harness rules](agents/AGENTS.md), and [the porting guide](docs/how-to/port-to-repo-template.md).
+- Add [ADR 0009](docs/decisions/0009-split-role-routing-from-skill-method.md), recording the Repo-Template charter/method port and its deliberate exclusions.
 
 ### Changed
 
 - The `agents/` harness now has protocols in place; adapters and evals remain documented placeholders.
+- Role charters now hold routing and limits while skills hold the method. The reviewer routes a required security review before any verdict and routes on the builder's `Docs for the scribe:` line; the builder writes that line; the scribe skips a confirmed `none`; the orchestrator closes it.
+- Update the protocols with the reference handoff state machine, the security and docs routing, and the post-merge record. Add nested rules for `agents/`.
 - `AGENTS.md` and `CONTRIBUTING.md` include the roster check.
 - Move CI from Python 3.9 to Python 3.13 and 3.14, and pin the runner to `ubuntu-24.04`.
 - Simplify `.github/CODEOWNERS` to one `*` catch-all line and remove the redundant test that policed the duplicate lines.

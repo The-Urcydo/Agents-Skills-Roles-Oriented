@@ -60,13 +60,19 @@ python3 -m unittest discover -s tools/tests -v
 
 Start with [docs/how-to/write-a-skill.md](docs/how-to/write-a-skill.md). An
 imported skill needs `PROVENANCE.md` and an entry in
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). To move a finished skill into
+Repo-Template, follow
+[docs/how-to/port-to-repo-template.md](docs/how-to/port-to-repo-template.md).
 
 ## Adding a role
 
 Role charters live in `roles/<role>/ROLE.md` and list the skills they use. A
 new role must pass the admission test in [roles/README.md](roles/README.md).
-Start with [docs/how-to/add-a-role.md](docs/how-to/add-a-role.md), then run
+A charter may declare `access: read-only` and `use_when`; the full contract is
+in [docs/reference/role-format.md](docs/reference/role-format.md). Routing
+belongs in the charter, the procedure in the skill. Read
+[agents/AGENTS.md](agents/AGENTS.md) before changing the harness. Start with
+[docs/how-to/add-a-role.md](docs/how-to/add-a-role.md), then run
 `python3 tools/roster.py` and `python3 tools/check.py --strict`.
 
 ## What happens next
