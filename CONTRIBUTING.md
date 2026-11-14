@@ -78,6 +78,7 @@ belongs in the charter, the procedure in the skill. Read
 ## What happens next
 
 CI runs `check.py --strict` and the unit tests on Python 3.13 and 3.14.
+`workflow-lint` runs actionlint and zizmor over `.github/workflows/`.
 Dependabot keeps the pinned actions current. The `protect-main` ruleset requires
 a code-owner review, resolved review threads, the `check` jobs, the CodeQL
 checks, and an approval of the latest push. If any are missing, leave the merge
