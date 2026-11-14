@@ -34,3 +34,4 @@ All notable changes to this repository are recorded here. The format follows [Ke
 - Protect `main` with Code Owner review, required checks, merge-only commits, and a release-tag ruleset.
 - Add `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue forms, and a governance ADR.
 - Harden CI with concurrency, a timeout, manual dispatch, and tests for pinned actions and governance files.
+- Set a 7-day Dependabot cooldown so a newly published action release is not proposed immediately.
