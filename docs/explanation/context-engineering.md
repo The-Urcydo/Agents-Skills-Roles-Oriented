@@ -22,12 +22,14 @@ A cold agent has only what it is given: no memory of the conversation that plann
 | Goal and acceptance criteria | [new-work-item](../../skills/new-work-item/SKILL.md) | exists |
 | A clean reviewer, one writer per path | [review protocol](../../agents/protocols/review.md), [parallel work](../../agents/protocols/parallel-work.md) | exists |
 | Ask before guessing | [escalation](../../agents/protocols/escalation.md) | exists |
-| A per-task brief for a cold agent | step 7 of [plan-work](../../skills/plan-work/SKILL.md) says "small enough for one session, ends with a check" | the template below, by hand |
+| A per-task brief for a cold agent | step 7 of [plan-work](../../skills/plan-work/SKILL.md) says each task should be small enough for one session and end with a check the agent can run | the template below, by hand |
 | Untrusted text inside a brief | security review covers review, not planning from external text | one rule in the template |
 
 ## A task brief template
 
 Whoever hands the task over writes this by hand. The numbers in it are engineering defaults, not findings: at most five read-first paths, and a return of at most ten lines.
+
+Use it when a task goes to an agent that has none of the earlier conversation. Skip it for a small task with a clear brief: the trial below found that it costs more planner tokens.
 
 ```markdown
 Task: [one sentence]
@@ -72,7 +74,7 @@ It did not change much else. Cold start and trust marks mostly tied the baseline
 
 ## What the sources say, and how far to trust it
 
-Checked by the advisor on 2026-11-14 unless noted.
+Checked on 2026-11-14 unless noted.
 
 - **High confidence for the idea, low for any number (2026-11-14).** Three research notes the owner collected agree on write, select, compress, and isolate; on four failure kinds (poisoning, distraction, confusion, and clash); on short standing instructions; on loading detail just in time; on sub-agents returning summaries instead of transcripts; and on restarting a degraded session from one consolidated brief. The notes are not published. They disagree on layer taxonomies, on whether rules belong at the end of the window, and on how much multi-agent isolation costs. This page adopts no taxonomy and no placement rule.
 - **Low confidence (2026-11-14).** The large "lost in the middle" accuracy drop comes from 2023-era models ([Liu et al., arXiv 2307.03172](https://arxiv.org/abs/2307.03172)). One note reports a later test that found no notable position effect; that is second-hand and was not verified.
