@@ -7,6 +7,7 @@ Start here. This file is the map; open only what the task needs.
 - [Skill format](reference/skill-format.md): required front matter, folder shape, metadata, and quality rules.
 - [Role format](reference/role-format.md): required and optional charter fields, and the charter/skill split.
 - [Why skills](explanation/why-skills.md): the context-budget reason for skills, and how they differ from roles and `AGENTS.md`.
+- [Context engineering for handoffs](explanation/context-engineering.md): what a cold agent needs, which repository artifacts provide it, and what is still unproven.
 
 ## Catalog
 

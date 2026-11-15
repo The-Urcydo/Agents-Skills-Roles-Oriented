@@ -14,6 +14,7 @@ All notable changes to this repository are recorded here. The format follows [Ke
 - Add the `plan-work` skill, extracted from the Repo-Template planner method and templates, so the planner charter stays routing.
 - Add [ADR 0009](docs/decisions/0009-split-role-routing-from-skill-method.md), recording the Repo-Template charter/method port and its deliberate exclusions.
 - Add `workflow-lint` to CI: actionlint and zizmor over `.github/`, both pinned and checksummed.
+- Add the explanation page [Context engineering for handoffs](docs/explanation/context-engineering.md): a map from what a cold agent needs to the artifacts the repository already has, one hand-written task brief template, and the limits of the evidence.
 
 ### Changed
 
