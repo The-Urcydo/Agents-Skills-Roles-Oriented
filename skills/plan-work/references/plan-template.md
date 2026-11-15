@@ -52,4 +52,4 @@ Copy the parts the host does not already provide. Keep the plan next to the work
 
 ## Handoff line
 
-When the plan is ready, give the agent doing the work one sentence: the first task and the plan's path. If a decision is still open, name the question and leave that task out of the plan until it is answered.
+When the plan is ready, give the agent doing the work one sentence: the first task and the plan's path. When a task goes to a fresh agent or session, send its `write-task-context` pack instead. If a decision is still open, name the question and leave that task out of the plan until it is answered.
