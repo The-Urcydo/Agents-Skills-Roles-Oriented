@@ -10,13 +10,13 @@ summary: Handle delegated authority with a grant rule in the escalation protocol
 
 The owner works in layers. The owner decides. An advisor session gives an independent view and drafts briefs. An orchestrator session does the work and opens the pull request. On 2026-11-15 the owner agreed that an advisor may hold delegated authority, not authority equal to the owner's, and asked whether the harness needs an `advisor` role.
 
-Three questions had no answer in the repository:
+These questions had no answer in the repository:
 
 - **What is delegated, and how is it revoked?** The [`merge-work`](../../skills/merge-work/SKILL.md) skill defines a grant for merging only. Nothing says what else an agent may do for the human, for how long, or what no grant can unlock.
 - **Who checks the result of a brief?** [The review protocol](../../agents/protocols/review.md) bars the builder from reviewing its own work. It does not bar the author of the brief, who then judges whether the brief was followed.
 - **Where would a rule be read?** No role charter links a file in `agents/protocols/`, so a rule that lives only in a protocol may never be loaded. The root [`AGENTS.md`](../../AGENTS.md) is always loaded, and the checker caps its length.
 
-Earlier advisor sessions showed three failure modes. The author of a brief was also its only independent reviewer, and a hardcoded count reached two pull request descriptions. A compaction summary drifted from the facts. Text from other agents' reports, score sheets, and web pages was taken for instruction. These come from the owner's session notes. This repository holds no second source for them, so treat them as a lead.
+Earlier advisor sessions showed failure modes. The author of a brief was also its only independent reviewer, and hardcoded counts reached pull request descriptions. A compaction summary drifted from the facts. Text from other agents' reports, score sheets, and web pages was taken for instruction. These come from the owner's session notes. This repository holds no second source for them, so treat them as a lead.
 
 ## Decision drivers
 
@@ -40,10 +40,10 @@ Earlier advisor sessions showed three failure modes. The author of a brief was a
 
 Chosen option: **add the rules to the existing protocols, add one pointer in the root `AGENTS.md`, and add no role.**
 
-1. **The admission test is not met.** Every artifact the advisor produces already has an owner: briefs (planner), decisions (architect), source checks (researcher), independent review (reviewer), and the human's short queue with a recommendation, a default, and a cost (orchestrator). The `access` field has two values, and the researcher, the reviewer, and the security role already use `read-only`; what is new here is authority, not tool access. An advisor that writes a brief and judges its result is the maker and the checker at once, the opposite of the checker half the test asks for. Only the context-window criterion is partly met, and a separate session already covers it.
-2. **Delegation is of work, not of authority.** The human's request, or a brief the human hands over, authorizes the work it names, up to the hand-over for review. An advisor session holds no authority of its own: a brief it drafts authorizes work only once the human hands it over, and it cannot pass a grant to another session. Any other action on shared state needs a grant. The human keeps approving a pull request, pushing to the default branch, changing branch protection, accepting a security risk, and accepting a decision record.
-3. **Grants.** The [escalation protocol](../../agents/protocols/escalation.md) gains a "Grants and delegation" section. A grant is the human's own words, in the session or in a record the human wrote, as `merge-work` already defines it. It covers one action, only what can be undone, and ends when the action is done, on "stop", or when the session that heard it ends. Merging stays under `merge-work` and the host's rule on who may merge. The governance acts above join the existing "Other decisions" list instead of a new list.
-4. **Independence.** The review protocol gains one bullet: an important item is reviewed by a fresh session that did not write or shape the brief, and the reviewer recomputes counts and file lists from the repository.
+1. **The admission test is not met.** Every artifact the advisor produces already has an owner: briefs (planner), decisions (architect), source checks (researcher), independent review (reviewer), and the human's short queue with a recommendation, a default, and a cost (orchestrator). The `access` field takes only `full` or `read-only`, and the researcher, the reviewer, and the security role already use `read-only`; what is new here is authority, not tool access. An advisor that writes a brief and judges its result is the maker and the checker at once, the opposite of the checker half the test asks for. Only the context-window criterion is partly met, and a separate session already covers it.
+2. **Delegation is of work, not of authority.** The human's request, or a brief the human hands over, authorizes the work it names, up to the hand-over for review. An advisor session holds no authority of its own: a brief it drafts authorizes work only once the human hands it over, and it cannot pass a grant to another session. Any other action on shared state needs a grant. The human keeps approving a pull request, a direct push to the default branch, changing branch protection, accepting a security risk, and accepting a decision record.
+3. **Grants.** The [escalation protocol](../../agents/protocols/escalation.md) gains a "Grants and delegation" section. A grant is the human's own words, in the session or in a record the human wrote, as `merge-work` already defines it. It names the action and the exact scope, and the handoff quotes it with the date. It covers one action, only what can be undone, and ends when the action is done, on "stop", or when the session that holds it ends. Merging stays under `merge-work` and the host's rule on who may merge. The governance acts above join the existing "Other decisions" list instead of a new list.
+4. **Independence.** The review protocol gains one bullet: the author of an item's brief is not its only independent reviewer, an important item is also reviewed by a fresh session that did not write or shape the brief, and the reviewer recomputes counts and file lists from the repository.
 5. **One pointer in the root rules.** `AGENTS.md` gains hard rule 13: one line that says grants come only from the human's own words and points to the escalation protocol. The owner approved this root-rule change on 2026-11-16. It is the only text this decision adds to an always-loaded file.
 6. **No rename.** The planner keeps its name; it already owns the brief.
 
@@ -56,7 +56,7 @@ Chosen option: **add the rules to the existing protocols, add one pointer in the
 
 ## Confirmation
 
-- The four repository checks pass: `python3 tools/check.py --strict`, `python3 tools/catalog.py --check`, `python3 tools/roster.py --check`, and `python3 -m unittest discover -s tools/tests`.
+- The repository checks pass: `python3 tools/check.py --strict`, `python3 tools/catalog.py --check`, `python3 tools/roster.py --check`, and `python3 -m unittest discover -s tools/tests`.
 - Acceptance gate: do not move this record to `accepted` until one of these has happened, whichever comes first:
   - a tabletop run, in which a fresh session is given only the protocols and the root rules and answers each scenario in the pull request, and the owner compares the answers with the expected behavior;
   - the first real delegation that uses the rule, where a reviewer in a fresh session checks that the grant is quoted in the handoff and that the brief's counts match the repository.

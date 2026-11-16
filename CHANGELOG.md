@@ -15,7 +15,7 @@ All notable changes to this repository are recorded here. The format follows [Ke
 - Add [ADR 0009](docs/decisions/0009-split-role-routing-from-skill-method.md), recording the Repo-Template charter/method port and its deliberate exclusions.
 - Add `workflow-lint` to CI: actionlint and zizmor over `.github/`, both pinned and checksummed.
 - Add the explanation page [Context engineering for handoffs](docs/explanation/context-engineering.md): a map from what a cold agent needs to the artifacts the repository already has, one hand-written task brief template, and the limits of the evidence.
-- Add a "Grants and delegation" section to the [escalation protocol](agents/protocols/escalation.md), a rule in the [review protocol](agents/protocols/review.md) that an important item is reviewed by a session that did not write its brief, hard rule 13 in `AGENTS.md`, and [ADR 0010](docs/decisions/0010-delegate-authority-by-grant.md) (proposed), which records why delegated authority is a protocol and not a role.
+- Add a "Grants and delegation" section to the [escalation protocol](agents/protocols/escalation.md), a rule in the [review protocol](agents/protocols/review.md) that the author of a brief is not its only independent reviewer and that an important item is also reviewed by a session that did not write its brief, hard rule 13 in `AGENTS.md`, and [ADR 0010](docs/decisions/0010-delegate-authority-by-grant.md) (proposed), which records why delegated authority is a protocol and not a role.
 
 ### Changed
 
