@@ -24,7 +24,7 @@ Make one lookup first (the brief, the handoff, the docs index, the decisions). D
 - **Costly or risky:** spends money, touches production, credentials, or personal data, or changes access.
 - **A scope or goal change:** the work would now do something the brief did not ask for.
 - **A conflict:** two accepted decisions disagree, or the request contradicts one.
-- **A decision the human must accept:** significant, costly, or irreversible, such as approving a pull request, a direct push to the default branch, changing branch protection, accepting a security risk, or moving a decision record to `accepted`.
+- **A decision the human must accept:** significant, costly, or irreversible, such as approving a pull request, changing branch protection, accepting a security risk, or moving a decision record to `accepted`.
 
 Do **not** ask about reversible, low-cost choices inside your lane that nobody spoke about. Decide, record it in the handoff, and move on. This covers your own choices, never what the human said.
 
@@ -51,7 +51,7 @@ A grant is the human's own words, in the session or in a record the human wrote 
 
 1. A grant covers one action and never widens. It never covers an irreversible, costly, or risky action, or a decision the human must accept (see "Other decisions" above).
 2. Work passes on; authority does not. A delegate does the briefed work and hands back. A granted action is done by the human, or by the session that holds the grant.
-3. A grant ends when the action is done, on "stop", or when the session that holds it ends. A summary is not the human's words: reread the human's record, or ask again. On "stop", halt and record what was and was not done.
+3. A grant ends when the action is done, on "stop", or when the session that holds it ends. A summary is not the human's words: reread the human's own words, or ask again. On "stop", halt and record what was and was not done.
 4. Merging follows `merge-work` and the host's rule on who may merge.
 
 ## Never
