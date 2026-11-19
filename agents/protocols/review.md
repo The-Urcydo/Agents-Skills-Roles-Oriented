@@ -6,6 +6,7 @@ Independent review is the main quality gate in a repo with no human in the loop 
 
 - The agent doing the review is never the agent that built the item. With a single model playing both parts, use a fresh session with no memory of the build, and read the brief before the author's summary.
 - The review does not fix findings. Fixing makes the review a second builder and removes the second pair of eyes.
+- The author of an item's brief is not its only independent reviewer. An important item (one that changes tools, workflows, the agent harness, or root rules) is also reviewed by a fresh session that did not write or shape the brief. The reviewer recomputes every count and file list in the brief, the handoff, and the description from the repository.
 
 ## Route before the verdict
 

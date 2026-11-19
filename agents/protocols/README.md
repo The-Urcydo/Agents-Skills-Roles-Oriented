@@ -5,7 +5,7 @@ Rules between roles, including the steps of a cross-role interaction. Task proce
 | Protocol | Rule |
 |---|---|
 | [Definition of done](definition-of-done.md) | What evidence makes work finished. |
-| [Escalation](escalation.md) | When to ask the human, and how to ask. |
+| [Escalation](escalation.md) | When to ask the human, how to ask, and what an agent may do for the human under a grant. |
 | [Handoff](handoff.md) | What a fresh session needs to continue. |
 | [Parallel work](parallel-work.md) | How several agents avoid overwriting each other. |
 | [Review](review.md) | Independence, findings, and verdicts. |

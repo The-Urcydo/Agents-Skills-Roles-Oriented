@@ -44,4 +44,5 @@ Start here. This file is the map; open only what the task needs.
 - [0007: Port the agent roles and skills from Repo-Template](decisions/0007-port-the-agent-roles-and-skills.md)
 - [0008: Keep the single-owner, multi-machine organization access model](decisions/0008-single-owner-organization-access.md)
 - [0009: Split role routing from skill method](decisions/0009-split-role-routing-from-skill-method.md)
+- [0010: Delegate authority by grant, not by role](decisions/0010-delegate-authority-by-grant.md)
 - [Decision record rules](decisions/README.md)
